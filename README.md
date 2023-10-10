@@ -47,13 +47,13 @@ Now that you're more familiar with your Bitbucket repository, go ahead and add a
 
 ## Local Setup 
 
-1. Clone the repository (See the guide above)
-2. Install local requirements
-    *pip install -r requirements.txt*
+1. Clone the repository (See the guide above).
+2. Install local requirements,
+    **pip install -r requirements.txt**
 3. Make .env and .flaskenv file and input neccesary data.
-    *cp env.sample .env*
-    *cp flaskenv_sample .flaskenv*
-4. Setup Virtual Environment and Activate
-    *pipenv install*
-5. Run flask
-    *flask run*
+    **cp env.sample .env**,
+    **cp flaskenv_sample .flaskenv**
+4. Setup Virtual Environment and Activate,
+    **pipenv install**
+5. Run flask,
+    **flask run**
