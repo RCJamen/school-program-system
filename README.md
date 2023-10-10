@@ -43,3 +43,17 @@ Use these steps to clone from SourceTree, our client for using the repository co
 4. Open the directory you just created to see your repository’s files.
 
 Now that you're more familiar with your Bitbucket repository, go ahead and add a new file locally. You can [push your change back to Bitbucket with SourceTree](https://confluence.atlassian.com/x/iqyBMg), or you can [add, commit,](https://confluence.atlassian.com/x/8QhODQ) and [push from the command line](https://confluence.atlassian.com/x/NQ0zDQ).
+
+
+## Local Setup 
+
+1. Clone the repository (See the guide above)
+2. Install local requirements
+    *pip install -r requirements.txt*
+3. Make .env and .flaskenv file and input neccesary data.
+    *cp env.sample .env*
+    *cp flaskenv_sample .flaskenv*
+4. Setup Virtual Environment and Activate
+    *pipenv install*
+5. Run flask
+    *flask run*
