@@ -42,5 +42,13 @@ body {
     font-size: 18px;
     text-align: center;
     font-weight: lighter;
-    padding-bottom: 20px;
+    padding-bottom: 15px;
+}
+
+#login .forget {
+    font-size: 15px;
+    text-align: center;
+    display: block;
+    margin-top: 8px;
+    margin-bottom: 8px;
 }
