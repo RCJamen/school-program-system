@@ -32,8 +32,7 @@ def login_is_required(function):
 
 @admin.route("/")
 def index():
-    return "Hello World <a href='/login'><button>Login</button></a>"
-
+    return render_template("/login.html")
 @admin.route("/login")
 def login():
     authorization_url, state = flow.authorization_url()

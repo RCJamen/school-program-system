@@ -1,3 +1,46 @@
+html,
 body {
-    background-color: #E9E3E3;
+    background: #E9E3E3;
+}
+
+.header {
+    background-color: #A41D21;
+    padding-top: 3vh;
+    padding-bottom: 1vh;
+}
+
+.content {
+    background: #E9E3E3;
+    padding-top: 15vh;
+
+}
+
+/*    --------------------------------------------------
+  :: Login Section
+  -------------------------------------------------- */
+
+#login .form-wrap {
+    width: 30%;
+    margin: 0 auto;
+}
+
+#login img {
+    height: 250px;
+    width: 235px;
+    padding-bottom: 5vh;
+}
+
+#login h1 {
+    color: #000000;
+    font-size: 28px;
+    text-align: center;
+    font-weight: bold;
+    padding-bottom: 5px;
+}
+
+#login p {
+    font-size: 18px;
+    text-align: center;
+    font-weight: lighter;
+    padding-bottom: 20px;
 }
