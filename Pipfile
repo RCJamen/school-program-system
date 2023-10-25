@@ -12,8 +12,6 @@ flask-wtf = "*"
 jinja2 = "*"
 oauth2client = "*"
 google-api-python-client = "*"
-pyopenssl = "*"
-pycrypto = "*"
 google-auth-oauthlib = "*"
 
 [dev-packages]
