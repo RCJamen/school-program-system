@@ -10,6 +10,9 @@ flask-mysql-connector = "*"
 flask-bootstrap = "*"
 flask-wtf = "*"
 jinja2 = "*"
+oauth2client = "*"
+google-api-python-client = "*"
+google-auth-oauthlib = "*"
 
 [dev-packages]
 

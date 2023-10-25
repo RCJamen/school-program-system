@@ -1,3 +1,4 @@
+
 from flask import Flask, render_template
 from flask_mysql_connector import MySQL
 from flask_bootstrap import Bootstrap
@@ -21,8 +22,11 @@ def create_app():
     mysql.init_app(app)
     CSRFProtect(app)
 
-    @app.route("/")
-    def hello_world():
-        return "<p>Initialization</p>"
-
+    from .controller.admin import admin
+    app.register_blueprint(admin)
+    
+    # @app.route("/")
+    # def hello_world():
+    #     return render_template("login.html")
+    
     return app
