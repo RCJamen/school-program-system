@@ -1,6 +1,7 @@
 html,
 body {
     background: #E9E3E3;
+    font-family: 'Open Sans', sans-serif;
 }
 
 .header {
@@ -22,6 +23,8 @@ body {
 #login .form-wrap {
     width: 30%;
     margin: 0 auto;
+    font-family: 'Open Sans', sans-serif;
+
 }
 
 #login img {
@@ -34,21 +37,27 @@ body {
     color: #000000;
     font-size: 28px;
     text-align: center;
-    font-weight: bold;
+    font-weight: bolder;
     padding-bottom: 5px;
+    font-family: 'Open Sans', sans-serif;
+
 }
 
 #login p {
     font-size: 18px;
     text-align: center;
-    font-weight: lighter;
+    font-weight: bold;
     padding-bottom: 15px;
+    font-family: 'Open Sans', sans-serif;
+
 }
 
-#login .forget {
+#login .newToIIT {
     font-size: 15px;
     text-align: center;
     display: block;
     margin-top: 8px;
     margin-bottom: 8px;
+    font-family: 'Open Sans', sans-serif;
+
 }
