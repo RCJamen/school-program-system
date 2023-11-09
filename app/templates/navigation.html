@@ -1,0 +1,64 @@
+{% extends "master_layout.html" %}
+{% block title %} {% endblock %}
+{% block style %} {% endblock %}
+
+{% block content %}
+<div class="nav-top">
+    <div class="header--wrapper">
+        <div class="sidebar-toggle">
+            <i class="fa-solid fa-bars"></i>
+        </div>
+        <div class="user--info">
+            <i class="fa-solid fa-circle-user"></i>
+            <p>Fulgent Travesores</p>
+        </div>
+    </div>
+</div>
+<div class="sidebar">
+    <span class="title">
+        <h2> MSU-IIT</h2>
+    </span>
+    <div class="logo">
+        <img src="{{ url_for('static', filename='pictures/iit-seal.png')}}" alt="MSU-IIT_logo">
+        <h3>Chairperson</h3>
+    </div>
+    <ul class="menu">
+        <li>
+            <a href="#">
+                <i class="fa-solid fa-house-chimney"></i>
+                <span>Home</span>
+            </a>
+        </li>
+        <li class="#">
+            <a href="#">
+                <i class="fa-solid fa-clipboard-list"></i>
+                <span>Subjects Handled</span></a>
+        </li>
+        <li class="#">
+            <a href="#">
+                <i class="fa-solid fa-users"></i>
+                <span>Faculty List</span>
+            </a>
+        </li>
+        <li class="#">
+            <a href="#">
+                <i class="fa-solid fa-list-ul"></i>
+                <span>Subject List</span>
+            </a>
+        </li>
+        <li class="#">
+            <a href="#">
+                <i class="fa-solid fa-file-lines"></i>
+                <span>College Curriculum</span>
+            </a>
+        </li>
+    </ul>
+</div>
+<div class="main-content">
+    <section class="main">
+    
+    </section> 
+</div>
+
+{% endblock %}
+

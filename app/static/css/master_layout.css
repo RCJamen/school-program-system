@@ -4,3 +4,129 @@ body {
     font-family: 'Open Sans', sans-serif;
     color: #212529
 }
+.title
+{
+    padding: 5rem;
+    padding-left: 20px;
+}
+.title h2
+{
+    background-color: 931D23;
+    padding-left: 30px;
+    background: #931D23;
+}
+.sidebar{
+    position: sticky;
+    top: 0;
+    left: 0;
+    bottom: 0;
+    width: 240px;
+    height: 100vh;
+    padding: 0 1.7rem;
+    color: whitesmoke;
+    overflow: hidden;
+    transition: all 0.3s linear;
+    background: #333333;
+}
+.sidebar:hover{
+    width: 240px;
+    transform: 0.3s;
+}
+.logo{
+    height: 80px;
+    padding: 16px;
+}
+.logo img
+{
+    height: 110px;
+    padding: 10px;
+    background-color: white;
+    border-radius: 95%;
+    margin-left: auto;
+    margin-right: auto;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+.logo h3
+{
+    padding-bottom: 15px;
+    font-size: 1.2rem;
+    align-items: center;
+    justify-content: center;
+    display: flex;
+    background-size: cover;
+}
+.menu{
+    height: 88%;
+    position: relative;
+    list-style: none;
+    padding: 2px;
+    margin-top: 5rem;
+}
+.menu li{
+    padding: 3px;
+    margin: 8px 0;
+    border-radius: 8px;
+    transition: all 0.3s ease-in-out;
+}
+.menu li:hover, 
+.active{
+    background: #e0e0e058;
+}
+.menu a{
+    color: aliceblue;
+    font-size: 14px;
+    text-decoration: none;
+    display: flex;
+    gap: 1.5rem;
+}
+.menu a span {
+    overflow: hidden;
+}
+.menu span
+{
+    justify-self: center;
+    align-self: center;
+}
+.menu a i {
+    font-size: 1.2rem;
+}
+.nav-top
+{
+    position: relative;
+    background: #A41D21;
+    width: 100%;
+    padding: 1rem;
+    overflow: hidden;
+}
+.header--wrapper
+{
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    flex-wrap: wrap;
+    margin-left: 15rem;
+}
+.sidebar-toggle i
+{
+    color: white;
+}
+.user--info
+{
+    display: flex;
+    align-items: center;
+    gap: 1;
+}
+.user--info i
+{
+    size: 3em;
+    color: white;
+    padding-right: 13px;
+}
+.user--info p
+{
+    font-weight: 600;
+    margin-top: 1em;
+    color: #FFFFFF;
+}
