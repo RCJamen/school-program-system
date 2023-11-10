@@ -25,8 +25,7 @@ def create_app():
     from .controller.admin import admin
     app.register_blueprint(admin)
     
-    # @app.route("/")
-    # def hello_world():
-    #     return render_template("login.html")
+    from .controller.faculty.facultyRoute import facultyRoute
+    app.register_blueprint(facultyRoute)
     
     return app
