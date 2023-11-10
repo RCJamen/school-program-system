@@ -1,14 +1,11 @@
-
-
 .header {
     background-color: #A41D21;
-    padding-top: 3vh;
-    padding-bottom: 1vh;
 }
 
 .content {
-    background: #E9E3E3;
     padding-top: 15vh;
+    background: #E9E3E3;
+    padding-bottom: 100%;
 
 }
 

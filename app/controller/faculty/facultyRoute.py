@@ -3,9 +3,11 @@ from flask_wtf import FlaskForm
 from wtforms import StringField, SubmitField
 
 from app.models.facultyModel import facultyModel
+from app.controller.admin.controller import login_is_required
 
 facultyRoute = Blueprint('faculty', __name__)
 faculty_model = facultyModel()
+
 
 class FacultyForm(FlaskForm):
     facultyIDInput = StringField('ID')
@@ -15,6 +17,7 @@ class FacultyForm(FlaskForm):
     submit = SubmitField('Add Faculty')
 
 @facultyRoute.route("/faculty", methods=["GET", "POST"])
+@login_is_required
 def faculty():
     form = FacultyForm()
     flash_message = None

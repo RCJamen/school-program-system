@@ -1,14 +1,14 @@
 {% extends "master_layout.html" %}
 
-{% block title %} <title>Faculty</title> {% endblock %}
+{% block pagetitle %} <title>Faculty</title> {% endblock %}
 
 
-{% block style %}
+{% block pagestyle %}
 <link rel="stylesheet" href="../static/css/faculty.css">
 {% endblock %}
 
 
-{% block content %}
+{% block pages %}
 
 
 
@@ -150,13 +150,15 @@
   </div>
 </div>
 
-{% block script %}
+
+
+
+
+{% endblock %}
+
+{% block pagescript %}
 <script
       type="text/javascript"
       src="../static/js/faculty.js"
     ></script>
-{% endblock %}
-
-
-
 {% endblock %}
