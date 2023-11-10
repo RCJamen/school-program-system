@@ -1,13 +1,12 @@
-body {
-    background: #E9E3E3;
-}
-
 .header {
     background-color: #A41D21;
 }
 
 .content {
     padding-top: 15vh;
+    background: #E9E3E3;
+    padding-bottom: 100%;
+
 }
 
 /*    --------------------------------------------------
