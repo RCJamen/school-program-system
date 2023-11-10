@@ -1,91 +1,65 @@
 {% extends "base.html" %}
 
-{% block title %} <title>Landing Page</title> {% endblock %}
+{% block title %} <title>Home</title> {% endblock %}
 
 {% block style %}
 <link rel="stylesheet" href="../static/css/master_layout.css">
 {% endblock %}
 
 {% block content %}
-<!-- <nav class="navbar navbar-expand-lg fixed-top pb-2 pt-2" style="background-color: #A41D21">
-    <div class="container-fluid">
-        <a class="navbar-brand ps-2" style="color: #FFF" href="#">
-            <i class="fa fa-bars"></i>
-        </a>
-        <div class="collapse navbar-collapse" id="navbar">
-            <ul class="navbar-nav ms-auto pe-3">
-                <li class="nav-item dropdown">
-                    <a class="nav-link" href="#" id="navbarDropdownMenuLink" role="button" data-bs-toggle="dropdown"
-                        aria-expanded="false">
-                        <i class="fas fa-user fa-fw" style="color: #FFF"></i>
-                        <span class="ps-2" style="color: #FFF">Ramel Cary B. Jamen</span>
-                    </a>
-                    <ul class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
-                        <li><a class="dropdown-item" href="#">Profile</a></li>
-                        <li><a class="dropdown-item" href="#">Logout</a></li>
-                    </ul>
-                </li>
-            </ul>
-        </div>
-    </div>
-</nav> -->
-
 <div class="main-container d-flex">
     <div class="sidebar" id="side_nav">
-        <div class="header-box px-2 pt-3 pb-4 d-flex justify-content-between">
-            <h1 class="fs-4"><span class="bg-white text-dark rounded shadow px-2 me-2">CL</span> <span
-                    class="text-white">Coding League</span></h1>
-            <button class="btn d-md-none d-block close-btn px-1 py-0 text-white"><i class="fa fa-stream"></i></button>
+        <div class="header-box px-2 pt-3 pb-4 mt-2 d-flex justify-content-between">
+            <h1 class="fs-3">
+                <img src="../static/pictures/iit-seal.png" alt="iit-seal" style="max-width: 12%; margin-left: 10px;">
+                <span class="text-white ps-2">My.IIT</span>
+            </h1>
+            <button class="btn d-md-none d-block close-btn px-1 py-0 text-white pe-2"><i
+                    class="fa-solid fa-bars-staggered"></i></button>
         </div>
 
         <ul class="list-unstyled px-2">
-            <li class="active"><a href="#" class="text-decoration-none px-3 py-2 d-block"><i class="fa fa-home"></i>
-                    Dashboard</a></li>
-            <li class=""><a href="#" class="text-decoration-none px-3 py-2 d-block"><i class="fa fa-list"></i>
-                    Projects</a></li>
-            <li class=""><a href="#" class="text-decoration-none px-3 py-2 d-block d-flex justify-content-between">
-                    <span><i class="fa fa-comment"></i> Messages</span>
-                    <span class="bg-dark rounded-pill text-white py-0 px-2">02</span>
-                </a>
-            </li>
-            <li class=""><a href="#" class="text-decoration-none px-3 py-2 d-block"><i
-                        class="fa fa-envelope-open-text"></i> Services</a></li>
-            <li class=""><a href="#" class="text-decoration-none px-3 py-2 d-block"><i class="fa fa-users"></i>
-                    Customers</a></li>
+            <li class="active"><a href="#" class="text-decoration-none px-3 py-2 d-block"><i class="fas fa-home"></i>
+                    &nbsp;<span class="ms-2">Home</span></a></li>
+            <li class=""><a href="#" class="text-decoration-none px-3 py-2 d-block"><i class="fas fa-book"></i>
+                    <span class="ms-3">Subjects Handled</span></a></li>
+            <li class=""><a href="#" class="text-decoration-none px-3 py-2 d-block"><i class="fas fa-users"></i>
+                    &nbsp;<span class="ms-2">Faculty List</span></a></li>
+            <li class=""><a href="#" class="text-decoration-none px-3 py-2 d-block"><i class="fas fa-list-alt"></i>
+                    <span class="ms-3">Subject List</span></a></li>
+            <li class=""><a href="#" class="text-decoration-none px-3 py-2 d-block"><i class="fas fa-file"></i>
+                    &nbsp;<span class="ms-3">College Curriculum</span></a></li>
         </ul>
+
         <hr class="h-color mx-2">
 
         <ul class="list-unstyled px-2">
-            <li class=""><a href="#" class="text-decoration-none px-3 py-2 d-block"><i class="fa fa-bars"></i>
-                    Settings</a></li>
-            <li class=""><a href="#" class="text-decoration-none px-3 py-2 d-block"><i class="fa fa-bell"></i>
-                    Notifications</a></li>
-
+            <li class=""><a href="#" class="text-decoration-none px-3 py-2 d-block"><i class="fas fa-sign-out-alt"></i>>
+                    <span class="ms-2">Logout</span></a></li>
         </ul>
 
     </div>
     <div class="content">
-        <nav class="navbar navbar-expand-md navbar-light bg-light">
+        <nav class="navbar navbar-expand-md" style="background-color: #A41D21">
             <div class="container-fluid">
                 <div class="d-flex justify-content-between d-md-none d-block">
-                    <button class="btn px-1 py-0 open-btn me-2"><i class="fal fa-stream"></i></button>
+                    <button class="btn px-1 py-0 open-btn me-2"><i class="fa-solid fa-bars-staggered"></i></button>
                     <a class="navbar-brand fs-4" href="#"><span
-                            class="bg-dark rounded px-2 py-0 text-white">CL</span></a>
-
+                            class="bg-dark rounded px-2 py-0 text-white">My.IIT</span></a>
                 </div>
                 <button class="navbar-toggler p-0 border-0" type="button" data-bs-toggle="collapse"
                     data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent"
                     aria-expanded="false" aria-label="Toggle navigation">
-                    <i class="fal fa-bars"></i>
+                    <i class="fa fa-bars"></i>
                 </button>
                 <div class="collapse navbar-collapse justify-content-end" id="navbarSupportedContent">
                     <ul class="navbar-nav mb-2 mb-lg-0">
                         <li class="nav-item">
-                            <a class="nav-link active" aria-current="page" href="#">Profile</a>
+                            <a class=" nav-link active" aria-current="page" href="#"><i class="fas fa-user fa-fw"
+                                    style="color: #FFF"></i>
+                                <span class="ps-2" style="color: #FFF">Ramel Cary B. Jamen</span></a>
                         </li>
-
                     </ul>
-
                 </div>
             </div>
         </nav>
