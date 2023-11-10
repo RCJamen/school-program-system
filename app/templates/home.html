@@ -1,0 +1,21 @@
+{% extends "master_layout.html" %}
+
+{% block pagetitle %}<title>Home</title> {% endblock %}
+
+{% block pagestyle %}
+<!-- <link rel="stylesheet" href="../static/css/NAME.css"> -->
+{% endblock %}
+
+{% block pages %}
+<div>
+    <h2 class="fs-5"> Welcome, {{session['name']}}!</h2>
+    <hr>
+    <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Nostrum, totam? Sequi alias eveniet ut quas
+        ullam delectus et quasi incidunt rem deserunt asperiores reiciendis assumenda doloremque provident,
+        dolores aspernatur neque.</p>
+</div>
+{% endblock %}
+
+{% block pagescript %}
+<script></script>
+{% endblock %}

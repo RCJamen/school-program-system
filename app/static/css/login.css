@@ -1,17 +1,11 @@
-html,
-body {
-    background: #E9E3E3;
-}
-
 .header {
     background-color: #A41D21;
-    padding-top: 3vh;
-    padding-bottom: 1vh;
 }
 
 .content {
-    background: #E9E3E3;
     padding-top: 15vh;
+    background: #E9E3E3;
+    padding-bottom: 100%;
 
 }
 
@@ -22,6 +16,8 @@ body {
 #login .form-wrap {
     width: 30%;
     margin: 0 auto;
+    font-family: 'Open Sans', sans-serif;
+
 }
 
 #login img {
@@ -34,21 +30,28 @@ body {
     color: #000000;
     font-size: 28px;
     text-align: center;
-    font-weight: bold;
+    font-weight: bolder;
     padding-bottom: 5px;
+    font-family: 'Open Sans', sans-serif;
+
 }
 
 #login p {
     font-size: 18px;
     text-align: center;
-    font-weight: lighter;
+    font-weight: bold;
     padding-bottom: 15px;
+    font-family: 'Open Sans', sans-serif;
+
 }
 
-#login .forget {
-    font-size: 15px;
+#login .newToIIT {
+    font-size: 16px;
     text-align: center;
     display: block;
     margin-top: 8px;
     margin-bottom: 8px;
+    padding-bottom: 15px;
+    font-family: 'Open Sans', sans-serif;
+
 }

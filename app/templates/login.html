@@ -1,5 +1,5 @@
 <!-- Child Template -->
-{% extends "master_layout.html" %}
+{% extends "base.html" %}
 
 {% block title %} <title>Login</title> {% endblock %}
 
@@ -9,7 +9,7 @@
 {% endblock %}
 
 {% block content %}
-<div class="header"></div>
+<div class="header pt-4 pb-2"></div>
 <div class="content">
     <section id="login">
         <div class="container">
@@ -21,8 +21,9 @@
                         <p>Welcome back!</p>
                         <a class="btn btn-primary btn-lg btn-block mb-3 w-100" style="background-color: #A41D21"
                             href="/login" role="button">
-                            <i class="fab fa-google me-2"></i>Sign in with Google</a>
-                        <a href="http://x4150my.msuiit.edu.ph/my/getmyiit.php" class="forget">New to My.IIT? Register
+                            <i class="fab fa-google me-2"></i>Sign in with Google My.IIT</a>
+                        <a href="https://myiit.msuiit.edu.ph/accounts/getmyiit.php" class="newToIIT">New to My.IIT?
+                            Register
                             Here.</a>
                         <hr>
                     </div>

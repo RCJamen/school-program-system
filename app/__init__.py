@@ -1,4 +1,3 @@
-
 from flask import Flask, render_template
 from flask_mysql_connector import MySQL
 from flask_bootstrap import Bootstrap
@@ -23,10 +22,11 @@ def create_app():
     CSRFProtect(app)
 
     from .controller.admin import admin
+
     app.register_blueprint(admin)
-    
-    # @app.route("/")
+
+    # @app.route("/home")
     # def hello_world():
-    #     return render_template("login.html")
-    
+    #     return render_template("master_layout.html")
+
     return app
