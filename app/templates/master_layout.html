@@ -65,15 +65,26 @@
         </nav>
 
         <div class="dashboard-content px-3 pt-4">
-            <h2 class="fs-5"> Dashboard</h2>
-            <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Nostrum, totam? Sequi alias eveniet ut quas
-                ullam delectus et quasi incidunt rem deserunt asperiores reiciendis assumenda doloremque provident,
-                dolores aspernatur neque.</p>
+            {% block pages%}
+            {% endblock %}
         </div>
     </div>
 </div>
 {% endblock %}
 
 {% block script %}
-<script src="{{ url_for('static',filename='js/sidebar.js')}}"></script>
+<script>
+    $(".sidebar ul li").on('click', function () {
+        $(".sidebar ul li.active").removeClass('active');
+        $(this).addClass('active');
+    });
+
+    $('.open-btn').on('click', function () {
+        $('.sidebar').addClass('active');
+    });
+
+    $('.close-btn').on('click', function () {
+        $('.sidebar').removeClass('active');
+    })
+</script>
 {% endblock %}
