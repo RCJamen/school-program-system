@@ -1,0 +1,60 @@
+
+html,
+body {
+    background: white;
+}
+* {
+    padding: 0;
+    margin: 0;
+}
+.note{
+    color: #777;
+    font-size: 0.85em;
+  }
+
+.faculty-title {
+padding: 30px 36px 30px 58px ;
+}
+
+.faculty-header {
+    padding: 30px 58px 30px 58px ;
+}
+
+
+
+.AddFacultyBtn {
+    background-color: rgba(164, 29, 33, 1) !important;
+    color: #ffffff !important;
+    border-color: rgba(164, 29, 33, 1) !important    
+}
+.AddFaculty {
+    background-color: rgba(164, 29, 33, 1) !important;
+    color: #ffffff /* Text color, assuming you want it to be white */!important;
+    border-color: rgba(164, 29, 33, 1) !important
+    /* Add any other styles you need */
+}
+.faculty-modal-body .form-group {
+    margin-bottom: 24px;
+    
+  }
+
+.faculty-modal-body {
+margin: 16px
+}
+
+.faculty-modal-header {
+    margin-left: 16px;
+    margin-right: 16px
+}
+
+.faculty-modal-footer {
+    margin-left: 16px;
+    margin-right: 16px
+}
+    
+.faculty-modal-body .form-group input.form-control {
+    padding-top: 12px;
+    padding-bottom: 12px;
+    padding-left: 16px;
+    border-radius: 16px;
+  }
