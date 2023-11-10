@@ -1,9 +1,14 @@
 {% extends "base.html" %}
 
-{% block title %} <title>Home</title> {% endblock %}
+{% block title %}
+{% block pagetitle %}
+{% endblock %}
+{% endblock %}
 
 {% block style %}
 <link rel="stylesheet" href="../static/css/master_layout.css">
+{% block pagestyle %}
+{% endblock %}
 {% endblock %}
 
 {% block content %}
@@ -19,7 +24,8 @@
         </div>
 
         <ul class="list-unstyled px-2">
-            <li class="active"><a href="#" class="text-decoration-none px-3 py-2 d-block"><i class="fas fa-home"></i>
+            <li class="active"><a href="/home" class="text-decoration-none px-3 py-2 d-block">
+                    <i class="fas fa-home"></i>
                     &nbsp;<span class="ms-2">Home</span></a></li>
             <li class=""><a href="#" class="text-decoration-none px-3 py-2 d-block"><i class="fas fa-book"></i>
                     <span class="ms-3">Subjects Handled</span></a></li>
@@ -33,8 +39,9 @@
 
         <hr class="h-color mx-2">
 
-        <ul class="list-unstyled px-2">
-            <li class=""><a href="#" class="text-decoration-none px-3 py-2 d-block"><i class="fas fa-sign-out-alt"></i>>
+        <ul class="list px-2">
+            <li class=""><a href="{{url_for('admin.logout')}}" class="text-decoration-none px-3 py-2 d-block"><i
+                        class="fas fa-sign-out-alt"></i>>
                     <span class="ms-2">Logout</span></a></li>
         </ul>
 
@@ -44,8 +51,9 @@
             <div class="container-fluid">
                 <div class="d-flex justify-content-between d-md-none d-block">
                     <button class="btn px-1 py-0 open-btn me-2"><i class="fa-solid fa-bars-staggered"></i></button>
-                    <a class="navbar-brand fs-4" href="#"><span
-                            class="bg-dark rounded px-2 py-0 text-white">My.IIT</span></a>
+                    <a class="navbar-brand fs-4" href="#">
+                        <span class="bg-dark rounded px-2 py-0 text-white">My.IIT</span>
+                    </a>
                 </div>
                 <button class="navbar-toggler p-0 border-0" type="button" data-bs-toggle="collapse"
                     data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent"
@@ -55,9 +63,10 @@
                 <div class="collapse navbar-collapse justify-content-end" id="navbarSupportedContent">
                     <ul class="navbar-nav mb-2 mb-lg-0">
                         <li class="nav-item">
-                            <a class=" nav-link active" aria-current="page" href="#"><i class="fas fa-user fa-fw"
-                                    style="color: #FFF"></i>
-                                <span class="ps-2" style="color: #FFF">Ramel Cary B. Jamen</span></a>
+                            <a class=" nav-link active" aria-current="page" href="#">
+                                <i class="fas fa-user fa-fw" style="color: #FFF"></i>
+                                <span class="ps-2" style="color: #FFF">{{session['name']}}</span>
+                            </a>
                         </li>
                     </ul>
                 </div>
@@ -87,4 +96,6 @@
         $('.sidebar').removeClass('active');
     })
 </script>
+{% block pagescript %}
+{% endblock %}
 {% endblock %}
