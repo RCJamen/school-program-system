@@ -1,0 +1,62 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1" />
+    <!-- <title>Subject List Mock</title> -->
+    <link
+      type="text/css"
+      rel="stylesheet"
+      href="../static/css/subjectList.css"
+    />
+  </head>
+  <body>
+    <h1>Subject List</h1>
+    <hr />
+
+    <div id="school-year">
+      <label for="year">School Year</label><br />
+      <select name="year">
+        <option id="placeholder" disabled="disabled" selected="default">
+          Please select
+        </option>
+        <option value="2019-2020">2019-2020</option>
+        <option value="2020-2021">2020-2021</option>
+        <option value="2021-2022">2021-2022</option>
+        <option value="2022-2023">2022-2023</option>
+      </select>
+    </div>
+
+    <table id="subject-list">
+      <tr>
+        <th>Subject Code</th>
+        <th>Section</th>
+        <th>Description</th>
+        <th>Credits</th>
+        <th>Handler</th>
+        <th>Action</th>
+      </tr>
+
+      <tr>
+        <td id="course-code">CCC151</td>
+        <td>CS3</td>
+        <td>Information Management</td>
+        <td>3</td>
+        <td>Alrick Gicole</td>
+        <td>
+          <button type="button">Edit Subject</button>
+        </td>
+      </tr>
+
+      <tr>
+        <td id="course-code">CSC181</td>
+        <td>CS3</td>
+        <td>Software Engineering</td>
+        <td>3</td>
+        <td id="not-assigned">Not Assigned</td>
+        <td>
+          <button type="button">Edit Subject</button>
+        </td>
+      </tr>
+    </table>
+  </body>
+</html>
