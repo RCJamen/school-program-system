@@ -24,13 +24,15 @@ def create_app():
     from .controller.admin import admin
     from .controller.subjectsHandled import subjectsHandled
     from .controller.faculty import faculty
+    from .controller.subject import subject
 
     app.register_blueprint(admin)
-    app.register_blueprint(faculty)
     app.register_blueprint(subjectsHandled)
+    app.register_blueprint(faculty)
+    app.register_blueprint(subject)
 
-    # @app.route("/subjects-handled")
+    # @app.route("/subjects")
     # def subjectsHandled():
-    #     return render_template("subjectsHandled.html")
+    #     return render_template("subjectList.html")
 
     return app

@@ -1,33 +1,28 @@
-<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
-<html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en">
-  <head>
-    <meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1" />
-    <!-- <title>Subject List Mock</title> -->
-    <link
-      type="text/css"
-      rel="stylesheet"
-      href="../static/css/subjectList.css"
-    />
-  </head>
-  <body>
-    <h1>Subject List</h1>
-    <hr />
+{% extends "master_layout.html" %}
 
-    <div id="school-year">
-      <label for="year">School Year</label><br />
-      <select name="year">
-        <option id="placeholder" disabled="disabled" selected="default">
-          Please select
-        </option>
-        <option value="2019-2020">2019-2020</option>
-        <option value="2020-2021">2020-2021</option>
-        <option value="2021-2022">2021-2022</option>
-        <option value="2022-2023">2022-2023</option>
-      </select>
-    </div>
+{% block pagetitle %}<title>Subject List</title> {% endblock %}
 
-    <table id="subject-list">
-      <tr>
+{% block pagestyle %}
+<link rel="stylesheet" href="../static/css/subjectList.css">
+{% endblock %}
+
+{% block pages %}
+<div class="subjects-list-container">
+  <div class="subjects-list-header">
+    <h1>Subject Lists</h1>
+  </div>
+  <hr />
+  <div class="subjects-list-sy">
+    <h4>School Year</h4>
+    <select name="school-year" id="school-year">
+      <option id="placeholder" disabled selected>Please select...</option>
+      <option value="year1">2019-2020</option>
+      <option value="year2">2020-2021</option>
+    </select>
+  </div>
+  <div class="subjects-list-content">
+    <table>
+      <tr class="subjects-list-table-head">
         <th>Subject Code</th>
         <th>Section</th>
         <th>Description</th>
@@ -35,8 +30,7 @@
         <th>Handler</th>
         <th>Action</th>
       </tr>
-
-      <tr>
+      <tr class="subjects-list-table-data">
         <td id="course-code">CCC151</td>
         <td>CS3</td>
         <td>Information Management</td>
@@ -46,8 +40,7 @@
           <button type="button">Edit Subject</button>
         </td>
       </tr>
-
-      <tr>
+      <tr class="subjects-list-table-data">
         <td id="course-code">CSC181</td>
         <td>CS3</td>
         <td>Software Engineering</td>
@@ -58,5 +51,10 @@
         </td>
       </tr>
     </table>
-  </body>
-</html>
+  </div>
+</div>
+{% endblock %}
+
+{% block pagescript %}
+<script></script>
+{% endblock %}
