@@ -1,7 +1,16 @@
-{% extends "base.html" %} {% block title %} {% block pagetitle %} {% endblock %}
-{% endblock %} {% block style %}
+{% extends "base.html" %}
+{% block title %}
+{% block pagetitle %}
+{% endblock %}
+{% endblock %}
+
+{% block style %}
 <link rel="stylesheet" href="../static/css/master_layout.css" />
-{% block pagestyle %} {% endblock %} {% endblock %} {% block content %}
+{% block pagestyle %}
+{% endblock %}
+{% endblock %}
+
+{% block content %}
 <div class="main-container d-flex">
   <div class="sidebar" id="side_nav">
     <div class="header-box px-2 pt-3 pb-4 mt-2 d-flex justify-content-between">
@@ -70,7 +79,9 @@
     </div>
   </div>
 </div>
-{% endblock %} {% block script %}
+{% endblock %}
+
+{% block script %}
 <script>
   $(".sidebar ul li").on('click', function () {
     $(".sidebar ul li.active").removeClass('active');
@@ -85,4 +96,6 @@
     $('.sidebar').removeClass('active');
   })
 </script>
-{% block pagescript %} {% endblock %} {% endblock %}
+{% block pagescript %}
+{% endblock %}
+{% endblock %}
