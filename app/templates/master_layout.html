@@ -1,131 +1,113 @@
-{% extends "base.html" %} {% block title %} {% block pagetitle %} {% endblock %}
-{% endblock %} {% block style %}
+{% extends "base.html" %}
+{% block title %}
+{% block pagetitle %}
+{% endblock %}
+{% endblock %}
+
+{% block style %}
 <link rel="stylesheet" href="../static/css/master_layout.css" />
-{% block pagestyle %} {% endblock %} {% endblock %} {% block content %}
+{% block pagestyle %}
+{% endblock %}
+{% endblock %}
+
+{% block content %}
 <div class="main-container d-flex">
-  <div class="sidebar" id="side_nav">
-    <div class="header-box px-2 pt-3 pb-4 mt-2 d-flex justify-content-between">
-      <h1 class="fs-3">
-        <img
-          src="../static/pictures/iit-seal.png"
-          alt="iit-seal"
-          style="max-width: 12%; margin-left: 10px"
-        />
-        <span class="text-white ps-2">My.IIT</span>
-      </h1>
-      <button class="btn d-md-none d-block close-btn px-1 py-0 text-white pe-2">
-        <i class="fa-solid fa-bars-staggered"></i>
-      </button>
-    </div>
-
-    <ul class="list-unstyled px-2">
-      <li class="active">
-        <a href="/home" class="text-decoration-none px-3 py-2 d-block">
-          <i class="fas fa-home"></i>
-          &nbsp;<span class="ms-2">Home</span></a
-        >
-      </li>
-      <li class="">
-        <a
-          href="/subjectsHandled"
-          class="text-decoration-none px-3 py-2 d-block"
-          ><i class="fas fa-book"></i>
-          <span class="ms-3">Subjects Handled</span></a
-        >
-      </li>
-      <li class="">
-        <a href="#" class="text-decoration-none px-3 py-2 d-block"
-          ><i class="fas fa-users"></i> &nbsp;<span class="ms-2"
-            >Faculty List</span
-          ></a
-        >
-      </li>
-      <li class="">
-        <a href="#" class="text-decoration-none px-3 py-2 d-block"
-          ><i class="fas fa-list-alt"></i>
-          <span class="ms-3">Subject List</span></a
-        >
-      </li>
-      <li class="">
-        <a href="#" class="text-decoration-none px-3 py-2 d-block"
-          ><i class="fas fa-file"></i> &nbsp;<span class="ms-3"
-            >College Curriculum</span
-          ></a
-        >
-      </li>
-    </ul>
-
-    <hr class="h-color mx-2" />
-
-    <ul class="list px-2">
-      <li class="">
-        <a
-          href="{{url_for('admin.logout')}}"
-          class="text-decoration-none px-3 py-2 d-block"
-          ><i class="fas fa-sign-out-alt"></i>>
-          <span class="ms-2">Logout</span></a
-        >
-      </li>
-    </ul>
-  </div>
-  <div class="content">
-    <nav class="navbar navbar-expand-md" style="background-color: #a41d21">
-      <div class="container-fluid">
-        <div class="d-flex justify-content-between d-md-none d-block">
-          <button class="btn px-1 py-0 open-btn me-2">
-            <i class="fa-solid fa-bars-staggered"></i>
-          </button>
-          <a class="navbar-brand fs-4" href="#">
-            <span class="bg-dark rounded px-2 py-0 text-white">My.IIT</span>
-          </a>
+    <div class="sidebar" id="side_nav">
+        <div class="header-box px-2 pt-3 pb-4 mt-2 d-flex justify-content-between">
+            <h1 class="fs-3">
+                <img src="../static/pictures/iit-seal.png" alt="iit-seal" style="max-width: 12%; margin-left: 10px" />
+                <span class="text-white ps-2">My.IIT</span>
+            </h1>
+            <button class="btn d-md-none d-block close-btn px-1 py-0 text-white pe-2">
+                <i class="fa-solid fa-bars-staggered"></i>
+            </button>
         </div>
-        <button
-          class="navbar-toggler p-0 border-0"
-          type="button"
-          data-bs-toggle="collapse"
-          data-bs-target="#navbarSupportedContent"
-          aria-controls="navbarSupportedContent"
-          aria-expanded="false"
-          aria-label="Toggle navigation"
-        >
-          <i class="fa fa-bars"></i>
-        </button>
-        <div
-          class="collapse navbar-collapse justify-content-end"
-          id="navbarSupportedContent"
-        >
-          <ul class="navbar-nav mb-2 mb-lg-0">
-            <li class="nav-item">
-              <a class="nav-link active" aria-current="page" href="#">
-                <i class="fas fa-user fa-fw" style="color: #fff"></i>
-                <span class="ps-2" style="color: #fff"
-                  >{{session['name']}}</span
-                >
-              </a>
+
+        <ul class="list-unstyled px-2">
+            <li class="active">
+                <a href="/home" class="text-decoration-none px-3 py-2 d-block">
+                    <i class="fas fa-home"></i>
+                    &nbsp;<span class="ms-2">Home</span></a>
             </li>
-          </ul>
-        </div>
-      </div>
-    </nav>
+            <li class="">
+                <a href="/subjects-handled" class="text-decoration-none px-3 py-2 d-block"><i class="fas fa-book"></i>
+                    <span class="ms-3">Subjects Handled</span></a>
+            </li>
+            <li class="">
+                <a href="#" class="text-decoration-none px-3 py-2 d-block"><i class="fas fa-users"></i> &nbsp;<span
+                        class="ms-2">Faculty List</span></a>
+            </li>
+            <li class="">
+                <a href="#" class="text-decoration-none px-3 py-2 d-block"><i class="fas fa-list-alt"></i>
+                    <span class="ms-3">Subject List</span></a>
+            </li>
+            <li class="">
+                <a href="#" class="text-decoration-none px-3 py-2 d-block"><i class="fas fa-file"></i> &nbsp;<span
+                        class="ms-3">College Curriculum</span></a>
+            </li>
+        </ul>
 
-    <div class="dashboard-content px-3 pt-4">
-      {% block pages%} {% endblock %}
+        <hr class="h-color mx-2" />
+
+        <ul class="list px-2">
+            <li class="">
+                <a href="{{url_for('admin.logout')}}" class="text-decoration-none px-3 py-2 d-block"><i
+                        class="fas fa-sign-out-alt"></i>>
+                    <span class="ms-2">Logout</span></a>
+            </li>
+        </ul>
     </div>
-  </div>
+    <div class="content">
+        <nav class="navbar navbar-expand-md" style="background-color: #a41d21">
+            <div class="container-fluid">
+                <div class="d-flex justify-content-between d-md-none d-block">
+                    <button class="btn px-1 py-0 open-btn me-2">
+                        <i class="fa-solid fa-bars-staggered"></i>
+                    </button>
+                    <a class="navbar-brand fs-4" href="#">
+                        <span class="bg-dark rounded px-2 py-0 text-white">My.IIT</span>
+                    </a>
+                </div>
+                <button class="navbar-toggler p-0 border-0" type="button" data-bs-toggle="collapse"
+                    data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent"
+                    aria-expanded="false" aria-label="Toggle navigation">
+                    <i class="fa fa-bars"></i>
+                </button>
+                <div class="collapse navbar-collapse justify-content-end" id="navbarSupportedContent">
+                    <ul class="navbar-nav mb-2 mb-lg-0">
+                        <li class="nav-item">
+                            <a class="nav-link active" aria-current="page" href="#">
+                                <i class="fas fa-user fa-fw" style="color: #fff"></i>
+                                <span class="ps-2" style="color: #fff">{{session['name']}}</span>
+                            </a>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </nav>
+
+        <div class="dashboard-content px-3 pt-4">
+            {% block pages%} {% endblock %}
+        </div>
+    </div>
 </div>
-{% endblock %} {% block script %}
+{% endblock %}
+
+{% block script %}
 <script>
-  $(".sidebar ul li").on("click", function () {
-    $(".sidebar ul li.active").removeClass("active");
-    $(this).addClass("active");
-  });
+    $(".sidebar ul li").on("click", function () {
+        $(".sidebar ul li.active").removeClass("active");
+        $(this).addClass("active");
+    });
 
-  $(".open-btn").on("click", function () {
-    $(".sidebar").addClass("active");
-  });
+    $(".open-btn").on("click", function () {
+        $(".sidebar").addClass("active");
+    });
 
-  $(".close-btn").on("click", function () {
-    $(".sidebar").removeClass("active");
-  });
+    $(".close-btn").on("click", function () {
+        $(".sidebar").removeClass("active");
+    });
 </script>
-{% block pagescript %} {% endblock %} {% endblock %}
+{% block pagescript %}
+{% endblock %}
+{% endblock %}

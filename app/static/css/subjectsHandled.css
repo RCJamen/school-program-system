@@ -1,14 +1,10 @@
-body {
-    font-family: Verdana, Geneva, Tahoma, sans-serif;
-    font-size: 14px;
-}
-
 .subjects-handled-container {
     margin: 10px;
     width: auto;
 }
 
-.subjects-handled-header, .subjects-handled-sy {
+.subjects-handled-header,
+.subjects-handled-sy {
     margin-left: 20px;
 }
 
@@ -26,7 +22,7 @@ body {
     text-align: left;
 }
 
-.subjects-handled-content table{
+.subjects-handled-content table {
     margin-top: 30px;
     border-collapse: collapse;
     width: 100%;
