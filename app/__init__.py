@@ -22,19 +22,15 @@ def create_app():
     CSRFProtect(app)
 
     from .controller.admin import admin
+    from .controller.subjectsHandled import subjectsHandled
+    from .controller.faculty import faculty
 
     app.register_blueprint(admin)
-    
-    from .controller.faculty import faculty
     app.register_blueprint(faculty)
-    
+    app.register_blueprint(subjectsHandled)
 
-    @app.route("/home")
-    def hello_world():
-        return render_template("master_layout.html")
-    
-    @app.route("/subjectsHandled")
-    def subjectsHandled():
-        return render_template("subjectsHandled.html")
+    # @app.route("/subjects-handled")
+    # def subjectsHandled():
+    #     return render_template("subjectsHandled.html")
 
     return app
