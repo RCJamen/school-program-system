@@ -74,9 +74,7 @@
     </div>
   </div>
 </div>
-{% endblock %}
-
-{% block script %}
+{% endblock %} {% block script %}
 <script>
   $(".sidebar ul li").on('click', function () {
     $(".sidebar ul li.active").removeClass('active');
@@ -102,6 +100,4 @@
     });
   });
 </script>
-{% block pagescript %}
-{% endblock %}
-{% endblock %}
+{% block pagescript %} {% endblock %} {% endblock %}
