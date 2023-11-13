@@ -13,13 +13,17 @@ body {
   }
 
 .faculty-title {
-padding: 30px 36px 30px 58px ;
+padding: 24px 32px 24px 32px ;
 }
 
 .faculty-header {
-    padding: 30px 58px 30px 58px ;
+    padding: 24px 32px 24px 32px ;
 }
 
+.faculty-body .faculty-table .table {
+  width: 96.5%;
+  margin-left: 21px;
+}
 
 
 .AddFacultyBtn {
