@@ -1,0 +1,161 @@
+{% extends "master_layout.html" %}
+
+{% block pagetitle %} <title>Faculty</title> {% endblock %}
+
+
+{% block pagestyle %}
+<link rel="stylesheet" href="../static/css/faculty.css">
+{% endblock %}
+
+
+{% block pages %}
+
+
+
+<div class = "faculty-container">
+    <div class = "faculty-title">
+        <h1 class ="m-0"> Faculty List </h1>
+    </div>
+        <hr>
+        <div class = "faculty-content"> 
+        
+            <div class = "faculty-header">
+                 <h6>School Year</h6>
+                    <div class = "row">
+                        <div class="col-3">
+                            <select class="form-select custom-select-size" aria-label="Default select example">
+                                <option selected>Feature Available Soon</option>
+                                <option value="1">One</option>
+                                <option value="2">Two</option>
+                                <option value="3">Three</option>
+                            </select>
+                        </div>
+                        <div class="col-4">
+                          {% if flash_message %}
+                              <div class="alert alert-{{ flash_message.type }} alert-dismissible fade show" role="alert">
+                                  <div class="d-flex justify-content-between align-items-center">
+                                      <span>{{ flash_message.message }}</span>
+                                      <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                                  </div>
+                              </div>
+                          {% endif %}
+                      
+                          {% for field, errors in form.errors.items() %}
+                            <div class="alert alert-danger alert-dismissible fade show" role="alert">
+                              <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                               {{ ', '.join(errors) }}
+                            </div>
+                          {% endfor %}
+
+                      </div>
+                        
+
+                        <div class = "col-5"> <button type="button" class="btn btn-primary float-end AddFacultyBtn" 
+                          data-bs-toggle="modal" data-bs-target="#addFacultyModal"><i class="fa-solid fa-user-plus"></i> Add Faculty </button> </div>
+
+                    </div>
+            </div>
+            <div class="faculty-body ">
+                <div class="bs-example container faculty-table table-responsive" data-example-id="striped-table">
+                    <table class="table table-hover ">
+                          
+                          <thead>
+                            <tr>
+                              <th>ID</th>
+                              <th>First Name</th>
+                              <th>Last Name</th>
+                              <th>Email</th>
+                              <th>Action</th>
+                            </tr>
+                          </thead>
+                          <tbody class = "table-group-divider">
+                            {% for faculty in faculties %}
+                            <tr>
+                              <th scope="row">{{faculty.facultyID}}</th>
+                              <td>{{faculty.firstname}}</td>
+                              <td>{{faculty.lastname}}</td>
+                              <td>{{faculty.email}}</td>
+                            </tr>
+                            {% endfor %}
+                          </tbody>
+                          <!-- <tfoot>
+                          <tr class="note"><th>Source</th><td colspan=3><a href="https://getbootstrap.com/css/#tables">BootStrap documentation</a></td></tr>
+                          </tfoot> -->
+                        </table>
+                      </div>
+                    </div>      
+        </div>
+</div>
+
+<div
+  class="modal fade"
+  id="addFacultyModal"
+  data-bs-backdrop="static"
+  tabindex="-1"
+  role="dialog"
+  aria-labelledby="FacultyModalLabel"
+  aria-hidden="true"
+>
+  <div class="modal-dialog" role="document">
+    <form action="/faculty" method="POST">
+      {{ form.csrf_token }}
+      {{ form.hidden_tag() }}
+      <div class="modal-content">
+        <div class="modal-header faculty-modal-header">
+          <h5 class="modal-title">Personal Faculty Information</h5>
+          <button
+            type="button"
+            class="btn-close"
+            data-bs-dismiss="modal"
+            aria-label="Close"
+          ></button>
+        </div>
+        <div class="modal-body faculty-modal-body">
+          
+          <div class="form-group">
+            <label for="facultyIDInput">ID</label>
+            {{ form.facultyIDInput(class="form-control", placeholder="Faculty ID", required=True, id="facultyIDInput") }}
+          </div>
+          <div class="form-group">
+            <label for="facultyfirstName">First Name</label>
+            {{ form.facultyfirstName(class="form-control", placeholder="First Name", required=True, id="facultyfirstName") }}
+          </div>
+          <!-- Properly closed the second form-group -->
+          <div class="form-group">
+            <label for="facultylastName">Last Name</label>
+            {{ form.facultylastName(class="form-control", placeholder="Last Name", required=True, id="facultylastName") }}
+          </div>
+          <div class="form-group">
+            <label for="facultyEmail">MSU-IIT Email</label>
+            {{ form.facultyEmail(class="form-control", placeholder="Email", required=True, id="facultyEmail") }}
+          </div>
+        </div>
+        
+        <div class="modal-footer faculty-modal-footer">
+          <button
+            type="button"
+            class="btn btn-secondary"
+            data-bs-dismiss="modal"
+          >
+          <i class="fa-solid fa-xmark" style="color: #ffffff;"></i> Close 
+          </button>
+          <button type="submit" class="btn btn-warning AddFaculty"> <i class="fa-solid fa-user-plus"></i> Add Faculty 
+          </button>
+        </div>
+      </div>
+    </form>
+  </div>
+</div>
+
+
+
+
+
+{% endblock %}
+
+{% block pagescript %}
+<script
+      type="text/javascript"
+      src="../static/js/faculty.js"
+    ></script>
+{% endblock %}

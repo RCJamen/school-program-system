@@ -24,6 +24,10 @@ def create_app():
     from .controller.admin import admin
 
     app.register_blueprint(admin)
+    
+    from .controller.faculty import faculty
+    app.register_blueprint(faculty)
+    
 
     # @app.route("/home")
     # def hello_world():
