@@ -25,8 +25,8 @@ def create_app():
 
     app.register_blueprint(admin)
     
-    from .controller.faculty.facultyRoute import facultyRoute
-    app.register_blueprint(facultyRoute)
+    from .controller.faculty import faculty
+    app.register_blueprint(faculty)
     
 
     # @app.route("/home")
