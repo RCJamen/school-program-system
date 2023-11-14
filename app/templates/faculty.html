@@ -41,10 +41,12 @@
                           {% endif %}
                       
                           {% for field, errors in form.errors.items() %}
-                              <div class="alert alert-danger">
-                                  {{ field }}: {{ ', '.join(errors) }}
-                              </div>
+                            <div class="alert alert-danger alert-dismissible fade show" role="alert">
+                              <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                              <strong>{{ field }}:</strong> {{ ', '.join(errors) }}
+                            </div>
                           {% endfor %}
+
                       </div>
                         
 
@@ -110,11 +112,6 @@
         </div>
         <div class="modal-body faculty-modal-body">
           
-          {% for field, errors in form.errors.items() %}
-            <div class="alert alert-danger">
-              {{ field }}: {{ ', '.join(errors) }}
-            </div>
-          {% endfor %}
           <div class="form-group">
             <label for="facultyIDInput">ID</label>
             {{ form.facultyIDInput(class="form-control", placeholder="Faculty ID", required=True, id="facultyIDInput") }}
