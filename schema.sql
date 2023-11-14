@@ -106,27 +106,41 @@ PRIMARY KEY(studentID),
 FOREIGN KEY(courseID) REFERENCES courses(courseID)
 );
 
-DROP TABLE IF EXISTS `subject_lists`;
-CREATE TABLE IF NOT EXISTS `subject_lists`(
-subListID INT AUTO_INCREMENT NOT NULL,
-subjectCode VARCHAR(255) NOT NULL,
-name VARCHAR(255) NOT NULL,
-academicYear VARCHAR(255) NOT NULL,
-semester VARCHAR(255) NOT NULL,
-courseID INT NOT NULL,
-PRIMARY KEY(subListID),
-FOREIGN KEY(courseID) REFERENCES courses(courseID)
+DROP TABLE IF EXISTS `sections`;
+CREATE TABLE IF NOT EXISTS `sections`(
+    sectionCode VARCHAR(255) PRIMARY KEY,
+    subjectCode VARCHAR(255)
+);
+
+DROP TABLE IF EXISTS `subjectList`;
+CREATE TABLE IF NOT EXISTS `subjectList`(
+    subjectCode VARCHAR(255) PRIMARY KEY NOT NULL UNIQUE,
+    section VARCHAR(255),
+    description VARCHAR(255) NOT NULL,
+    credits INT,
+    handlerName VARCHAR(255) DEFAULT 'NOT ASSIGNED',
+    FOREIGN KEY(section) REFERENCES sections(sectionCode)
+);
+
+DROP TABLE IF EXISTS `faculty_subject`;
+CREATE TABLE IF NOT EXISTS `faculty_subject`(
+    facultyID VARCHAR(9) NOT NULL,
+    subjectCode VARCHAR(255) PRIMARY KEY NOT NULL UNIQUE,
+    section VARCHAR(255),
+    FOREIGN KEY(facultyID) REFERENCES faculty(facultyID),
+    FOREIGN KEY(subjectCode) REFERENCES subjectList(subjectCode),
+    FOREIGN KEY(section) REFERENCES sections(sectionCode)
 );
 
 DROP TABLE IF EXISTS `class_records`;
 CREATE TABLE IF NOT EXISTS `class_records`(
 classRecordID INT AUTO_INCREMENT NOT NULL,
 studentID INT NOT NULL,
-subListID INT NOT NULL,
+subjectCode VARCHAR(255) NOT NULL,
 assessID INT NOT NULL,
 totalGrade INT NOT NULL,
 PRIMARY KEY(classRecordID),
 FOREIGN KEY(studentID) REFERENCES students(studentID),
-FOREIGN KEY(subListID) REFERENCES subject_lists(subListID),
+FOREIGN KEY(subjectCode) REFERENCES subjectList(subjectCode),
 FOREIGN KEY(assessID) REFERENCES assessments(assessID)
 );

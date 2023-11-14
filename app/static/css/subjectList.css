@@ -41,6 +41,11 @@
     width: fit-content;
 }
 
+#noSubjectsAvailable {
+    text-align: center;
+    color: gray;
+}
+
 .subjects-list-content button {
     background-color: #a41d21;
     color: white;

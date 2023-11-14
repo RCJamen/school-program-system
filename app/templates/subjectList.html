@@ -1,12 +1,9 @@
-{% extends "master_layout.html" %}
-
-{% block pagetitle %}<title>Subject List</title> {% endblock %}
-
-{% block pagestyle %}
-<link rel="stylesheet" href="../static/css/subjectList.css">
-{% endblock %}
-
-{% block pages %}
+{% extends "master_layout.html" %} {% block pagetitle %}<title>
+  Subject List
+</title>
+{% endblock %} {% block pagestyle %}
+<link rel="stylesheet" href="../static/css/subjectList.css" />
+{% endblock %} {% block pages %}
 <div class="subjects-list-container">
   <div class="subjects-list-header">
     <h1>Subject Lists</h1>
@@ -30,31 +27,26 @@
         <th>Handler</th>
         <th>Action</th>
       </tr>
+
+      {% if subjectInfo|length == 0 %}
+      <tr>
+        <td colspan="6" id="noSubjectsAvailable">No subjects available.</td>
+      </tr>
+      {% else %} {% for subject in subjectInfo %}
       <tr class="subjects-list-table-data">
-        <td id="course-code">CCC151</td>
-        <td>CS3</td>
-        <td>Information Management</td>
-        <td>3</td>
-        <td class="fw-bold">Alrick Gicole</td>
+        <td class="fw-bold">{{ subject[2] }}</td>
+        <td>{{ subject[0] }}</td>
+        <td>{{ subject[4] }}</td>
+        <td>{{ subject[5] }}</td>
+        <td class="fw-bold">{{ subject[6] }}</td>
         <td>
           <button type="button">Edit Subject</button>
         </td>
       </tr>
-      <tr class="subjects-list-table-data">
-        <td id="course-code">CSC181</td>
-        <td>CS3</td>
-        <td>Software Engineering</td>
-        <td>3</td>
-        <td class="fw-bold">Not Assigned</td>
-        <td>
-          <button type="button">Edit Subject</button>
-        </td>
-      </tr>
+      {% endfor %} {% endif %}
     </table>
   </div>
 </div>
-{% endblock %}
-
-{% block pagescript %}
+{% endblock %} {% block pagescript %}
 <script></script>
 {% endblock %}
