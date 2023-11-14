@@ -1,5 +1,6 @@
 from app import mysql
 
+
 class SubjectList(object):
     def __init__(self, code, section, description, credits, handler) -> None:
         self.code = code
@@ -7,7 +8,7 @@ class SubjectList(object):
         self.description = description
         self.credits = credits
         self.handler = handler
-    
+
     @classmethod
     def all(cls):
         cursor = mysql.connection.cursor()

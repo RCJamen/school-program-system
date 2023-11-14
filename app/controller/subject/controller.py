@@ -4,11 +4,11 @@ from flask.helpers import url_for
 from . import subject
 from app.controller.admin.controller import login_is_required
 from app import mysql
-import app.models.subject as subjectListModel
+from app.models.subjectModel import SubjectList
 
 
 @subject.route("/subjects")
 @login_is_required
 def index():
-    subjectInfo = subjectListModel.SubjectList.all()
+    subjectInfo = SubjectList.all()
     return render_template("subjectList.html", subjectInfo=subjectInfo)
