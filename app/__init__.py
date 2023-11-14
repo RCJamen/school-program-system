@@ -29,8 +29,12 @@ def create_app():
     app.register_blueprint(faculty)
     
 
-    # @app.route("/home")
-    # def hello_world():
-    #     return render_template("master_layout.html")
+    @app.route("/home")
+    def hello_world():
+        return render_template("master_layout.html")
+    
+    @app.route("/subjectsHandled")
+    def subjectsHandled():
+        return render_template("subjectsHandled.html")
 
     return app
