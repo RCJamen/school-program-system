@@ -108,28 +108,28 @@ FOREIGN KEY(courseID) REFERENCES courses(courseID)
 
 DROP TABLE IF EXISTS `sections`;
 CREATE TABLE IF NOT EXISTS `sections`(
-    sectionCode VARCHAR(255) PRIMARY KEY,
-    subjectCode VARCHAR(255)
+sectionCode VARCHAR(255) PRIMARY KEY,
+subjectCode VARCHAR(255)
 );
 
 DROP TABLE IF EXISTS `subjectList`;
 CREATE TABLE IF NOT EXISTS `subjectList`(
-    subjectCode VARCHAR(255) PRIMARY KEY NOT NULL UNIQUE,
-    section VARCHAR(255),
-    description VARCHAR(255) NOT NULL,
-    credits INT,
-    handlerName VARCHAR(255) DEFAULT 'NOT ASSIGNED',
-    FOREIGN KEY(section) REFERENCES sections(sectionCode)
+subjectCode VARCHAR(255) PRIMARY KEY NOT NULL UNIQUE,
+section VARCHAR(255),
+description VARCHAR(255) NOT NULL,
+credits INT,
+handlerName VARCHAR(255) DEFAULT 'NOT ASSIGNED',
+FOREIGN KEY(section) REFERENCES sections(sectionCode)
 );
 
 DROP TABLE IF EXISTS `faculty_subject`;
 CREATE TABLE IF NOT EXISTS `faculty_subject`(
-    facultyID VARCHAR(9) NOT NULL,
-    subjectCode VARCHAR(255) PRIMARY KEY NOT NULL UNIQUE,
-    section VARCHAR(255),
-    FOREIGN KEY(facultyID) REFERENCES faculty(facultyID),
-    FOREIGN KEY(subjectCode) REFERENCES subjectList(subjectCode),
-    FOREIGN KEY(section) REFERENCES sections(sectionCode)
+facultyID VARCHAR(9) NOT NULL,
+subjectCode VARCHAR(255) PRIMARY KEY NOT NULL UNIQUE,
+section VARCHAR(255),
+FOREIGN KEY(facultyID) REFERENCES faculty(facultyID),
+FOREIGN KEY(subjectCode) REFERENCES subjectList(subjectCode),
+FOREIGN KEY(section) REFERENCES sections(sectionCode)
 );
 
 DROP TABLE IF EXISTS `class_records`;
@@ -144,3 +144,20 @@ FOREIGN KEY(studentID) REFERENCES students(studentID),
 FOREIGN KEY(subjectCode) REFERENCES subjectList(subjectCode),
 FOREIGN KEY(assessID) REFERENCES assessments(assessID)
 );
+
+INSERT INTO `faculty` (facultyID, firstname, lastname, email)
+VALUES ('2023-0001', 'Fulgent', 'Travesores', 'fulgent.travesores@g.msuiit.edu.ph'),
+('2023-0002', 'Alrick', 'Gicole', 'alrick.gicole@g.msuiit.edu.ph'),
+('2023-0003', 'Janella', 'Balantac', 'janella.balantac@g.msuiit.edu.ph'),
+('2023-0004', 'Ramel Cary', 'Jamen', 'ramelcary.jamen@g.msuiit.edu.ph');
+
+INSERT INTO subjectList (subjectCode, description, credits)
+VALUES 
+('CCC181', 'Application Development', 3),
+('CSC181', 'Software Engineering', 3);
+
+INSERT INTO sections (sectionCode, subjectCode)
+VALUES
+('CS3A', 'CCC181'),
+('CS3B', 'CCC181'),
+('CS4', 'CSC181');
