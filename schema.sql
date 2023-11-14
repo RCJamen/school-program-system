@@ -109,7 +109,9 @@ FOREIGN KEY(courseID) REFERENCES courses(courseID)
 DROP TABLE IF EXISTS `sections`;
 CREATE TABLE IF NOT EXISTS `sections`(
 sectionCode VARCHAR(255) PRIMARY KEY,
-subjectCode VARCHAR(255)
+subjectCode VARCHAR(255),
+handlerID VARCHAR(9),
+FOREIGN KEY (handlerID) REFERENCES faculty(facultyID) ON DELETE CASCADE ON UPDATE CASCADE
 );
 
 DROP TABLE IF EXISTS `subjectList`;
@@ -119,16 +121,7 @@ section VARCHAR(255),
 description VARCHAR(255) NOT NULL,
 credits INT,
 handlerName VARCHAR(255) DEFAULT 'NOT ASSIGNED',
-FOREIGN KEY(section) REFERENCES sections(sectionCode)
-);
-
-DROP TABLE IF EXISTS `faculty_subject`;
-CREATE TABLE IF NOT EXISTS `faculty_subject`(
-facultyID VARCHAR(9) NOT NULL,
-subjectCode VARCHAR(255) PRIMARY KEY NOT NULL UNIQUE,
-section VARCHAR(255),
-FOREIGN KEY(facultyID) REFERENCES faculty(facultyID),
-FOREIGN KEY(subjectCode) REFERENCES subjectList(subjectCode),
+semester INT NOT NULL,
 FOREIGN KEY(section) REFERENCES sections(sectionCode)
 );
 
@@ -151,13 +144,13 @@ VALUES ('2023-0001', 'Fulgent', 'Travesores', 'fulgent.travesores@g.msuiit.edu.p
 ('2023-0003', 'Janella', 'Balantac', 'janella.balantac@g.msuiit.edu.ph'),
 ('2023-0004', 'Ramel Cary', 'Jamen', 'ramelcary.jamen@g.msuiit.edu.ph');
 
-INSERT INTO subjectList (subjectCode, description, credits)
+INSERT INTO subjectList (subjectCode, description, credits, semester)
 VALUES 
-('CCC181', 'Application Development', 3),
-('CSC181', 'Software Engineering', 3);
+('CCC181', 'Application Development', 3, 1),
+('CSC181', 'Software Engineering', 3, 2);
 
-INSERT INTO sections (sectionCode, subjectCode)
+INSERT INTO sections (sectionCode, subjectCode, handlerID)
 VALUES
-('CS3A', 'CCC181'),
-('CS3B', 'CCC181'),
-('CS4', 'CSC181');
+('CS3A', 'CCC181', '2023-0001'),
+('CS3B', 'CCC181', '2023-0002'),
+('CS4', 'CSC181', '2023-0004');

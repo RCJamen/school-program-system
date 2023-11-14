@@ -1,25 +1,19 @@
-{% extends "master_layout.html" %}
-
-{% block pagetitle %}
+{% extends "master_layout.html" %} {% block pagetitle %}
 <title>Subject List</title>
-{% endblock %}
-
-{% block pagestyle %}
+{% endblock %} {% block pagestyle %}
 <link rel="stylesheet" href="../static/css/subjectList.css" />
-{% endblock %}
-
-{% block pages %}
+{% endblock %} {% block pages %}
 <div class="subjects-list-container">
   <div class="subjects-list-header">
     <h1>Subject Lists</h1>
   </div>
   <hr />
   <div class="subjects-list-sy">
-    <h4>School Year</h4>
-    <select name="school-year" id="school-year">
+    <h4>Semester</h4>
+    <select name="semester" id="semester">
       <option id="placeholder" disabled selected>Please select...</option>
-      <option value="year1">2019-2020</option>
-      <option value="year2">2020-2021</option>
+      <option value="1">Semester 1</option>
+      <option value="2">Semester 2</option>
     </select>
   </div>
   <div class="subjects-list-content">
@@ -39,11 +33,11 @@
       </tr>
       {% else %} {% for subject in subjectInfo %}
       <tr class="subjects-list-table-data">
-        <td class="fw-bold">{{ subject[2] }}</td>
-        <td>{{ subject[0] }}</td>
-        <td>{{ subject[4] }}</td>
-        <td>{{ subject[5] }}</td>
-        <td class="fw-bold">{{ subject[6] }}</td>
+        <td class="fw-bold">{{ subject[0] }}</td>
+        <td>{{ subject[1] }}</td>
+        <td>{{ subject[2] }}</td>
+        <td>{{ subject[3] }}</td>
+        <td class="fw-bold">{{ subject[4] }}</td>
         <td>
           <button type="button">Edit Subject</button>
         </td>
