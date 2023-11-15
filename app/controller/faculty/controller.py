@@ -9,9 +9,11 @@ faculty_model = facultyModel()
 
 @faculty.route("/faculty", methods=["GET", "POST"])
 @login_is_required
-def faculty():
+def add_faculty():
+    
     form = FacultyForm()
     flash_message = None
+    single_faculty = None
     if request.method == "POST":
         if form.validate_on_submit():
             facultyID = form.facultyIDInput.data
@@ -20,7 +22,7 @@ def faculty():
             email = form.facultyEmail.data
 
             result = faculty_model.create_faculty(facultyID, firstname, lastname, email)
-            
+            # single_faculty = faculty_model.get_single_faculty(facultyID)
             if "success" in result:
                 flash_message = {"type": "success", "message": "Faculty created successfully"}
             else:
@@ -32,3 +34,10 @@ def faculty():
     
     return render_template("faculty.html", faculties=faculties, form=form, flash_message=flash_message)
 
+@faculty.route("/faculty/delete/<string:facultyID>", methods=["DELETE"])
+def delete_faculty(facultyID):
+    try:
+        result = faculty_model.delete_faculty(facultyID)
+        return jsonify({'success': result == 'Faculty deleted successfully'})
+    except Exception as e:
+        return jsonify({'success': False, 'error': str(e)})

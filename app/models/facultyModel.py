@@ -20,3 +20,25 @@ class facultyModel:
             return faculties
         except Exception as e:
             return f"Failed to retrieve faculty data: {str(e)}"
+        
+    # @classmethod
+    # def get_single_faculty(cls, facultyID):
+    #     try:
+    #         cur = mysql.connection.cursor(dictionary=True)
+    #         cur.execute("SELECT facultyID, firstname, lastname, email FROM faculty WHERE facultyID = %s", (facultyID,))
+    #         faculty = cur.fetchone()
+    #         return faculty
+    #     except Exception as e:
+    #         return f"Failed to retrieve faculty data: {str(e)}"
+    #     finally:
+    #         cur.close()
+
+    @classmethod
+    def delete_faculty(cls, facultyID):
+        try:
+            cur = mysql.new_cursor(dictionary=True)
+            cur.execute("DELETE FROM faculty where facultyID = %s", (facultyID,))
+            mysql.connection.commit()
+            return "Faculty deleted successfully"
+        except Exception as e:
+            return f"Failed to delete faculty: {str(e)}"
