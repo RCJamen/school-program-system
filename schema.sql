@@ -106,24 +106,42 @@ PRIMARY KEY(studentID),
 FOREIGN KEY(courseID) REFERENCES courses(courseID)
 );
 
-DROP TABLE IF EXISTS `sections`;
-CREATE TABLE IF NOT EXISTS `sections`(
-sectionCode VARCHAR(255) PRIMARY KEY,
-subjectCode VARCHAR(255),
-handlerID VARCHAR(9),
-FOREIGN KEY (handlerID) REFERENCES faculty(facultyID) ON DELETE CASCADE ON UPDATE CASCADE
+DROP TABLE IF EXISTS `section`;
+CREATE TABLE IF NOT EXISTS `section`(
+sectionCode VARCHAR(255) PRIMARY KEY
 );
 
-DROP TABLE IF EXISTS `subjectList`;
-CREATE TABLE IF NOT EXISTS `subjectList`(
+DROP TABLE IF EXISTS `subject`;
+CREATE TABLE IF NOT EXISTS `subject`(
 subjectCode VARCHAR(255) PRIMARY KEY NOT NULL UNIQUE,
-section VARCHAR(255),
 description VARCHAR(255) NOT NULL,
 credits INT,
-handlerName VARCHAR(255) DEFAULT 'NOT ASSIGNED',
-semester INT NOT NULL,
-FOREIGN KEY(section) REFERENCES sections(sectionCode)
+semester INT
 );
+
+DROP TABLE IF EXISTS `subject_section`;
+CREATE TABLE IF NOT EXISTS `subject_section`(
+subjectID VARCHAR(9),
+sectionID VARCHAR(255),
+PRIMARY KEY (subjectID, sectionID),
+FOREIGN KEY (subjectID) REFERENCES subject(subjectCode),
+FOREIGN KEY (sectionID) REFERENCES section(sectionCode)
+);
+
+
+-- to handle 1 section of the same subject
+-- but can handle many subjects (subjectID not unique) of the same section
+DROP TABLE IF EXISTS `assignFaculty`;
+CREATE TABLE IF NOT EXISTS `assignFaculty`(
+facultyID VARCHAR(9),
+subjectID VARCHAR(255),
+sectionID VARCHAR(255),
+PRIMARY KEY (facultyID, subjectID, sectionID),
+FOREIGN KEY (facultyID) REFERENCES faculty(facultyID),
+FOREIGN KEY (subjectID) REFERENCES subject(subjectCode),
+FOREIGN KEY (sectionID) REFERENCES section(sectionCode)
+);
+
 
 DROP TABLE IF EXISTS `class_records`;
 CREATE TABLE IF NOT EXISTS `class_records`(
@@ -134,7 +152,7 @@ assessID INT NOT NULL,
 totalGrade INT NOT NULL,
 PRIMARY KEY(classRecordID),
 FOREIGN KEY(studentID) REFERENCES students(studentID),
-FOREIGN KEY(subjectCode) REFERENCES subjectList(subjectCode),
+FOREIGN KEY(subjectCode) REFERENCES subject(subjectCode),
 FOREIGN KEY(assessID) REFERENCES assessments(assessID)
 );
 
@@ -144,13 +162,33 @@ VALUES ('2023-0001', 'Fulgent', 'Travesores', 'fulgent.travesores@g.msuiit.edu.p
 ('2023-0003', 'Janella', 'Balantac', 'janella.balantac@g.msuiit.edu.ph'),
 ('2023-0004', 'Ramel Cary', 'Jamen', 'ramelcary.jamen@g.msuiit.edu.ph');
 
-INSERT INTO subjectList (subjectCode, description, credits, semester)
+INSERT INTO subject (subjectCode, description, credits, semester)
 VALUES 
 ('CCC181', 'Application Development', 3, 1),
-('CSC181', 'Software Engineering', 3, 2);
+('CSC181', 'Software Engineering', 3, 2),
+('CSC173', 'Intelligent Systems', 3, 1),
+('CCC102', 'Computer Programming II', 3, 2);
 
-INSERT INTO sections (sectionCode, subjectCode, handlerID)
+INSERT INTO section (sectionCode)
 VALUES
-('CS3A', 'CCC181', '2023-0001'),
-('CS3B', 'CCC181', '2023-0002'),
-('CS4', 'CSC181', '2023-0004');
+('CS1'),
+('CS2'),
+('CS3A'),
+('CS3B'),
+('CS4');
+
+INSERT INTO subject_section (subjectID, sectionID)
+VALUES
+('CCC102', 'CS2'),
+('CCC181', 'CS3A'),
+('CCC181', 'CS3B'),
+('CSC181', 'CS3A'),
+('CSC181', 'CS3B');
+
+INSERT INTO assignFaculty (facultyID, subjectID, sectionID)
+VALUES
+('2023-0001', 'CSC181', 'CS3A'),
+('2023-0001', 'CCC181', 'CS3A'),
+('2023-0002', 'CSC181', 'CS3B'),
+('2023-0002', 'CCC181', 'CS3B'),
+('2023-0004', 'CCC102', 'CS2');

@@ -13,10 +13,11 @@ class SubjectList(object):
     def all(cls):
         try:
             cursor = mysql.connection.cursor()
-            sql = '''SELECT sl.subjectCode, s.sectionCode, sl.description, sl.credits, concat(f.firstname, ' ', f.lastname) AS handlerName FROM sections AS s 
-                    RIGHT JOIN faculty AS f ON s.handlerID = f.facultyID 
-                    RIGHT JOIN subjectList AS sl ON s.subjectCode = sl.subjectCode
-                    ORDER BY sl.subjectCode, s.sectionCode'''
+            sql = '''SELECT sub.subjectCode, s.sectionCode, sub.description, sub.credits, concat(f.firstname, ' ', f.lastname) AS handlerName FROM assignFaculty AS af
+                    RIGHT JOIN subject AS sub ON af.subjectID = sub.subjectCode
+                    LEFT JOIN faculty AS f ON f.facultyID = af.facultyID
+                    LEFT JOIN section AS s ON af.sectionID = s.sectionCode
+                    ORDER BY sub.subjectCode, s.sectionCode'''
             cursor.execute(sql)
             result = cursor.fetchall()
             return result
