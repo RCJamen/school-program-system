@@ -1,0 +1,64 @@
+.subjects-list-container {
+    margin: 10px;
+    width: auto;
+}
+
+.subjects-list-header,
+.subjects-list-sy {
+    margin-left: 20px;
+}
+
+.subjects-list-sy select {
+    padding: 2px 0px;
+    width: 200px;
+}
+
+#placeholder {
+    color: gray;
+}
+
+.subjects-list-content {
+    margin: 10px 50px;
+    text-align: left;
+}
+
+.subjects-list-content table {
+    margin-top: 30px;
+    border-collapse: collapse;
+    width: 100%;
+}
+
+.subjects-list-content th {
+    border-bottom: 2px solid black;
+    padding: 10px 10px;
+    width: fit-content;
+    background-color: #f8f9fa;
+}
+
+.subjects-list-content td {
+    border-bottom: 1px solid black;
+    padding: 5px 10px;
+    width: fit-content;
+}
+
+#noSubjectsAvailable {
+    text-align: center;
+    color: gray;
+}
+
+.subjects-list-content button {
+    background-color: #a41d21;
+    color: white;
+    padding: 0px 10px;
+    border-color: transparent;
+    border-radius: 5px;
+    text-align: center;
+}
+
+.subjects-list-content button:hover {
+    background-color: #711316;
+}
+
+.subjects-list-content button:active {
+    background-color: #a41d21;
+}
