@@ -42,3 +42,15 @@ class facultyModel:
             return "Faculty deleted successfully"
         except Exception as e:
             return f"Failed to delete faculty: {str(e)}"
+
+    @classmethod
+    def update_faculty(cls, facultyID, firstname, lastname, email):
+        try:
+            cur = mysql.new_cursor(dictionary=True)
+            # Use placeholders in the query to prevent SQL injection
+            cur.execute("UPDATE faculty SET firstname = %s, lastname = %s, email = %s WHERE facultyID = %s",
+                        (firstname, lastname, email, facultyID))
+            mysql.connection.commit()
+            return "Faculty Information Updated Successfully"
+        except Exception as e:
+            return f"Failed to update faculty: {str(e)}"
