@@ -25,8 +25,8 @@ def create_app():
 
     app.register_blueprint(admin)
 
-    # @app.route("/home")
-    # def hello_world():
-    #     return render_template("master_layout.html")
+    @app.route("/class-record")
+    def hello_world():
+        return render_template("class-record.html")
 
     return app

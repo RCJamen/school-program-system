@@ -1,0 +1,74 @@
+.fs-5 
+{
+    font-weight: 700;
+}
+.table-container {
+    display: flex;
+    justify-content: space-between;
+    flex-wrap: wrap;
+    max-width: 35%;
+    margin: auto;
+}
+
+.dist-conv
+{
+    margin-top: 20px;
+    text-transform: capitalize;
+    flex: 1;
+    box-sizing: border-box;
+}
+
+.grade-distribution,
+.grade-conversion
+{
+    width: 100%;
+    padding: 10px;
+    /* margin-top: 10px; */
+    background: #FFFFFF;
+    border-radius: 10px;
+}
+.grade-distribution, .grade-conversion table
+{
+    max-width: 100%;
+}
+.table
+{
+    border-collapse: collapse;
+    margin: 25px 0;
+    font-size: 15px;
+    min-width: 100%;
+    overflow: hidden;
+    border-radius: 5px 5px 0 0;
+}
+h3
+{
+    text-align: center;
+    font-size: small;
+}
+table thead tr
+{
+    text-align: center;
+    font-weight: bold;
+}
+.table th, .table td
+{
+    text-align: center;
+    padding: 12px 15px;
+}
+.table tbody tr:nth-of-type(even)
+{
+    background: #c2cdd7;
+    
+}
+.table tbody tr:not(:last-child) {
+    border-bottom: 1px solid #ddd;
+}
+.table tbody tr:active
+{
+    font-weight: bold;
+    color: #b8c4cf;
+}
+.table tbody tr:last-of-type
+{
+    border-bottom: 3px solid #FFFFFF;
+}
