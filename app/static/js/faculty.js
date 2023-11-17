@@ -56,10 +56,6 @@ $(document).ready(function() {
         // Update modal content with faculty details
         $('#askDelete .delete-modal-body').html(`<p>Do you want to delete the following faculty?</p><strong>ID:</strong> ${facultyID}<br><strong>Name:</strong> ${facultyName}`);
 
-
-        // Fetch faculty details using an AJAX request (optional)
-        // You can include this part if you need to fetch additional details from the server
-
         // Show the modal
         $('#askDelete').modal('show');
 
@@ -73,13 +69,24 @@ $(document).ready(function() {
                     'X-CSRFToken': csrfToken
                 },
                 success: function(response) {
-                    // Handle success, e.g., refresh the page or update UI
-                    $(event.target).closest('tr').remove();
-                    console.log('Faculty deleted successfully:', response);
+                    if (response.success) {
+                        // Handle success, e.g., refresh the page or update UI
+                        $(event.target).closest('tr').remove();
+                        console.log('Faculty deleted successfully:', response);
+                        // Add a flash message for successful deletion
+                        flashMessage('success', `Faculty deleted successfully - ID: <strong>${facultyID}</strong>, Name: <strong>${facultyName}</strong>`);
+                    } else {
+                        // Handle failure, e.g., display an error message
+                        console.error('Error deleting faculty:', response.error);
+                        // Add a flash message for failed deletion
+                        flashMessage('danger', 'Failed to delete faculty');
+                    }
                 },
                 error: function(error) {
                     // Handle error, e.g., display an error message
                     console.error('Error deleting faculty:', error);
+                    // Add a flash message for failed deletion
+                    flashMessage('danger', 'Failed to delete faculty');
                 }
             });
 
@@ -87,7 +94,25 @@ $(document).ready(function() {
             $('#askDelete').modal('hide');
         });
     });
+
+    function flashMessage(type, message) {
+        // Create flash message HTML
+        var flashMessageHTML = `
+            <div class="alert alert-${type} alert-dismissible fade show" role="alert">
+                <div class="d-flex justify-content-between align-items-center">
+                    <span>${message}</span>
+                    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                </div>
+            </div>
+        `;
+
+        // Append flash message HTML to a container (adjust the selector accordingly)
+        $('#flash-messages-container').append(flashMessageHTML);
+    }
+
+    
 });
+
 
 var csrfToken = $('meta[name=csrf-token]').attr('content');  // Move it outside the click event handler
 
@@ -100,7 +125,6 @@ $(".edit-faculty").click(function() {
 
     console.log('Clicked Edit Faculty. ID:', facultyID, 'FirstName:', facultyfirstName, 'LastName:', facultylastName, 'Email:', facultyEmail);
     
-    // Set the form fields with the retrieved data
     $("#editFacultyIDInput").val(facultyID);
     $("#editFacultyfirstName").val(facultyfirstName);
     $("#editFacultylastName").val(facultylastName);
@@ -115,8 +139,6 @@ $("#editFacultyForm").submit(function(e) {
     var facultylastName = $("#editFacultylastName").val();
     var facultyEmail = $("#editFacultyEmail").val();
 
-    // Perform your own custom validation if needed
-
     $.ajax({
         type: 'POST',
         url: `/faculty/edit/${facultyID}`,
@@ -130,16 +152,45 @@ $("#editFacultyForm").submit(function(e) {
             'X-CSRFToken': csrfToken
         },
         success: function(response) {
-            // Handle success, e.g., refresh the page or update UI
-            window.location.reload();
             console.log('Faculty Updated successfully:', response);
+            editFlashMessage('success', `Faculty updated successfully - ID: <strong>${facultyID}</strong>`);
+            
+            // After the flash message is shown, redirect to the faculty page
+            setTimeout(function() {
+                editRedirect();
+            }, 3000); // Adjust the timeout duration as needed
         },
         error: function(error) {
             // Handle error, e.g., display an error message
             console.error('Error Updating faculty:', error);
         },
     });
+
+    function editFlashMessage(type, message) {
+        // Create flash message HTML
+        var flashMessageHTML = `
+            <div class="alert alert-${type} alert-dismissible fade show" role="alert">
+                <div class="d-flex justify-content-between align-items-center">
+                    <span>${message}</span>
+                    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                </div>
+            </div>
+        `;
+
+        // Append flash message HTML to a container (adjust the selector accordingly)
+        $('#flash-messages-container').append(flashMessageHTML);
+    }
+
 });
+
+function editRedirect() {
+    function redirectToFaculty() {
+        window.location.href = '/faculty';
+    }
+
+    // Trigger the flash message after the redirection
+    redirectToFaculty();
+}
 
 
 const editFacultyBtn = document.querySelectorAll('.edit-faculty');

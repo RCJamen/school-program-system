@@ -25,10 +25,11 @@ def add_faculty():
             result = faculty_model.create_faculty(facultyID, firstname, lastname, email)
             # single_faculty = faculty_model.get_single_faculty(facultyID)
             if "success" in result:
-                flash_message = {"type": "success", "message": "Faculty created successfully"}
-                
+                credentials_message = f"ID: <strong>{facultyID}</strong>, Name: <strong>{firstname} {lastname}</strong>, Email: <strong>{email}</strong>"
+                flash_message = {"type": "success", "message": f"Faculty created successfully - {credentials_message}"}
             else:
                 flash_message = {"type": "danger", "message": f"Failed to create faculty: {result}"}
+
         else:
             flash_message = {"type": "danger", "message": "Form validation failed. Please check your inputs."}
 

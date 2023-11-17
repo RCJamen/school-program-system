@@ -29,22 +29,23 @@
                                 <option value="3">Three</option>
                             </select>
                         </div>
-                        <div class="col-4">
+                        <div class="col-4" id = "flash-messages-container">
                           {% if flash_message %}
                               <div class="alert alert-{{ flash_message.type }} alert-dismissible fade show" role="alert">
                                   <div class="d-flex justify-content-between align-items-center">
-                                      <span>{{ flash_message.message }}</span>
+                                      <span>{{ flash_message.message | safe }}</span>
                                       <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
                                   </div>
                               </div>
                           {% endif %}
-                      
+
                           {% for field, errors in add_form.errors.items() %}
-                            <div class="alert alert-danger alert-dismissible fade show" role="alert">
-                              <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
-                               {{ ', '.join(errors) }}
-                            </div>
+                              <div class="alert alert-danger alert-dismissible fade show" role="alert">
+                                  <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                                  {{ ', '.join(errors) }}
+                              </div>
                           {% endfor %}
+
 
                       </div>
                         
@@ -230,7 +231,7 @@
           >
           <i class="fa-solid fa-xmark" style="color: #ffffff;"></i> Close 
           </button>
-          <button type="submit" class="btn btn-success UpdateFaculty"> <i class="fa-solid fa-user-pen"></i>Update Faculty</button>
+          <button type="submit" class="btn btn-success UpdateFaculty" data-bs-dismiss="modal"> <i class="fa-solid fa-user-pen"></i>Update Faculty</button>
           
         </div>
       </div>
