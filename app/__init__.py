@@ -31,8 +31,8 @@ def create_app():
     app.register_blueprint(faculty)
     app.register_blueprint(subject)
 
-    # @app.route("/subjects")
-    # def subjectsHandled():
-    #     return render_template("subjectList.html")
+    @app.route("/class-record")
+    def hello_world():
+        return render_template("class-record.html")
 
     return app
