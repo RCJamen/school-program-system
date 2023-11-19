@@ -31,8 +31,8 @@ def add_faculty():
             else:
                 flash_message = {"type": "danger", "message": f"Failed to create faculty: {result}"}
 
-        else:
-            flash_message = {"type": "danger", "message": "Form validation failed. Please check your inputs."}
+        # else:
+        #     flash_message = {"type": "danger", "message": "Form validation failed. Please check your inputs."}
 
     faculties = faculty_model.get_faculty()
     
