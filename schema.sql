@@ -130,17 +130,20 @@ FOREIGN KEY (sectionID) REFERENCES section(sectionCode)
 
 
 -- to handle 1 section of the same subject
--- but can handle many subjects (subjectID not unique) of the same section
+-- but can handle many subjects (subjectID not unique) of the same section-- Drop the existing assignFaculty table if it exists
 DROP TABLE IF EXISTS `assignFaculty`;
+
+-- Create the assignFaculty table with foreign key constraints
 CREATE TABLE IF NOT EXISTS `assignFaculty`(
-facultyID VARCHAR(9),
-subjectID VARCHAR(255),
-sectionID VARCHAR(255),
-PRIMARY KEY (facultyID, subjectID, sectionID),
-FOREIGN KEY (facultyID) REFERENCES faculty(facultyID),
-FOREIGN KEY (subjectID) REFERENCES subject(subjectCode),
-FOREIGN KEY (sectionID) REFERENCES section(sectionCode)
+    facultyID VARCHAR(9),
+    subjectID VARCHAR(255),
+    sectionID VARCHAR(255),
+    PRIMARY KEY (subjectID, sectionID),  -- Change the primary key
+    FOREIGN KEY (facultyID) REFERENCES faculty(facultyID) ON DELETE SET NULL,
+    FOREIGN KEY (subjectID) REFERENCES subject(subjectCode) ON DELETE CASCADE,
+    FOREIGN KEY (sectionID) REFERENCES section(sectionCode) ON DELETE CASCADE
 );
+
 
 
 DROP TABLE IF EXISTS `class_records`;
