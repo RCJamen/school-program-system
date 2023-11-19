@@ -7,6 +7,7 @@ from app.controller.admin.controller import login_is_required
 
 faculty_model = facultyModel()
 
+
 @faculty.route("/faculty", methods=["GET", "POST"])
 @login_is_required
 def add_faculty():

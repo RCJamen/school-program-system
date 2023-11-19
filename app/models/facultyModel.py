@@ -1,11 +1,15 @@
 from app import mysql
 
+
 class facultyModel:
     @classmethod
     def create_faculty(cls, facultyID, firstname, lastname, email):
         try:
             cur = mysql.new_cursor(dictionary=True)
-            cur.execute("INSERT INTO faculty (facultyID, firstname, lastname, email) VALUES (%s, %s, %s, %s)", (facultyID, firstname, lastname, email))
+            cur.execute(
+                "INSERT INTO faculty (facultyID, firstname, lastname, email) VALUES (%s, %s, %s, %s)",
+                (facultyID, firstname, lastname, email),
+            )
             mysql.connection.commit()
             return "Faculty created successfully"
         except Exception as e:
