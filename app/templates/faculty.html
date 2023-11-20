@@ -85,7 +85,8 @@
                                 data-faculty-id="{{ faculty.facultyID }}" data-bs-toggle="modal" data-bs-target="#askDelete"><i class="fa-solid fa-trash" 
                                 style="color: #000000;"></i></button>
                                 
-                                <button type="button" class="btn btn-outline-light show-academic-load"><i class="fa-solid fa-chalkboard-user" style="color: #000000;"></i></button>
+                                <button type="button" class="btn btn-outline-light show-academic-load"><i class="fa-solid fa-chalkboard-user" 
+                                  style="color: #000000;" data-bs-toggle="modal" data-bs-target="#academic-load"></i></button>
                               </td>
                             </tr>
                             {% endfor %}
@@ -236,6 +237,82 @@
         </div>
       </div>
     </form>
+  </div>
+</div>
+
+
+<div class="modal" tabindex="-1" id = academic-load>
+  <div class="modal-dialog modal-fullscreen" >
+    <div class="modal-content">
+      
+     
+      <div class="modal-body academic-modal-body">
+        <div class="academic-header">
+          <button type="button" class="btn btn-outline-light" data-bs-dismiss="modal" aria-label="Close">
+            <!-- Use an arrow-left icon from FontAwesome -->
+            <i class="fa-solid fa-arrow-left" style="color: #000000;"></i> back</button>
+        <div class = "row body-header">
+          <div class="col-3">
+            <div class = col-3-content>
+            <div class="profile-picture">
+              <img src="../static/pictures/orv.jpg" alt="Profile Picture">
+            </div>
+            <div class = "profile-content">
+              <h6>Juan Dela Curz</h6>
+              <p>putangina mo ka</p>
+            </div>
+          </div>
+        </div>
+          
+          <div class = "col-9"><button type="button" class="btn btn-warning float-end academicEditBtn">Warning</button></div>
+
+        </div>
+        <div class = "row body-sort" >
+          <div class = "col-2 school-year">
+            <h6>School Year</h6>
+            <select class="form-select custom-select-size" aria-label="Default select example">
+              <option selected>Feature Available Soon</option>
+              <option value="1">One</option>
+              <option value="2">Two</option>
+              <option value="3">Three</option>
+          </select>
+          </div>
+          <div class = "col-2 semester">
+            <h6>School Year</h6>
+            <select class="form-select custom-select-size" aria-label="Default select example">
+              <option selected>Feature Available Soon</option>
+              <option value="1">One</option>
+              <option value="2">Two</option>
+              <option value="3">Three</option>
+          </select>
+          </div>
+        </div>
+        <div class="container-fluid">
+          <header class="p-0">
+            <nav class="navbar">
+              <ul class="nav">
+                <li class="nav-item">
+                  <a class="nav-link" href="#" id="academicLoad">Academic Load</a>
+                </li>
+                <li class="nav-item">
+                  <a class="nav-link" href="#" id="classSchedule">Class Schedule</a>
+                </li>
+              </ul>
+            </nav>
+            <div class="line-wrapper">
+              <hr class="my-0 mx-3">
+              <div class="red-line"></div>
+            </div>
+          </header>
+        </div>
+        
+        
+        
+        
+       
+      </div>
+
+    </div>
   </div>
 </div>
 

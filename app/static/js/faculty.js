@@ -214,3 +214,47 @@ editFacultyBtn.forEach(button => {
         email_input.value = edit_faculty_email;
     });
 });
+
+
+document.addEventListener('DOMContentLoaded', function () {
+    // Add event listeners for link hover and remove 'active' class
+    var academicLoadLink = document.getElementById('academicLoad');
+    var classScheduleLink = document.getElementById('classSchedule');
+    var redLine = document.querySelector('.red-line');
+  
+    // Function to update the red line based on the active link
+    function updateRedLine(activeLink) {
+      var rect = activeLink.getBoundingClientRect();
+      redLine.style.width = rect.width + 'px';
+      redLine.style.left = rect.left + 'px';
+    }
+  
+    academicLoadLink.addEventListener('mouseenter', function () {
+      updateRedLine(academicLoadLink);
+    });
+  
+    classScheduleLink.addEventListener('mouseenter', function () {
+      updateRedLine(classScheduleLink);
+    });
+  
+    // Function to remove 'active' class and reset red line on mouse leave
+    function resetRedLine() {
+      redLine.style.width = '0';
+      academicLoadLink.classList.remove('active');
+      classScheduleLink.classList.remove('active');
+    }
+  
+    academicLoadLink.addEventListener('mouseleave', resetRedLine);
+    classScheduleLink.addEventListener('mouseleave', resetRedLine);
+  
+    // Add active class based on the current URL
+    var url = window.location.href;
+    if (url.indexOf('academic-load') !== -1) {
+      academicLoadLink.classList.add('active');
+      updateRedLine(academicLoadLink);
+    } else if (url.indexOf('class-schedule') !== -1) {
+      classScheduleLink.classList.add('active');
+      updateRedLine(classScheduleLink);
+    }
+  });
+  
