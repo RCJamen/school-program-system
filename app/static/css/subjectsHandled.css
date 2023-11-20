@@ -1,59 +1,53 @@
-.subjects-handled-container {
-    margin: 10px;
-    width: auto;
+.subHandled-title {
+    padding: 24px 32px 24px 32px;
 }
 
-.subjects-handled-header,
-.subjects-handled-sy {
-    margin-left: 20px;
+.subHandled-header {
+    padding: 24px 32px 24px 32px;
 }
 
-.subjects-handled-sy select {
-    padding: 2px 0px;
-    width: 200px;
+.subHandled-body .subHandled-table .table {
+    width: 96.5%;
+    margin-left: 21px;
 }
 
-#placeholder {
-    color: gray;
+.subHandled-modal-body .form-group {
+    margin-bottom: 24px;
+
 }
 
-.subjects-handled-content {
-    margin: 10px 50px;
-    text-align: left;
+.subHandled-modal-body {
+    margin: 16px
 }
 
-.subjects-handled-content table {
-    margin-top: 30px;
-    border-collapse: collapse;
-    width: 100%;
+.subHandled-modal-header {
+    margin-left: 16px;
+    margin-right: 16px
 }
 
-.subjects-handled-content th {
-    border-bottom: 2px solid black;
-    padding: 10px 10px;
-    width: fit-content;
-    background-color: #f8f9fa;
+.subHandled-modal-footer {
+    margin-left: 16px;
+    margin-right: 16px
 }
 
-.subjects-handled-content td {
-    border-bottom: 1px solid black;
-    padding: 5px 10px;
-    width: fit-content;
+.subHandled-modal-body .form-group input.form-control {
+    padding-top: 12px;
+    padding-bottom: 12px;
+    padding-left: 16px;
+    border-radius: 16px;
 }
 
-.subjects-handled-content button {
-    background-color: #a41d21;
-    color: white;
-    padding: 0px 10px;
-    border-color: transparent;
-    border-radius: 5px;
-    text-align: center;
+.AddSubjectBtn {
+    background-color: rgba(164, 29, 33, 1) !important;
+    color: #ffffff !important;
+    border-color: rgba(164, 29, 33, 1) !important
 }
 
-.subjects-handled-content button:hover {
-    background-color: #711316;
-}
-
-.subjects-handled-content button:active {
-    background-color: #a41d21;
+.AddSubject {
+    background-color: rgba(164, 29, 33, 1) !important;
+    color: #ffffff
+        /* Text color, assuming you want it to be white */
+        !important;
+    border-color: rgba(164, 29, 33, 1) !important
+        /* Add any other styles you need */
 }

@@ -14,9 +14,7 @@
   <div class="subject-list-title">
     <h1 class="m-0">Subject Lists</h1>
   </div>
-
   <hr />
-
   <div class="subject-list-content">
     <div class="subject-list-header">
       <h6>School Year</h6>
@@ -36,40 +34,40 @@
             data-bs-target="#addFacultyModal"><i class="fa-solid fa-user-plus"></i> Add Subject </button> </div>
       </div>
     </div>
-  </div>
-
-  <div class="subject-list-body">
-    <div class="bs-example container subject-list-body table-responsive" data-example-id="striped-table">
-      <table class="table table-hover">
-        <thead>
-          <tr>
-            <th>Subject Code</th>
-            <th>Section</th>
-            <th>Description</th>
-            <th>Credits</th>
-            <th>Handler</th>
-            <th>Action</th>
-          </tr>
-        </thead>
-        <tbody class="table-group-divider">
-          {% if subjectInfo|length == 0 %}
-          <tr>
-            <td colspan="6" id="noSubjectsAvailable">No subjects available.</td>
-          </tr>
-          {% else %} {% for subject in subjectInfo %}
-          <tr class="subjects-list-table-data">
-            <td class="fw-bold">{{ subject[0] }}</td>
-            <td>{{ subject[1] }}</td>
-            <td>{{ subject[2] }}</td>
-            <td>{{ subject[3] }}</td>
-            <td class="fw-bold">{{ subject[4] }}</td>
-            <td>
-              <button type="button" class="btn btn-outline-light edit-subject" data-bs-toggle="modal"><i
-                  class="fa-solid fa-pen" style="color: #000000;"></i></button>
-            </td>
-          </tr>
-          {% endfor %} {% endif %}
-      </table>
+    <div class="subject-list-body">
+      <div class="bs-example container subject-list-body table-responsive" data-example-id="striped-table">
+        <table class="table table-hover">
+          <thead>
+            <tr>
+              <th>Subject Code</th>
+              <th>Section</th>
+              <th>Description</th>
+              <th>Credits</th>
+              <th>Handler</th>
+              <th>Action</th>
+            </tr>
+          </thead>
+          <tbody class="table-group-divider">
+            {% if subjectInfo|length == 0 %}
+            <tr>
+              <td colspan="6" id="noSubjectsAvailable">No subjects available.</td>
+            </tr>
+            {% else %} {% for subject in subjectInfo %}
+            <tr class="subjects-list-table-data">
+              <td class="fw-bold">{{ subject[0] }}</td>
+              <td>{{ subject[1] }}</td>
+              <td>{{ subject[2] }}</td>
+              <td>{{ subject[3] }}</td>
+              <td class="fw-bold">{{ subject[4] }}</td>
+              <td>
+                <button type="button" class="btn btn-outline-light edit-subject" data-bs-toggle="modal"><i
+                    class="fa-solid fa-pen" style="color: #000000;"></i></button>
+              </td>
+            </tr>
+            {% endfor %} {% endif %}
+          </tbody>
+        </table>
+      </div>
     </div>
   </div>
 </div>
