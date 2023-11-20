@@ -23,6 +23,20 @@ class SubjectList(object):
             return result
         except Exception as e:
             return f"Failed to load Subject List: {str(e)}"
+    
+    @classmethod    
+    def getSubjectsHandled(cls, handlerName):
+        try:
+            cursor = mysql.connection.cursor()
+            sql = '''SELECT s.semester, s.subjectCode, af.sectionID, s.description, s.credits FROM assignFaculty AS af
+                    LEFT JOIN subject AS s ON af.subjectID = s.subjectCode
+                    LEFT JOIN faculty AS f ON af.facultyID = f.facultyID
+                    WHERE CONCAT(f.firstname, ' ', f.lastname) = %s'''
+            cursor.execute(sql, (handlerName,))
+            result = cursor.fetchall()
+            return result
+        except Exception as e:
+            return f"Failed to load list of Subjects Handled: {str(e)}"
 
     
     # GET LIST OF SUBJECTS BY SEMESTER
