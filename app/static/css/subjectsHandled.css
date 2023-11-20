@@ -11,43 +11,8 @@
     margin-left: 21px;
 }
 
-.subHandled-modal-body .form-group {
-    margin-bottom: 24px;
-
-}
-
-.subHandled-modal-body {
-    margin: 16px
-}
-
-.subHandled-modal-header {
-    margin-left: 16px;
-    margin-right: 16px
-}
-
-.subHandled-modal-footer {
-    margin-left: 16px;
-    margin-right: 16px
-}
-
-.subHandled-modal-body .form-group input.form-control {
-    padding-top: 12px;
-    padding-bottom: 12px;
-    padding-left: 16px;
-    border-radius: 16px;
-}
-
-.AddSubjectBtn {
+.ShowClassRecordBtn {
     background-color: rgba(164, 29, 33, 1) !important;
     color: #ffffff !important;
     border-color: rgba(164, 29, 33, 1) !important
-}
-
-.AddSubject {
-    background-color: rgba(164, 29, 33, 1) !important;
-    color: #ffffff
-        /* Text color, assuming you want it to be white */
-        !important;
-    border-color: rgba(164, 29, 33, 1) !important
-        /* Add any other styles you need */
 }
