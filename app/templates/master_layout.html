@@ -22,9 +22,8 @@
       <button class="btn d-md-none d-block close-btn px-1 py-0 text-white pe-2"><i
           class="fa-solid fa-bars-staggered"></i></button>
     </div>
-
     <ul class="list-unstyled px-2">
-      <li class="active"><a href="/home" class="text-decoration-none px-3 py-2 d-block">
+      <li class=""><a href="/home" class="text-decoration-none px-3 py-2 d-block">
           <i class="fas fa-home"></i>
           &nbsp;<span class="ms-2">Home</span></a></li>
       <li class=""><a href="/subjects-handled" class="text-decoration-none px-3 py-2 d-block"><i
@@ -37,15 +36,12 @@
       <li class=""><a href="/curriculum" class="text-decoration-none px-3 py-2 d-block"><i class="fas fa-file"></i>
           &nbsp;<span class="ms-3">College Curriculum</span></a></li>
     </ul>
-
     <hr class="border">
-
     <ul class="list px-2">
       <li class=""><a href="{{url_for('admin.logout')}}" class="text-decoration-none px-3 py-2 d-block"><i
             class="fas fa-sign-out-alt"></i>>
           <span class="ms-2">Logout</span></a></li>
     </ul>
-
   </div>
   <div class="content">
     <nav class="navbar navbar-expand-md" style="background-color: #A41D21">
@@ -73,7 +69,6 @@
         </div>
       </div>
     </nav>
-
     <div class="dashboard-content px-3 pt-4">
       {% block pages%}
       {% endblock %}
@@ -96,6 +91,17 @@
   $('.close-btn').on('click', function () {
     $('.sidebar').removeClass('active');
   })
+
+  $(document).ready(function () {
+    var path = window.location.pathname;
+
+    $('.list-unstyled li').each(function () {
+      var href = $(this).find('a').attr('href');
+      if (path === href) {
+        $(this).addClass('active');
+      }
+    });
+  });
 </script>
 {% block pagescript %}
 {% endblock %}
