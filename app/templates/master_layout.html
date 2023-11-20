@@ -65,7 +65,12 @@
           <ul class="navbar-nav mb-2 mb-lg-0">
             <li class="nav-item">
               <a class=" nav-link active" aria-current="page" href="#">
+                {% if session.get("profile_picture") %}
+                <img src="{{ session['profile_picture'] }}" alt="Profile Picture" class="rounded-circle"
+                  style="width: 30px; height: 30px;">
+                {% else %}
                 <i class="fas fa-user fa-fw" style="color: #FFF"></i>
+                {% endif %}
                 <span class="ps-2" style="color: #FFF">{{session['name']}}</span>
               </a>
             </li>
