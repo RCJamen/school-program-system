@@ -1,49 +1,74 @@
-{% extends "master_layout.html" %} {% block pagetitle %}
+{% extends "master_layout.html" %}
+
+{% block pagetitle %}
 <title>Subject List</title>
-{% endblock %} {% block pagestyle %}
+{% endblock %}
+
+{% block pagestyle %}
 <link rel="stylesheet" href="../static/css/subjectList.css" />
-{% endblock %} {% block pages %}
-<div class="subjects-list-container">
-  <div class="subjects-list-header">
-    <h1>Subject Lists</h1>
+{% endblock %}
+
+{% block pages %}
+<meta name="csrf-token" content="{{ csrf_token() }}">
+<div class="subject-list-container">
+  <div class="subject-list-title">
+    <h1 class="m-0">Subject Lists</h1>
   </div>
   <hr />
-  <div class="subjects-list-sy">
-    <h4>Semester</h4>
-    <select name="semester" id="semester">
-      <option id="placeholder" disabled selected>Please select...</option>
-      <option value="1">Semester 1</option>
-      <option value="2">Semester 2</option>
-    </select>
-  </div>
-  <div class="subjects-list-content">
-    <table>
-      <tr class="subjects-list-table-head">
-        <th>Subject Code</th>
-        <th>Section</th>
-        <th>Description</th>
-        <th>Credits</th>
-        <th>Handler</th>
-        <th>Action</th>
-      </tr>
-
-      {% if subjectInfo|length == 0 %}
-      <tr>
-        <td colspan="6" id="noSubjectsAvailable">No subjects available.</td>
-      </tr>
-      {% else %} {% for subject in subjectInfo %}
-      <tr class="subjects-list-table-data">
-        <td class="fw-bold">{{ subject[0] }}</td>
-        <td>{{ subject[1] }}</td>
-        <td>{{ subject[2] }}</td>
-        <td>{{ subject[3] }}</td>
-        <td class="fw-bold">{{ subject[4] }}</td>
-        <td>
-          <button type="button">Edit Subject</button>
-        </td>
-      </tr>
-      {% endfor %} {% endif %}
-    </table>
+  <div class="subject-list-content">
+    <div class="subject-list-header">
+      <h6>School Year</h6>
+      <div class="row">
+        <div class="col-3">
+          <select class="form-select custom-select-size" aria-label="Default select example">
+            <option selected>Feature Available Soon</option>
+            <option value="1">One</option>
+            <option value="2">Two</option>
+            <option value="3">Three</option>
+          </select>
+        </div>
+        <div class="col-4" id="flash-messages-container">
+          <!--SUBJECT FLASH MESSAGE  -->
+        </div>
+        <div class="col-5"> <button type="button" class="btn btn-primary float-end AddSubjectBtn" data-bs-toggle="modal"
+            data-bs-target="#addFacultyModal"><i class="fa-solid fa-user-plus"></i> Add Subject </button> </div>
+      </div>
+    </div>
+    <div class="subject-list-body">
+      <div class="bs-example container subject-list-body table-responsive" data-example-id="striped-table">
+        <table class="table table-hover">
+          <thead>
+            <tr>
+              <th>Subject Code</th>
+              <th>Section</th>
+              <th>Description</th>
+              <th>Credits</th>
+              <th>Handler</th>
+              <th>Action</th>
+            </tr>
+          </thead>
+          <tbody class="table-group-divider">
+            {% if subjectInfo|length == 0 %}
+            <tr>
+              <td colspan="6" id="noSubjectsAvailable">No subjects available.</td>
+            </tr>
+            {% else %} {% for subject in subjectInfo %}
+            <tr class="subjects-list-table-data">
+              <td class="fw-bold">{{ subject[0] }}</td>
+              <td>{{ subject[1] }}</td>
+              <td>{{ subject[2] }}</td>
+              <td>{{ subject[3] }}</td>
+              <td class="fw-bold">{{ subject[4] }}</td>
+              <td>
+                <button type="button" class="btn btn-outline-light edit-subject" data-bs-toggle="modal"><i
+                    class="fa-solid fa-pen" style="color: #000000;"></i></button>
+              </td>
+            </tr>
+            {% endfor %} {% endif %}
+          </tbody>
+        </table>
+      </div>
+    </div>
   </div>
 </div>
 {% endblock %} {% block pagescript %}
