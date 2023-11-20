@@ -7,51 +7,71 @@
 {% endblock %}
 
 {% block pages%}
-<div class="subjects-handled-container">
-  <div class="subjects-handled-header">
-    <h1>Subjects Handled</h1>
+<div class = "subjects-handled-container">
+  <div class = "subjects-handled-title">
+      <h1 class ="m-0"> Subjects Handled </h1>
   </div>
-  <hr />
-  <div class="subjects-handled-sy">
-    <h4>School Year</h4>
-    <select name="school-year" id="school-year">
-      <option id="placeholder" disabled selected>Please select...</option>
-      <option value="year1">2019-2020</option>
-      <option value="year2">2020-2021</option>
-    </select>
-  </div>
-  <div class="subjects-handled-content">
-    <table>
-      <tr class="subjects-handled-table-head">
-        <th>Semester</th>
-        <th>Subject Code</th>
-        <th>Section</th>
-        <th>Description</th>
-        <th>Credits</th>
-        <th>Action</th>
-      </tr>
-      <tr class="subjects-handled-table-data">
-        <td>1</td>
-        <td>CSC181</td>
-        <td>CS3</td>
-        <td>Software Engineering</td>
-        <td>3</td>
-        <td>
-          <button>Class Record</button>
-        </td>
-      </tr>
-      <tr class="subjects-handled-table-data">
-        <td>1</td>
-        <td>CCC181</td>
-        <td>CS3</td>
-        <td>Application Development</td>
-        <td>3</td>
-        <td>
-          <button>Class Record</button>
-        </td>
-      </tr>
-    </table>
-  </div>
+      <hr>
+      <div class = "subjects-handled-content"> 
+      
+          <div class = "subjects-handled-header">
+               <h6>School Year</h6>
+                  <div class = "row">
+                      <div class="col-3">
+                          <select class="form-select custom-select-size" aria-label="Default select example">
+                              <option disabled selected>Select S.Y.</option>
+                              <option value="year1">2019-2020</option>
+                              <option value="year2">2020-2021</option>
+                              <option value="year3">2021-2022</option>
+                          </select>
+                      </div>
+                      <!-- <div class = "col-5"> 
+                        <button type="button" class="btn btn-primary float-end ClassRecordBtn" 
+                        data-bs-toggle="modal" data-bs-target="#classRecordModal"><i class="fa-solid fa-user-plus"></i> Class Record </button> 
+                      </div> -->
+                  </div>
+          </div>
+          <div class="subjects-handled-body ">
+              <div class="bs-example container subjects-handled-table table-responsive" data-example-id="striped-table">
+                  <table class="table table-hover ">
+                        
+                        <thead>
+                          <tr>
+                            <th>Semester</th>
+                            <th>Subject Code</th>
+                            <th>Section</th>
+                            <th>Description</th>
+                            <th>Credits</th>
+                            <th>Action</th>
+                          </tr>
+                        </thead>
+                        <tbody class = "table-group-divider">
+                          {% if subjectsHandledList|length == 0 %}
+                          <tr>
+                            <td colspan="6" id="noSubjectsAvailable">No subjects available.</td>
+                          </tr>
+                          {% else %}
+                          {% for subject in subjectsHandledList %}
+                          <tr>
+                            <td scope="row" class="fw-bold">{{ subject[0] }}</td>
+                            <td class="fw-bold">{{ subject[1] }}</td>
+                            <td>{{ subject[2] }}</td>
+                            <td>{{ subject[3] }}</td>
+                            <td>{{ subject[4] }}</td>
+                            <td>
+                              <button type="button" class="btn btn-outline-light class-record"><i class="fa-solid fa-clipboard fa-lg" style="color: #000000;"></i></button>
+                            </td>
+                          </tr>
+                          {% endfor %}
+                          {% endif %}
+                        </tbody>
+                        <!-- <tfoot>
+                        <tr class="note"><th>Source</th><td colspan=3><a href="https://getbootstrap.com/css/#tables">BootStrap documentation</a></td></tr>
+                        </tfoot> -->
+                      </table>
+                    </div>
+                  </div>      
+      </div>
 </div>
 {% endblock %}
 

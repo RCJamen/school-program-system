@@ -1,59 +1,26 @@
-.subjects-handled-container {
-    margin: 10px;
-    width: auto;
+html,
+body {
+    background: white;
 }
 
-.subjects-handled-header,
-.subjects-handled-sy {
-    margin-left: 20px;
+* {
+    padding: 0;
+    margin: 0;
 }
 
-.subjects-handled-sy select {
-    padding: 2px 0px;
-    width: 200px;
+.subjects-handled-title {
+    padding: 24px 32px 24px 32px;
+}
+
+.subjects-handled-header {
+    padding: 24px 32px 24px 32px;
+}
+
+.subjects-handled-body .subjects-handled-table .table {
+    width: 96.5%;
+    margin-left: 21px;
 }
 
 #placeholder {
     color: gray;
-}
-
-.subjects-handled-content {
-    margin: 10px 50px;
-    text-align: left;
-}
-
-.subjects-handled-content table {
-    margin-top: 30px;
-    border-collapse: collapse;
-    width: 100%;
-}
-
-.subjects-handled-content th {
-    border-bottom: 2px solid black;
-    padding: 10px 10px;
-    width: fit-content;
-    background-color: #f8f9fa;
-}
-
-.subjects-handled-content td {
-    border-bottom: 1px solid black;
-    padding: 5px 10px;
-    width: fit-content;
-}
-
-.subjects-handled-content button {
-    background-color: #a41d21;
-    color: white;
-    padding: 0px 10px;
-    border-color: transparent;
-    border-radius: 5px;
-    text-align: center;
-}
-
-.subjects-handled-content button:hover {
-    background-color: #711316;
-}
-
-.subjects-handled-content button:active {
-    background-color: #a41d21;
 }

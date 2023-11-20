@@ -186,7 +186,8 @@ VALUES
 ('CCC181', 'CS3A'),
 ('CCC181', 'CS3B'),
 ('CSC181', 'CS3A'),
-('CSC181', 'CS3B');
+('CSC181', 'CS3B'),
+('CSC173', 'CS3B');
 
 INSERT INTO assignFaculty (facultyID, subjectID, sectionID)
 VALUES
@@ -194,4 +195,5 @@ VALUES
 ('2023-0001', 'CCC181', 'CS3A'),
 ('2023-0002', 'CSC181', 'CS3B'),
 ('2023-0002', 'CCC181', 'CS3B'),
-('2023-0004', 'CCC102', 'CS2');
+('2023-0004', 'CCC102', 'CS2'),
+('2023-0003', 'CSC173', 'CS3B');
