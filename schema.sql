@@ -115,8 +115,7 @@ DROP TABLE IF EXISTS `subject`;
 CREATE TABLE IF NOT EXISTS `subject`(
 subjectCode VARCHAR(255) PRIMARY KEY NOT NULL UNIQUE,
 description VARCHAR(255) NOT NULL,
-credits INT,
-semester INT
+credits INT
 );
 
 DROP TABLE IF EXISTS `subject_section`;
@@ -165,24 +164,33 @@ VALUES ('2023-0001', 'Fulgent', 'Travesores', 'fulgent.travesores@g.msuiit.edu.p
 ('2023-0003', 'Janella', 'Balantac', 'janella.balantac@g.msuiit.edu.ph'),
 ('2023-0004', 'Ramel Cary', 'Jamen', 'ramelcary.jamen@g.msuiit.edu.ph');
 
-INSERT INTO subject (subjectCode, description, credits, semester)
+INSERT INTO subject (subjectCode, description, credits)
 VALUES 
-('CCC181', 'Application Development', 3, 1),
-('CSC181', 'Software Engineering', 3, 2),
-('CSC173', 'Intelligent Systems', 3, 1),
-('CCC102', 'Computer Programming II', 3, 2);
+('CCC181', 'Application Development', 3),
+('CSC181', 'Software Engineering', 3),
+('CSC173', 'Intelligent Systems', 3),
+('CCC102', 'Computer Programming II', 3),
+('CCC101', 'Computer Programming I', 3);
 
 INSERT INTO section (sectionCode)
 VALUES
-('CS1'),
-('CS2'),
+('CS1A'),
+('CS1B'),
+('CS1C'),
+('CS2A'),
+('CS2B'),
+('CS2C'),
 ('CS3A'),
 ('CS3B'),
-('CS4');
+('CS3C'),
+('CS4A'),
+('CS4B'),
+('CS4C');
 
 INSERT INTO subject_section (subjectID, sectionID)
 VALUES
-('CCC102', 'CS2'),
+-- ('CCC101', 'CS2A'),
+('CCC102', 'CS2A'),
 ('CCC181', 'CS3A'),
 ('CCC181', 'CS3B'),
 ('CSC181', 'CS3A'),
@@ -195,5 +203,5 @@ VALUES
 ('2023-0001', 'CCC181', 'CS3A'),
 ('2023-0002', 'CSC181', 'CS3B'),
 ('2023-0002', 'CCC181', 'CS3B'),
-('2023-0004', 'CCC102', 'CS2'),
+('2023-0004', 'CCC102', 'CS2A'),
 ('2023-0003', 'CSC173', 'CS3B');

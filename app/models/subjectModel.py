@@ -13,11 +13,21 @@ class SubjectList(object):
     def all(cls):
         try:
             cursor = mysql.connection.cursor()
-            sql = '''SELECT sub.subjectCode, s.sectionCode, sub.description, sub.credits, concat(f.firstname, ' ', f.lastname) AS handlerName FROM assignFaculty AS af
-                    RIGHT JOIN subject AS sub ON af.subjectID = sub.subjectCode
-                    LEFT JOIN faculty AS f ON f.facultyID = af.facultyID
-                    LEFT JOIN section AS s ON af.sectionID = s.sectionCode
-                    ORDER BY sub.subjectCode, s.sectionCode'''
+            sql = '''SELECT 
+                        s.subjectCode,
+                        ss.sectionID,
+                        s.description,
+                        s.credits,
+                        CONCAT(f.firstname, ' ', f.lastname) AS handlerName
+                    FROM 
+                        subject AS s
+                    LEFT JOIN 
+                        subject_section AS ss ON s.subjectCode = ss.subjectID
+                    LEFT JOIN 
+                        assignFaculty AS af ON ss.subjectID = af.subjectID AND ss.sectionID = af.sectionID
+                    LEFT JOIN 
+                        faculty AS f ON af.facultyID = f.facultyID
+                    ORDER BY s.subjectCode, ss.sectionID'''
             cursor.execute(sql)
             result = cursor.fetchall()
             return result
@@ -28,10 +38,20 @@ class SubjectList(object):
     def getSubjectsHandled(cls, handlerName):
         try:
             cursor = mysql.connection.cursor()
-            sql = '''SELECT s.semester, s.subjectCode, af.sectionID, s.description, s.credits FROM assignFaculty AS af
-                    LEFT JOIN subject AS s ON af.subjectID = s.subjectCode
-                    LEFT JOIN faculty AS f ON af.facultyID = f.facultyID
-                    WHERE CONCAT(f.firstname, ' ', f.lastname) = %s'''
+            sql = '''SELECT 
+                        s.subjectCode, 
+                        af.sectionID, 
+                        s.description, 
+                        s.credits 
+                    FROM 
+                        assignFaculty AS af
+                    LEFT JOIN 
+                        subject AS s ON af.subjectID = s.subjectCode
+                    LEFT JOIN
+                        faculty AS f ON af.facultyID = f.facultyID
+                    WHERE 
+                        CONCAT(f.firstname, ' ', f.lastname) = %s
+                    ORDER BY s.subjectCode, af.sectionID'''
             cursor.execute(sql, (handlerName,))
             result = cursor.fetchall()
             return result
