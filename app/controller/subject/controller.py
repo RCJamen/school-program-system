@@ -11,3 +11,10 @@ from app.models.subjectModel import SubjectList
 def index():
     subjectInfo = SubjectList.all()
     return render_template("subjectList.html", subjectInfo=subjectInfo)
+
+
+# @subject.route("/subjects/update")
+# @login_is_required
+# def subject_update():
+#     subjectInfo = SubjectList.all()
+#     return "1"

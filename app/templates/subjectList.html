@@ -60,7 +60,9 @@
               <td>{{ subject[3] }}</td>
               <td class="fw-bold">{{ subject[4] }}</td>
               <td>
-                <button type="button" class="btn btn-outline-light edit-subject" data-bs-toggle="modal"><i
+                <button type="button" class="btn btn-outline-light edit-subject" data-bs-target="#editSubjectModal"
+                  data-subject-code="{{subject[0]}}" data-section="{{subject[1]}}" data-description="{{subject[2]}}"
+                  data-credits="{{subject[3]}}" data-handler="{{subject[4]}}" data-bs-toggle="modal"><i
                     class="fa-solid fa-pen" style="color: #000000;"></i></button>
               </td>
             </tr>
@@ -71,6 +73,97 @@
     </div>
   </div>
 </div>
-{% endblock %} {% block pagescript %}
-<script></script>
+
+
+<div class="modal fade" id="addFacultyModal" data-bs-backdrop="static" tabindex="-1" role="dialog"
+  aria-labelledby="editFacultyModalLabel" aria-hidden="true">
+  <div class="modal-dialog" role="document">
+    <form action="" method="POST">
+      <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
+      <div class="modal-content">
+        <div class="modal-header subject-list-modal-header">
+          <h5 class="modal-title">Add Subject Information</h5>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+        <div class="modal-body subject-list-modal-body">
+          <div class="form-group">
+            <label>Subject Code</label>
+            <input type="text" name="subjectCode" class="form-control" placeholder="Enter Code">
+          </div>
+          <div class="form-group">
+            <label>Section</label>
+            <input type="text" name="section" class="form-control" placeholder="Enter Section">
+          </div>
+          <div class="form-group">
+            <label>Description</label>
+            <input type="text" name="description" class="form-control" placeholder="Enter Description">
+          </div>
+          <div class="form-group">
+            <label>Credits</label>
+            <input type="text" name="credits" class="form-control" placeholder="Enter Credits">
+          </div>
+          <div class="form-group">
+            <label>Handler</label>
+            <input type="text" name="handler" class="form-control" placeholder="Enter Handler">
+          </div>
+        </div>
+        <div class="modal-footer subject-list-modal-footer">
+          <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">
+            <i class="fa-solid fa-xmark" style="color: #ffffff;"></i> Close
+          </button>
+          <button type="submit" class="btn btn-success UpdateFaculty" data-bs-dismiss="modal"> <i
+              class="fa-solid fa-user-pen"></i>Add Subject</button>
+        </div>
+      </div>
+    </form>
+  </div>
+</div>
+
+
+<div class="modal fade" id="editSubjectModal" data-bs-backdrop="static" tabindex="-1" role="dialog"
+  aria-labelledby="editFacultyModalLabel" aria-hidden="true">
+  <div class="modal-dialog" role="document">
+    <form action="" method="POST">
+      <div class="modal-content">
+        <div class="modal-header subject-list-modal-header">
+          <h5 class="modal-title">Update Subject Information</h5>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+        <div class="modal-body subject-list-modal-body">
+          <div class="form-group">
+            <label for="editCodeInput">Subject Code</label>
+            <input value="" type="text" name="name" class="form-control" id="editCodeInput">
+          </div>
+          <div class="form-group">
+            <label for="editSectionInput">Section</label>
+            <input value="" type="text" name="name" class="form-control" id="editSectionInput">
+          </div>
+          <div class="form-group">
+            <label for="editDescriptionInput">Description</label>
+            <input value="" type="text" name="name" class="form-control" id="editDescriptionInput">
+          </div>
+          <div class="form-group">
+            <label for="editCreditsInput">Credits</label>
+            <input value="" type="text" name="name" class="form-control" id="editCreditsInput">
+          </div>
+          <div class="form-group">
+            <label for="editHandlerInput">Handler</label>
+            <input value="" type="text" name="name" class="form-control" id="editHandlerInput">
+          </div>
+        </div>
+        <div class="modal-footer subject-list-modal-footer">
+          <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">
+            <i class="fa-solid fa-xmark" style="color: #ffffff;"></i> Close
+          </button>
+          <button type="submit" class="btn btn-success UpdateFaculty" data-bs-dismiss="modal"> <i
+              class="fa-solid fa-user-pen"></i>Update Subject</button>
+        </div>
+      </div>
+    </form>
+  </div>
+</div>
+{% endblock %}
+
+{% block pagescript %}
+<script type="text/javascript" src="../static/js/editSubject.js"></script>
 {% endblock %}
