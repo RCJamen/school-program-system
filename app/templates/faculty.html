@@ -86,7 +86,7 @@
                                 style="color: #000000;"></i></button>
                                 
                                 <button type="button" class="btn btn-outline-light show-academic-load"><i class="fa-solid fa-chalkboard-user" 
-                                  style="color: #000000;" data-bs-toggle="modal" data-bs-target="#academic-load"></i></button>
+                                style="color: #000000;" data-bs-toggle="modal" data-bs-target="#academic-load" data-facultyID-academic="{{ faculty.facultyID }}" onclick="showAcademicLoad(this)"></i></button>
                               </td>
                             </tr>
                             {% endfor %}
@@ -242,7 +242,7 @@
 
 
 <div class="modal" tabindex="-1" id = academic-load>
-  <div class="modal-dialog modal-fullscreen" >
+  <div class="modal-dialog modal-fullscreen modal-dialog-scrollable" >
     <div class="modal-content">
       
      
@@ -250,7 +250,7 @@
         <div class="academic-header">
           <button type="button" class="btn btn-outline-light" data-bs-dismiss="modal" aria-label="Close">
             <!-- Use an arrow-left icon from FontAwesome -->
-            <i class="fa-solid fa-arrow-left" style="color: #000000;"></i> back</button>
+            <i class="fa-solid fa-arrow-left" style="color: #000000;"></i> back</button></div>
         <div class = "row body-header">
           <div class="col-3">
             <div class = col-3-content>
@@ -288,29 +288,51 @@
           </div>
         </div>
         <div class="container-fluid">
-          <header class="p-0">
-            <nav class="navbar">
-              <ul class="nav">
-                <li class="nav-item">
-                  <a class="nav-link" href="#" id="academicLoad">Academic Load</a>
-                </li>
-                <li class="nav-item">
-                  <a class="nav-link" href="#" id="classSchedule">Class Schedule</a>
-                </li>
-              </ul>
-            </nav>
-            <div class="line-wrapper">
-              <hr class="my-0 mx-3">
-              <div class="red-line"></div>
+          <ul class="nav nav-underline" id="myTabs">
+            <li class="nav-item">
+              <a class="nav-link active" id="academicLoad-tab" data-bs-toggle="tab" href="#academicLoad">Academic Load</a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" id="classSchedule-tab" data-bs-toggle="tab" href="#classSchedule">Class Schedule</a>
+            </li>
+          </ul>
+          <div class="tab-content mt-3">
+            <div class="tab-pane fade show active" id="academicLoad">
+              <div class = "academic-table">
+                <div class="bs-example container academic-table table-responsive" data-example-id="striped-table">
+                  <table class="table table-hover">
+                      <thead>
+                          <tr>
+                              <th>Subject Code</th>
+                              <th>Section</th>
+                              <th>Description</th>
+                              <th>Schedule</th>
+                              <th>Credits</th>
+                              <th>Action</th>
+                          </tr>
+                      </thead>
+                      <tbody class="table-group-divider" id="faculty-table-body">
+                        
+                      </tbody>
+                  </table>
+              </div>
             </div>
-          </header>
+            <div class="tab-pane fade" id="classSchedule">
+              <p>This is Class Schedule.</p>
+            </div>
+          </div>
         </div>
         
         
         
         
+        
+        </div>
+        
+        
+        
        
-      </div>
+      
 
     </div>
   </div>
