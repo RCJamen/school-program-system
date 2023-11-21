@@ -8,14 +8,16 @@ from app.controller.admin.controller import login_is_required
 faculty_model = facultyModel()
 
 
-@faculty.route("/faculty", methods=["GET", "POST"])
+@faculty.route("/faculty", methods=["GET", "POST"], endpoint="add_faculty")
 @login_is_required
 def add_faculty():
-    
     add_form = FacultyForm()
     update_form = UpdateFacultyForm()
     flash_message = None
-    # single_faculty = None
+
+    # Check if faculty_id is present in the request parameters
+    
+
     if request.method == "POST":
         if add_form.validate_on_submit():
             facultyID = add_form.facultyIDInput.data
@@ -24,19 +26,28 @@ def add_faculty():
             email = add_form.facultyEmail.data
 
             result = faculty_model.create_faculty(facultyID, firstname, lastname, email)
-            # single_faculty = faculty_model.get_single_faculty(facultyID)
+
             if "success" in result:
                 credentials_message = f"ID: <strong>{facultyID}</strong>, Name: <strong>{firstname} {lastname}</strong>, Email: <strong>{email}</strong>"
                 flash_message = {"type": "success", "message": f"Faculty created successfully - {credentials_message}"}
             else:
                 flash_message = {"type": "danger", "message": f"Failed to create faculty: {result}"}
 
-        # else:
-        #     flash_message = {"type": "danger", "message": "Form validation failed. Please check your inputs."}
-
     faculties = faculty_model.get_faculty()
     
+    
+
     return render_template("faculty.html", faculties=faculties, add_form=add_form, flash_message=flash_message, update_form=update_form)
+
+@faculty.route("/faculty_data", methods=["GET"], endpoint="get_faculty_data")
+@login_is_required
+def get_faculty_data():
+    faculty_id = request.args.get('faculty_id')
+    faculty_data = faculty_model.get_assigned_subjects(faculty_id)
+
+    # Return the faculty data as JSON
+    return jsonify(faculty_data)
+
 
 @faculty.route("/faculty/delete/<string:facultyID>", methods=["DELETE"])
 def delete_faculty(facultyID):

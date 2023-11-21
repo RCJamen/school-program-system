@@ -216,45 +216,53 @@ editFacultyBtn.forEach(button => {
 });
 
 
-document.addEventListener('DOMContentLoaded', function () {
-    // Add event listeners for link hover and remove 'active' class
-    var academicLoadLink = document.getElementById('academicLoad');
-    var classScheduleLink = document.getElementById('classSchedule');
-    var redLine = document.querySelector('.red-line');
-  
-    // Function to update the red line based on the active link
-    function updateRedLine(activeLink) {
-      var rect = activeLink.getBoundingClientRect();
-      redLine.style.width = rect.width + 'px';
-      redLine.style.left = rect.left + 'px';
-    }
-  
-    academicLoadLink.addEventListener('mouseenter', function () {
-      updateRedLine(academicLoadLink);
+function showAcademicLoad(button) {
+    var facultyID = button.getAttribute('data-facultyID-academic');
+    console.log('Faculty ID:', facultyID);
+
+    // Use AJAX to fetch data and update modal content
+    $.ajax({
+        url: "/faculty_data",  // Update this with your actual route to fetch faculty data
+        method: "GET",
+        data: { faculty_id: facultyID },
+        success: function (data) {
+            // Update your modal content with the fetched data here
+            var tbody = $('#faculty-table-body');
+
+            // Clear existing content in the tbody
+            tbody.empty();
+    
+            // Iterate through the data and append rows to the tbody
+            for (var i = 0; i < data.length; i++) {
+                var subject = data[i];
+                var row = '<tr>' +
+                    '<th scope="row">' + subject['Subject Code'] + '</th>' +
+                    '<td>' + subject['Section ID'] + '</td>' +
+                    '<td>' + subject['Description'] + '</td>' +
+                    '<td>Tuesday</td>' +
+                    '<td>' + subject['Credits'] + '</td>' +
+                    '<td>' +
+                    '<button type="button" class="btn btn-outline-light edit-faculty" data-bs-target="#editFacultyModal">' +
+                    '<i class="fa-solid fa-pen" style="color: #000000;"></i>' +
+                    '</button>' +
+                    '<button type="button" class="btn btn-outline-light delete-faculty" data-bs-toggle="modal" data-bs-target="#askDelete">' +
+                    '<i class="fa-solid fa-trash" style="color: #000000;"></i>' +
+                    '</button>' +
+                    '<button type="button" class="btn btn-outline-light show-academic-load" data-bs-toggle="modal" data-bs-target="#academic-load">' +
+                    '<i class="fa-solid fa-chalkboard-user" style="color: #000000;"></i>' +
+                    '</button>' +
+                    '</td>' +
+                    '</tr>';
+                
+                tbody.append(row);
+            }
+    
+            // Show the modal
+            $('#academic-load').modal('show');
+        },
+        error: function (error) {
+            console.error("Error fetching data:", error);
+            console.log(data)
+        }
     });
-  
-    classScheduleLink.addEventListener('mouseenter', function () {
-      updateRedLine(classScheduleLink);
-    });
-  
-    // Function to remove 'active' class and reset red line on mouse leave
-    function resetRedLine() {
-      redLine.style.width = '0';
-      academicLoadLink.classList.remove('active');
-      classScheduleLink.classList.remove('active');
-    }
-  
-    academicLoadLink.addEventListener('mouseleave', resetRedLine);
-    classScheduleLink.addEventListener('mouseleave', resetRedLine);
-  
-    // Add active class based on the current URL
-    var url = window.location.href;
-    if (url.indexOf('academic-load') !== -1) {
-      academicLoadLink.classList.add('active');
-      updateRedLine(academicLoadLink);
-    } else if (url.indexOf('class-schedule') !== -1) {
-      classScheduleLink.classList.add('active');
-      updateRedLine(classScheduleLink);
-    }
-  });
-  
+}
