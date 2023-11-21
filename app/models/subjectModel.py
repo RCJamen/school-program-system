@@ -1,14 +1,43 @@
 from app import mysql
 
-class SubjectList(object):
-    def __init__(self, code, section, description, credits, handler, semester) -> None:
+class Subjects(object):
+    def __init__(self, code, section, description, credits, handler) -> None:
         self.code = code
         self.section = section
         self.description = description
         self.credits = credits
         self.handler = handler
-        self.semester = semester
     
+    def add(self):
+        cursor = mysql.connection.cursor()
+        sql_subject = "INSERT INTO subject(subjectCode, description, credits) VALUES (%s, %s, %s)"
+        sql_section = "INSERT INTO subject_section(subjectID, sectionID) VALUES (%s, %s)"
+        sql_assign_faculty = "INSERT INTO assignFaculty(facultyID, subjectID, sectionID) VALUES (%s, %s, %s)"
+        params_subject = (self.code, self.description, self.credits)
+        params_section = (self.code, self.section)
+        params_assign_faculty = (self.handler, self.code, self.section)
+        cursor.execute(sql_subject, params_subject)
+        cursor.execute(sql_section, params_section)
+        cursor.execute(sql_assign_faculty, params_assign_faculty)
+        mysql.connection.commit()
+
+
+    @classmethod
+    def refer_section(cls):
+        cursor = mysql.connection.cursor()
+        sql = f"SELECT sectionCode FROM section"
+        cursor.execute(sql)
+        result = cursor.fetchall()
+        return result
+    
+    @classmethod
+    def refer_handler(cls):
+        cursor = mysql.connection.cursor()
+        sql = f"SELECT facultyID, firstname, lastname FROM faculty"
+        cursor.execute(sql)
+        result = cursor.fetchall()
+        return result
+
     @classmethod
     def all(cls):
         try:
