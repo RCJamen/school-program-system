@@ -27,8 +27,6 @@ class Subjects(object):
 
     @classmethod
     def delete(cls, subjectCode, section):
-        print(subjectCode)
-        print(section)
         try:
             cursor = mysql.connection.cursor()
             subject_section = "DELETE FROM subject_section WHERE subjectID = %s AND sectionID = %s"

@@ -27,17 +27,9 @@ def index():
 def create_subject():
     form = subjectForm(request.form)
     if request.method == "POST" and form.validate():
-        subjects = subjectModel.Subjects(code=form.subjectCode.data, section=form.section.data, description=form.section.data, credits=form.credits.data, handler=form.handler.data)
+        subjects = subjectModel.Subjects(code=form.subjectCode.data, section=form.section.data, description=form.description.data, credits=form.credits.data, handler=form.handler.data)
         print(subjects)
         subjects.add()
-       
-        # if "success" in result:
-        #     credentials_message = f"Subject Code: <strong>{facultyID}</strong>, Name: <strong>{firstname} {lastname}</strong>, Email: <strong>{email}</strong>"
-        #     flash_message = {"type": "success", "message": f"Faculty created successfully - {credentials_message}"}
-        # else:
-        #     flash_message = {"type": "danger", "message": f"Failed to create faculty: {result}"}
-
-
         return redirect(url_for(".index"))
     return redirect(url_for(".index"))
 
