@@ -28,7 +28,7 @@
           </select>
         </div>
         <div class="col-4" id="flash-messages-container">
-          <!--SUBJECT FLASH MESSAGE  -->
+
         </div>
         <div class="col-5"> <button type="button" class="btn btn-primary float-end AddSubjectBtn" data-bs-toggle="modal"
             data-bs-target="#addFacultyModal"><i class="fa-solid fa-user-plus"></i> Add Subject </button> </div>
@@ -64,6 +64,10 @@
                   data-subject-code="{{subject[0]}}" data-section="{{subject[1]}}" data-description="{{subject[2]}}"
                   data-credits="{{subject[3]}}" data-handler="{{subject[4]}}" data-bs-toggle="modal"><i
                     class="fa-solid fa-pen" style="color: #000000;"></i></button>
+                <button type="button" class="btn btn-outline-light delete-subject" data-subject-code="{{subject[0]}}"
+                  data-section="{{subject[1]}}" data-handler="{{subject[4]}}" data-bs-toggle="modal"
+                  data-bs-target="#deleteSubjectModal"><i class="fa-solid fa-trash"
+                    style="color: #000000;"></i></button>
               </td>
             </tr>
             {% endfor %} {% endif %}
@@ -73,7 +77,6 @@
     </div>
   </div>
 </div>
-
 
 <div class="modal fade" id="addFacultyModal" data-bs-backdrop="static" tabindex="-1" role="dialog"
   aria-labelledby="editFacultyModalLabel" aria-hidden="true">
@@ -128,6 +131,25 @@
     </form>
   </div>
 </div>
+
+<div class="modal" tabindex="-1" id="deleteSubjectModal" data-bs-backdrop="static">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title">Confirmation</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body delete-modal-body">
+        <!-- Faculty details will be dynamically inserted here -->
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">No</button>
+        <button type="button" class="btn btn-primary delete-button">Yes</button>
+      </div>
+    </div>
+  </div>
+</div>
+
 <div class="modal fade" id="editSubjectModal" data-bs-backdrop="static" tabindex="-1" role="dialog"
   aria-labelledby="editFacultyModalLabel" aria-hidden="true">
   <div class="modal-dialog" role="document">
@@ -174,4 +196,6 @@
 
 {% block pagescript %}
 <script type="text/javascript" src="../static/js/editSubject.js"></script>
+<script type="text/javascript" src="../static/js/deleteFaculty.js"></script>
+
 {% endblock %}
