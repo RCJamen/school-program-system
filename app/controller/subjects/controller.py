@@ -21,16 +21,28 @@ def index():
     subjectInfo = subjectModel.Subjects.all()
     sectionInfo = subjectModel.Subjects.refer_section()
     handlerInfo = subjectModel.Subjects.refer_handler()
-    return render_template("subjectList.html", subjectInfo=subjectInfo, sectionInfo=sectionInfo, handlerInfo=handlerInfo)
+    flash_message = session.pop('flash_message', None)
+    return render_template("subjectList.html", subjectInfo=subjectInfo, sectionInfo=sectionInfo, handlerInfo=handlerInfo, flash_message=flash_message)
 
 @subject.route("/subjects/create", methods=['POST','GET'])
 def create_subject():
     form = subjectForm(request.form)
     if request.method == "POST" and form.validate():
-        subjects = subjectModel.Subjects(code=form.subjectCode.data, section=form.section.data, description=form.description.data, credits=form.credits.data, handler=form.handler.data)
-        print(subjects)
-        subjects.add()
-        return redirect(url_for(".index"))
+        code=form.subjectCode.data
+        section=form.section.data
+        description=form.description.data
+        credits=form.credits.data
+        handler=form.handler.data
+        subjects = subjectModel.Subjects(code, section, description, credits, handler)
+        result = subjects.add()
+        if "success" in result:
+            credentials_message = f"Subject Code: <strong>{code}</strong><br>Section: <strong>{section}</strong><br> Description: <strong>{description}</strong><br>Credits: <strong>{credits}</strong><br>Handler: <strong>{handler}</strong>"
+            flash_message = {"type": "success", "message": f"Subject created successfully - {credentials_message}"}
+            session['flash_message'] = flash_message
+        else:
+            flash_message = {"type": "danger", "message": f"Failed to create Subject: {result}"}
+            session['flash_message'] = flash_message
+        return redirect(url_for(".index", message=flash_message))
     return redirect(url_for(".index"))
 
 @subject.route("/subjects/delete/<string:subjectCode>/<string:section>", methods=["POST"])

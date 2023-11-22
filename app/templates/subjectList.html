@@ -28,6 +28,14 @@
           </select>
         </div>
         <div class="col-4" id="flash-messages-container">
+          {% if flash_message %}
+          <div class="alert alert-{{ flash_message.type }} alert-dismissible fade show" role="alert">
+            <div class="d-flex justify-content-between align-items-center">
+              <span>{{ flash_message.message | safe }}</span>
+              <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+            </div>
+          </div>
+          {% endif %}
 
         </div>
         <div class="col-5"> <button type="button" class="btn btn-primary float-end AddSubjectBtn" data-bs-toggle="modal"
@@ -131,7 +139,6 @@
     </form>
   </div>
 </div>
-
 <div class="modal" tabindex="-1" id="deleteSubjectModal" data-bs-backdrop="static">
   <div class="modal-dialog">
     <div class="modal-content">
@@ -149,7 +156,6 @@
     </div>
   </div>
 </div>
-
 <div class="modal fade" id="editSubjectModal" data-bs-backdrop="static" tabindex="-1" role="dialog"
   aria-labelledby="editFacultyModalLabel" aria-hidden="true">
   <div class="modal-dialog" role="document">

@@ -29,7 +29,7 @@ $(document).ready(function () {
                         $(event.target).closest('tr').remove();
                         console.log('Subject deleted successfully:', response);
                         // Add a flash message for successful deletion
-                        flashMessage('success', `Subject deleted successfully - Subject Code: <strong>${subjectCode}</strong>, Section: <strong>${section}</strong>, Handler: <strong>${handler}</strong>`);
+                        flashMessage('success', `Subject deleted successfully<br>Subject Code: <strong>${subjectCode}</strong><br>Section: <strong>${section}</strong><br>Handler: <strong>${handler}</strong>`);
                     } else {
                         // Handle failure, e.g., display an error message
                         console.error('Error deleting subject:', response.message);
