@@ -4,6 +4,8 @@
 
 
 {% block pagestyle %}
+{% block schedulestyle %}
+{% endblock %}
 <link rel="stylesheet" href="../static/css/faculty.css">
 {% endblock %}
 
@@ -289,51 +291,43 @@
         </div>
         <div class="container-fluid">
           <ul class="nav nav-underline" id="myTabs">
-            <li class="nav-item">
-              <a class="nav-link active" id="academicLoad-tab" data-bs-toggle="tab" href="#academicLoad">Academic Load</a>
-            </li>
-            <li class="nav-item">
-              <a class="nav-link" id="classSchedule-tab" data-bs-toggle="tab" href="#classSchedule">Class Schedule</a>
-            </li>
+              <li class="nav-item">
+                  <a class="nav-link active" id="academicLoad-tab" data-bs-toggle="tab" href="#academicLoad">Academic Load</a>
+              </li>
+              <li class="nav-item">
+                  <a class="nav-link" id="classSchedule-tab" data-bs-toggle="tab" href="#classSchedule">Class Schedule</a>
+              </li>
           </ul>
           <div class="tab-content mt-3">
-            <div class="tab-pane fade show active" id="academicLoad">
-              <div class = "academic-table">
-                <div class="bs-example container academic-table table-responsive" data-example-id="striped-table">
-                  <table class="table table-hover">
-                      <thead>
-                          <tr>
-                              <th>Subject Code</th>
-                              <th>Section</th>
-                              <th>Description</th>
-                              <th>Schedule</th>
-                              <th>Credits</th>
-                              <th>Action</th>
-                          </tr>
-                      </thead>
-                      <tbody class="table-group-divider" id="faculty-table-body">
-                        
-                      </tbody>
-                  </table>
+              <div class="tab-pane fade show active" id="academicLoad">
+                  <div class="academic-table">
+                      <div class="bs-example container academic-table table-responsive" data-example-id="striped-table">
+                          <table class="table table-hover">
+                              <thead>
+                              <tr>
+                                  <th>Subject Code</th>
+                                  <th>Section</th>
+                                  <th>Description</th>
+                                  <th>Schedule</th>
+                                  <th>Credits</th>
+                                  <th>Action</th>
+                              </tr>
+                              </thead>
+                              <tbody class="table-group-divider" id="academic-table-body">
+                              <!-- DOM TO DYNAMICALLY ADD DATA IN TABLE -->
+                              </tbody>
+                          </table>
+                      </div>
+                  </div>
               </div>
-            </div>
-            <div class="tab-pane fade" id="classSchedule">
-              <p>This is Class Schedule.</p>
-            </div>
+              <div class="tab-pane fade" id="classSchedule">
+                {% block schedulecontent %}
+                {% endblock %}
+                
+              </div>
           </div>
+      </div>
         </div>
-        
-        
-        
-        
-        
-        </div>
-        
-        
-        
-       
-      
-
     </div>
   </div>
 </div>
@@ -342,8 +336,11 @@
 {% endblock %}
 
 {% block pagescript %}
+{% block schedulescript %}
+{% endblock %}
 <script
       type="text/javascript"
       src="../static/js/faculty.js"
     ></script>
 {% endblock %}
+

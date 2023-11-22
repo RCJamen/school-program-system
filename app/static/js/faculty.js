@@ -227,7 +227,7 @@ function showAcademicLoad(button) {
         data: { faculty_id: facultyID },
         success: function (data) {
             // Update your modal content with the fetched data here
-            var tbody = $('#faculty-table-body');
+            var tbody = $('#academic-table-body');
 
             // Clear existing content in the tbody
             tbody.empty();
