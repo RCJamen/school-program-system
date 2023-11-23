@@ -34,17 +34,26 @@ def create_subject():
         credits=form.credits.data
         handler=form.handler.data
         subjects = subjectModel.Subjects(code, section, description, credits, handler)
-        result = subjects.add()
-        if "success" in result:
-            credentials_message = f"Subject Code: <strong>{code}</strong><br>Section: <strong>{section}</strong><br> Description: <strong>{description}</strong><br>Credits: <strong>{credits}</strong><br>Handler: <strong>{handler}</strong>"
-            flash_message = {"type": "success", "message": f"Subject created successfully - {credentials_message}"}
-            session['flash_message'] = flash_message
-        else:
-            flash_message = {"type": "danger", "message": f"Failed to create Subject: {result}"}
-            session['flash_message'] = flash_message
-        return redirect(url_for(".index", message=flash_message))
-    return redirect(url_for(".index"))
+        existing_subject = subjectModel.Subjects.exists(code)
 
+        if existing_subject:
+            result = subjects.add_section()
+            flash_message = {"type": "success", "message": f"Successfully Added Section: {result}"}
+            session['flash_message'] = flash_message
+            return redirect(url_for(".index", message=flash_message))
+        
+        else:
+            result = subjects.add()
+            if "success" in result:
+                credentials_message = f"Subject Code: <strong>{code}</strong><br>Section: <strong>{section}</strong><br> Description: <strong>{description}</strong><br>Credits: <strong>{credits}</strong><br>Handler: <strong>{handler}</strong>"
+                flash_message = {"type": "success", "message": f"Subject created successfully - {credentials_message}"}
+                session['flash_message'] = flash_message
+            else:
+                flash_message = {"type": "danger", "message": f"Failed to create Subject: {result}"}
+                session['flash_message'] = flash_message
+            return redirect(url_for(".index", message=flash_message))
+    return redirect(url_for(".index"))
+1
 @subject.route("/subjects/delete/<string:subjectCode>/<string:section>/<string:handler>", methods=["POST"])
 def delete_subject(subjectCode, section, handler):
     try:

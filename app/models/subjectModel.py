@@ -24,6 +24,20 @@ class Subjects(object):
             return "Faculty created successfully"
         except Exception as e:
             return f"Failed to create Faculty: {str(e)}"    
+        
+    def add_section(self):
+        try:
+            cursor = mysql.connection.cursor()
+            sql_section = "INSERT INTO subject_section(subjectID, sectionID) VALUES (%s, %s)"
+            sql_assignFaculty = "INSERT INTO assignFaculty(facultyID, subjectID, sectionID) VALUES (%s, %s, %s)"
+            params_section = (self.code, self.section)
+            params_assignFaculty = (self.handler, self.code, self.section)
+            cursor.execute(sql_section, params_section)
+            cursor.execute(sql_assignFaculty, params_assignFaculty)
+            mysql.connection.commit()
+            return "Faculty created successfully"
+        except Exception as e:
+            return f"Failed to create Faculty: {str(e)}"    
 
     @classmethod
     def delete(cls, subjectCode, section, handler):
@@ -100,6 +114,14 @@ class Subjects(object):
             return "Subject edited successfully"
         except Exception as e:
             return f"Failed to edit subject: {str(e)}"
+        
+    @classmethod
+    def exists(cls, code):
+        cursor = mysql.connection.cursor()
+        check_sql = "SELECT subjectCode FROM subject WHERE subjectCode = %s"
+        cursor.execute(check_sql, (code,))
+        existing_subject = cursor.fetchone()
+        return existing_subject is not None
 
     @classmethod
     def refer_section(cls):

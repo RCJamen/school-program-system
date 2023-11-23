@@ -112,9 +112,11 @@ sectionCode VARCHAR(255) PRIMARY KEY
 
 DROP TABLE IF EXISTS `subject`;
 CREATE TABLE IF NOT EXISTS `subject`(
-subjectCode VARCHAR(10) PRIMARY KEY NOT NULL UNIQUE,
+subjectID INT AUTO_INCREMENT PRIMARY KEY,
+subjectCode VARCHAR(10) NOT NULL,
 description VARCHAR(255) NOT NULL,
-credits INT
+credits INT,
+UNIQUE KEY unique_subject (subjectCode, description, credits)
 );
 
 DROP TABLE IF EXISTS `subject_section`;
