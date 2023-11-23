@@ -215,54 +215,110 @@ editFacultyBtn.forEach(button => {
     });
 });
 
+function goBack() {
+    // You can use window.location.href to navigate to the /faculty route
+    window.location.href = '/faculty';
+}
+
+var currentFacultyID = null;
+var isEditState = false;
+
+function toggleFunctions(button) {
+    if (isEditState) {
+        showAcademicLoad(button);
+    } else {
+        editAcademicLoad(button);
+    }
+    isEditState = !isEditState;
+}
 
 function showAcademicLoad(button) {
-    var facultyID = button.getAttribute('data-facultyID-academic');
-    console.log('Faculty ID:', facultyID);
+    currentFacultyID = button.getAttribute('data-facultyID-academic');
+    console.log('Faculty ID:', currentFacultyID);
 
-    // Use AJAX to fetch data and update modal content
     $.ajax({
-        url: "/faculty_data",  // Update this with your actual route to fetch faculty data
+        url: "/faculty_data",
         method: "GET",
-        data: { faculty_id: facultyID },
+        data: { faculty_id: currentFacultyID },
         success: function (data) {
-            // Update your modal content with the fetched data here
             var tbody = $('#academic-table-body');
-
-            // Clear existing content in the tbody
             tbody.empty();
-    
-            // Iterate through the data and append rows to the tbody
+
             for (var i = 0; i < data.length; i++) {
                 var subject = data[i];
                 var row = '<tr>' +
                     '<th scope="row">' + subject['Subject Code'] + '</th>' +
                     '<td>' + subject['Section ID'] + '</td>' +
                     '<td>' + subject['Description'] + '</td>' +
-                    '<td>Tuesday</td>' +
+                    '<td>' + subject['Schedule'] + '</td>' +
                     '<td>' + subject['Credits'] + '</td>' +
                     '<td>' +
-                    '<button type="button" class="btn btn-outline-light edit-faculty" data-bs-target="#editFacultyModal">' +
-                    '<i class="fa-solid fa-pen" style="color: #000000;"></i>' +
-                    '</button>' +
-                    '<button type="button" class="btn btn-outline-light delete-faculty" data-bs-toggle="modal" data-bs-target="#askDelete">' +
-                    '<i class="fa-solid fa-trash" style="color: #000000;"></i>' +
-                    '</button>' +
-                    '<button type="button" class="btn btn-outline-light show-academic-load" data-bs-toggle="modal" data-bs-target="#academic-load">' +
-                    '<i class="fa-solid fa-chalkboard-user" style="color: #000000;"></i>' +
-                    '</button>' +
+                    '<button type="button" class="btn btn-info classRecordBtn" style="color: white;">Class Record</button>' +
                     '</td>' +
                     '</tr>';
-                
+
                 tbody.append(row);
             }
-    
-            // Show the modal
+
             $('#academic-load').modal('show');
         },
         error: function (error) {
             console.error("Error fetching data:", error);
-            console.log(data)
+            console.log(data);
         }
     });
+}
+
+$('.academicEditBtn').on('click', function () {
+    var button = $(this);
+    toggleFunctions(button[0]);
+    // Hide the button after the first click
+    button.hide();
+});
+
+function editAcademicLoad(button) {
+    console.log('Faculty ID:', currentFacultyID);
+
+    $.ajax({
+        url: "/faculty_data",
+        method: "GET",
+        data: { faculty_id: currentFacultyID },
+        success: function (data) {
+            var tbody = $('#academic-table-body');
+            tbody.empty();
+
+            for (var i = 0; i < data.length; i++) {
+                var subject = data[i];
+                var row = '<tr>' +
+                    '<th scope="row">' + subject['Subject Code'] + '</th>' +
+                    '<td>' + subject['Section ID'] + '</td>' +
+                    '<td>' + subject['Description'] + '</td>' +
+                    '<td>' + subject['Schedule'] + '</td>' +
+                    '<td>' + subject['Credits'] + '</td>' +
+                    '<td>' +
+                    '<button type="button" class="btn btn-warning editSchedule"><i class="fa-solid fa-pen-to-square" style="color: #ffffff;"></i></button>' +
+                    '    ' +
+                    '<button type="button" class="btn btn-danger addSchedule" onclick="openSecondModal()"><i class="fa-solid fa-calendar-plus" style="color: #ffffff;"></i></button> ' +
+                    '</td>' +
+                    '</tr>';
+
+                tbody.append(row);
+            }
+
+            $('#academic-load').modal('show');
+        },
+        error: function (error) {
+            console.error("Error fetching data:", error);
+            console.log(data);
+        }
+    });
+}
+
+
+function openSecondModal() {
+    // Create a new instance of the Bootstrap Modal for the second modal
+    var secondModal = new bootstrap.Modal(document.getElementById('secondModal'), { backdrop: 'static' });
+    
+    // Show the second modal
+    secondModal.show();
 }

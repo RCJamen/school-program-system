@@ -119,6 +119,8 @@ credits INT,
 semester INT
 );
 
+-- Drop the existing schedule table if it exists
+
 DROP TABLE IF EXISTS `subject_section`;
 CREATE TABLE IF NOT EXISTS `subject_section`(
 subjectID VARCHAR(9),
@@ -128,6 +130,18 @@ FOREIGN KEY (subjectID) REFERENCES subject(subjectCode),
 FOREIGN KEY (sectionID) REFERENCES section(sectionCode)
 );
 
+DROP TABLE IF EXISTS `schedule`;
+
+-- Create the schedule table
+CREATE TABLE IF NOT EXISTS `schedule`(
+    scheduleID INT PRIMARY KEY AUTO_INCREMENT,
+    subjectID VARCHAR(255),
+    sectionID VARCHAR(255),
+    day VARCHAR(255),
+    time_start TIME,
+    time_end TIME,
+    FOREIGN KEY (subjectID, sectionID) REFERENCES subject_section(subjectID, sectionID)
+);
 
 -- to handle 1 section of the same subject
 -- but can handle many subjects (subjectID not unique) of the same section-- Drop the existing assignFaculty table if it exists
@@ -195,3 +209,15 @@ VALUES
 ('2023-0002', 'CSC181', 'CS3B'),
 ('2023-0002', 'CCC181', 'CS3B'),
 ('2023-0004', 'CCC102', 'CS2');
+
+
+INSERT INTO `schedule` (subjectID, sectionID, day, time_start, time_end)
+VALUES 
+    ('CCC181', 'CS3A', 'Wednesday', '10:30:00', '12:00:00'),
+    ('CCC181', 'CS3A', 'Thursday', '09:00:00', '10:30:00'),
+    ('CSC181', 'CS3A', 'Wednesday', '10:30:00', '12:00:00'),
+    ('CSC181', 'CS3A', 'Thursday', '09:00:00', '10:30:00'),
+    ('CSC181', 'CS3B', 'Wednesday', '10:30:00', '12:00:00'),
+    ('CSC181', 'CS3B', 'Thursday', '09:00:00', '10:30:00'),
+    ('CCC181', 'CS3B', 'Wednesday', '10:30:00', '12:00:00'),
+    ('CCC181', 'CS3B', 'Thursday', '09:00:00', '10:30:00');

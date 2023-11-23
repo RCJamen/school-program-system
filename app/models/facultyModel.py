@@ -60,25 +60,6 @@ class facultyModel:
             return f"Failed to update faculty: {str(e)}"
     
     
-    @classmethod
-    def update_faculty(cls, facultyID):
-        try:
-            cur = mysql.new_cursor(dictionary=True)
-            query = """
-            SELECT subject.subjectCode, subject.description, subject.credits, subject.semester
-            FROM assignFaculty
-            JOIN subject ON assignFaculty.subjectID = subject.subjectCode
-            WHERE assignFaculty.facultyID = %s
-        """
-            # Use placeholders in the query to prevent SQL injection
-            cur.execute(query,
-                        (facultyID))
-            assigned_subjects = cur.fetchall()
-            mysql.connection.commit()
-            return assigned_subjects
-        except Exception as e:
-            return f"Failed to update faculty: {str(e)}"
-    
     def get_assigned_subjects(self, faculty_id):
         try:
             cur = mysql.new_cursor(dictionary=True)
@@ -87,9 +68,11 @@ class facultyModel:
                 "   af.subjectID AS 'Subject Code', "
                 "   subject.description AS 'Description', "
                 "   subject.credits AS 'Credits', "
-                "   af.sectionID AS 'Section ID' "
+                "   af.sectionID AS 'Section ID', "
+                "   CONCAT(s.day, ' ', TIME_FORMAT(s.time_start, '%h:%i %p'), ' - ', TIME_FORMAT(s.time_end, '%h:%i %p')) AS 'Schedule' "
                 "FROM assignFaculty af "
                 "JOIN subject ON subject.subjectCode = af.subjectID "
+                "JOIN schedule s ON af.subjectID = s.subjectID AND af.sectionID = s.sectionID "
                 "WHERE af.facultyID = %s"
             )
             cur.execute(query, (faculty_id,))
@@ -98,4 +81,5 @@ class facultyModel:
             return assigned_subjects
         except Exception as e:
             return f"Failed to retrieve assigned subject to faculty data: {str(e)}"
+
 
