@@ -23,16 +23,7 @@ class Subjects(object):
             mysql.connection.commit()
             return "Faculty created successfully"
         except Exception as e:
-            return f"Failed to create Faculty: {str(e)}"
-        
-    # @classmethod
-    # def get_id_subject_section(cls):
-
-
-    # @classmethod
-    # def get_id_assignFaculty(cls):
-        
-
+            return f"Failed to create Faculty: {str(e)}"    
 
     @classmethod
     def delete(cls, subjectCode, section, handler):
@@ -49,7 +40,6 @@ class Subjects(object):
             assignFacultyID_result = cursor.fetchone()
             assignFacultyID = assignFacultyID_result[0]
 
-
             sql_get_subject_section = "SELECT subsecID FROM subject_section WHERE subjectID = %s AND sectionID = %s"
             cursor.execute(sql_get_subject_section, (subjectCode, section))
             subsecID_result = cursor.fetchone()
@@ -57,10 +47,12 @@ class Subjects(object):
             
             subject_section = "DELETE FROM subject_section WHERE subsecID = %s"
             assignFaculty = "DELETE FROM assignFaculty WHERE assignFacultyID = %s"         
-            subject = "DELETE FROM subject WHERE subjectCode = %s"            
+            subject = "DELETE FROM subject WHERE subjectCode = %s"    
+
             params_subject_section = (subsecID,)
             params_assignFaculty = (assignFacultyID,)
             params_subject = (subjectCode,)
+
             cursor.execute(subject_section, params_subject_section)
             cursor.execute(assignFaculty, params_assignFaculty)
             cursor.execute(subject, params_subject)
@@ -72,39 +64,42 @@ class Subjects(object):
         finally:
             cursor.close()
 
+    @staticmethod
+    def update(subjectCode, old_subjectCode, section, old_sectionCode, description, credits, handler, old_handlerCode):
+        try:
+            cursor = mysql.connection.cursor()
 
-    # @staticmethod
-    # def update(subjectCode, old_subjectCode, section, old_sectionCode, description, credits, handler, old_handlerCode):
-    #     try:
-    #         cursor = mysql.connection.cursor()
+            sql_get_faculty_id = "SELECT facultyID FROM faculty WHERE CONCAT(firstname, ' ', lastname) LIKE %s"
+            cursor.execute(sql_get_faculty_id, (f"%{old_handlerCode}%",))
+            faculty_id_result = cursor.fetchone()
+            old_facultyID = faculty_id_result[0]
 
-    #         # Update subject table
-    #         sql_subject_update = "UPDATE subject SET subjectCode=%s, description=%s, credits=%s WHERE subjectCode=%s"
-    #         params_subject_update = (subjectCode, description, credits, old_subjectCode)
-    #         cursor.execute(sql_subject_update, params_subject_update)
+            sql_get_assignFaculty = "SELECT assignFacultyID FROM assignFaculty WHERE facultyID = %s AND subjectID = %s AND sectionID = %s"
+            cursor.execute(sql_get_assignFaculty, (old_facultyID, old_subjectCode, old_sectionCode))
+            assignFacultyID_result = cursor.fetchone()
+            old_assignFacultyID = assignFacultyID_result[0]
 
-    #         # Get facultyID based on old_handlerCode
-    #         sql_get_faculty_id = "SELECT facultyID FROM faculty WHERE CONCAT(firstname, ' ', lastname) LIKE %s"
-    #         cursor.execute(sql_get_faculty_id, (f"%{old_handlerCode}%",))
-    #         old_FacultyID = cursor.fetchone()
+            sql_get_subject_section = "SELECT subsecID FROM subject_section WHERE subjectID = %s AND sectionID = %s"
+            cursor.execute(sql_get_subject_section, (old_subjectCode, old_sectionCode))
+            subsecID_result = cursor.fetchone()
+            old_subsecID = subsecID_result[0]
 
-    #         # Update assignFaculty table
-    #         sql_assign_faculty_update = "UPDATE assignFaculty SET facultyID=%s, subjectID=%s, sectionID=%s WHERE facultyID=%s AND subjectID=%s AND sectionID=%s"
-    #         params_assign_faculty_update = (handler, subjectCode, section, old_FacultyID[0], old_subjectCode, old_sectionCode)
-    #         cursor.execute(sql_assign_faculty_update, params_assign_faculty_update)
+            sql_subject_update = "UPDATE subject SET subjectCode= %s, description = %s, credits = %s WHERE subjectCode = %s"
+            params_subject_update = (subjectCode, description, credits, old_subjectCode)
+            cursor.execute(sql_subject_update, params_subject_update)
 
-    #         # Update subject_section table
-    #         sql_section_update = "UPDATE subject_section SET subjectID=%s WHERE subjectID=%s AND sectionID=%s"
-    #         params_section_update = (subjectCode, old_subjectCode, old_sectionCode)
-    #         cursor.execute(sql_section_update, params_section_update)
+            sql_assign_faculty_update = "UPDATE assignFaculty SET facultyID = %s, subjectID = %s, sectionID = %s WHERE assignFacultyID = %s"
+            params_assign_faculty_update = (handler, subjectCode, section, old_assignFacultyID)
+            cursor.execute(sql_assign_faculty_update, params_assign_faculty_update)
 
+            sql_section_update = "UPDATE subject_section SET subjectID = %s, sectionID = %s WHERE subsecID = %s"
+            params_section_update = (subjectCode, section, old_subsecID)
+            cursor.execute(sql_section_update, params_section_update)
 
-    #         mysql.connection.commit()
-    #         return "Subject edited successfully"
-    #     except Exception as e:
-    #         return f"Failed to edit subject: {str(e)}"
-
-
+            mysql.connection.commit()
+            return "Subject edited successfully"
+        except Exception as e:
+            return f"Failed to edit subject: {str(e)}"
 
     @classmethod
     def refer_section(cls):
@@ -132,7 +127,6 @@ class Subjects(object):
             return result[0]
         else:
             return None 
-
 
     @classmethod
     def all(cls):
