@@ -250,7 +250,7 @@
      
       <div class="modal-body academic-modal-body">
         <div class="academic-header">
-          <button type="button" class="btn btn-outline-light" data-bs-dismiss="modal" aria-label="Close">
+          <button type="button" class="btn btn-outline-light" data-bs-dismiss="modal" aria-label="Close" onclick="goBack()">
             <!-- Use an arrow-left icon from FontAwesome -->
             <i class="fa-solid fa-arrow-left" style="color: #000000;"></i> back</button></div>
         <div class = "row body-header">
@@ -266,7 +266,7 @@
           </div>
         </div>
           
-          <div class = "col-9"><button type="button" class="btn btn-warning float-end academicEditBtn">Warning</button></div>
+          <div class = "col-9"><button type="button" class="btn btn-danger float-end academicEditBtn" id = "academicEditBtn" >Edit</button></div>
 
         </div>
         <div class = "row body-sort" >
@@ -321,9 +321,7 @@
                   </div>
               </div>
               <div class="tab-pane fade" id="classSchedule">
-                {% block schedulecontent %}
-                {% endblock %}
-                
+                {% include "schedule.html" %}
               </div>
           </div>
       </div>
@@ -332,12 +330,43 @@
   </div>
 </div>
 
+<div class="modal fade" id="secondModal" tabindex="-1" aria-labelledby="secondModalLabel" aria-hidden="true">
+  <div class="modal-dialog">
+      <div class="modal-content">
+          <div class="modal-header">
+              <h5 class="modal-title" id="secondModalLabel">Second Modal</h5>
+              <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+          </div>
+          <div class="modal-body">
+            <div class="add-schedule-container">
+              <h1>Add Schedule</h1>
+              <form>
+                <div class="form-group">
+                  <label for="">Date</label>
+                  <input type="date" id="date" name="date" required>
+                </div>
+                <div class="form-group">
+                  <label for="time">Time</label>
+                  <input type="time" id="time" name="time" required>
+                </div>
+                <div class="form-group">
+                  <label for="title">Title</label>
+                  <input type="text" id="title" name="title" required>
+                </div>
+                <div class="form-group">
+                  <input type="submit" value="Add Schedule">
+                </div>
+              </form>
+            </div>
+          </div>
+      </div>
+  </div>
+</div>
 
 {% endblock %}
 
 {% block pagescript %}
-{% block schedulescript %}
-{% endblock %}
+
 <script
       type="text/javascript"
       src="../static/js/faculty.js"

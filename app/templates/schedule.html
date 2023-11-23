@@ -1,9 +1,9 @@
-{% extends "faculty.html" %}
 
-{% block schedulestyle %}
+
+
 <link rel="stylesheet" href="../static/css/schedule.css">
-{% endblock %}
-{% block schedulecontent %}
+
+<section id = "schedule">
 <div class="cd-schedule loading">
 	<div class="timeline">
 		<ul>
@@ -28,6 +28,7 @@
 			<li><span>18:00</span></li>
 		</ul>
 	</div> <!-- .timeline -->
+
 	<div class="events">
 		<ul class="wrap">
 			<li class="events-group">
@@ -238,18 +239,14 @@
 
 	<div class="cover-layer"></div>
 </div> <!-- .cd-schedule -->
-
-
-{% endblock %}
-                
+</section>
 
 
 
 
 
-{% block schedulescript %}
+
 <script
 type="text/javascript"
 src="../static/js/schedule.js"
 ></script>
-{% endblock %}

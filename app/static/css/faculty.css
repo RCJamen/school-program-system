@@ -76,7 +76,7 @@ margin: 16px
     margin:0px !important
   }
 
-  
+
   
   
   .row.body-header .col-3 .col-3-content {
@@ -157,3 +157,39 @@ margin: 16px
 }
 
 
+.add-schedule-container {
+  width: 80%;
+  max-width: 600px;
+  margin: 12px auto;
+  background-color: white;
+  padding: 12px;
+}
+
+.add-schedule-container h1 {
+  text-align: center;
+  color: #333;
+}
+
+.add-schedule-container .form-group {
+  margin-bottom: 15px;
+}
+
+.add-schedule-container label {
+  display: block;
+  font-weight: bold;
+  margin-bottom: 5px;
+}
+
+.add-schedule-container input, .add-schedule-container textarea {
+  display: block;
+  width: 100%;
+  padding: 10px;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+}
+
+.add-schedule-container input[type="submit"] {
+  background-color: #007bff;
+  color: white;
+  cursor: pointer;
+}
