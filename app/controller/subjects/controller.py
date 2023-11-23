@@ -68,7 +68,7 @@ def update_subject():
         print(old_handlerCode)
         result = subjectModel.Subjects.update(subjectCode, old_subjectCode, section, old_sectionCode, description, credits, handler, old_handlerCode)
         if "success" in result:
-            credentials_message = f"ASDASD"
+            credentials_message = f"Subject Code: <strong>{subjectCode}</strong><br>Section: <strong>{section}</strong><br> Description: <strong>{description}</strong><br>Credits: <strong>{credits}</strong><br>Handler: <strong>{handler}</strong>"
             flash_message = {"type": "success", "message": f"Subject Edited successfully - {credentials_message}"}
             session['flash_message'] = flash_message
         else:

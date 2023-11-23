@@ -137,7 +137,7 @@ class Subjects(object):
                         ss.sectionID,
                         s.description,
                         s.credits,
-                        CONCAT(f.firstname, ' ', f.lastname) AS handlerName
+                        SUBSTRING_INDEX(CONCAT(f.firstname, ' ', f.lastname), ' ', -1) AS handlerLastName
                     FROM 
                         subject AS s
                     LEFT JOIN 

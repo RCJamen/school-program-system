@@ -100,7 +100,7 @@ FOREIGN KEY(courseID) REFERENCES courses(courseID)
 DROP TABLE IF EXISTS `faculty`;
 CREATE TABLE IF NOT EXISTS `faculty`(
 facultyID VARCHAR (10) PRIMARY KEY DEFAULT 'None',
-firstname VARCHAR(255),
+firstname VARCHAR(255) NOT NULL,
 lastname VARCHAR(255) NOT NULL,
 email VARCHAR(255) NOT NULL
 );
@@ -147,7 +147,7 @@ FOREIGN KEY(subjectCode) REFERENCES subject(subjectCode),
 FOREIGN KEY(assessID) REFERENCES assessments(assessID)
 );
 
-INSERT INTO `faculty` (facultyID, firstname, lastname, email)
+INSERT INTO `faculty` (facultyID, firstname ,lastname, email)
 VALUES ('None', 'None', 'None', 'None');
 
 INSERT INTO `faculty` (facultyID, firstname, lastname, email)
@@ -168,19 +168,7 @@ VALUES ('2023-0001', 'Fulgent', 'Lavesores', 'fulgent.lavesores@g.msuiit.edu.ph'
 -- ('CSC186', 'Human-Computer Interaction', 3),
 -- ('CCC181', 'Applications Development and
 -- Emerging Technologies', 3),
--- ('CSC145', 'Programming Languages', 3),
--- ('CSC171', 'Introduction to Artificial Intelligence', 3),
--- ('CSC181', 'Software Engineering', 4),
--- ('CSC113', 'Computer Networks and Data Communications', 3),
--- ('CSC133', 'Modeling and Simulation', 3),
--- ('CSC161', 'Computer Systems Security', 3),
--- ('CSC175', 'Parallel and Distributed Computing', 3),
--- ('CSC194', 'Computer Science Seminar', 1),
--- ('CSC197', 'Practicum', 0),
--- ('CSC193', 'Special Topics in Computer Science', 3),
--- ('CSC198', 'Research Methods', 3),
--- ('CSC109', 'Social, Ethical, and Professional Issues', 3),
--- ('CSC199', 'Undergraduate Thesis', 3);
+-- ('CSC145', 'Programming Languages', 3);
 
 INSERT INTO section (sectionCode)
 VALUES
@@ -209,25 +197,12 @@ VALUES
 -- ('CSC124', 'None'),
 -- ('CSC186', 'None'),
 -- ('CCC181', 'None'),
--- ('CSC145', 'None'),
--- ('CSC171', 'None'),
--- ('CSC181', 'None'),
--- ('CSC113', 'None'),
--- ('CSC133', 'None'),
--- ('CSC161', 'None'),
--- ('CSC175', 'None'),
--- ('CSC194', 'None'),
--- ('CSC197', 'None'),
--- ('CSC193', 'None'),
--- ('CSC198', 'None'),
--- ('CSC109', 'None'),
--- ('CSC199', 'None');
-
+-- ('CSC145', 'None');
 
 -- INSERT INTO assignFaculty (facultyID, subjectID, sectionID)
 -- VALUES
--- ('2023-0001', 'CSC181', 'CS3A'),
--- ('2023-0001', 'CCC181', 'CS3A'),
--- ('2023-0002', 'CSC181', 'CS3B'),
--- ('2023-0002', 'CCC181', 'CS3B'),
--- ('2023-0004', 'CCC102', 'CS2A');
+-- ('2023-0001', 'CSC181', 'None'),
+-- ('2023-0001', 'CCC181', 'None'),
+-- ('2023-0002', 'CSC181', 'None'),
+-- ('2023-0002', 'CCC181', 'None'),
+-- ('2023-0004', 'CCC102', 'None');
