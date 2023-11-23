@@ -7,7 +7,9 @@ $(document).ready(function () {
         var handler = $(this).data('handler');
 
         $('#editCodeInput').val(subjectCode);
+        $('#editCodeInputHidden').val(subjectCode);
         $('#editSectionInput').val(section);
+        $('#editSectionInputHidden').val(section);
         $('#editDescriptionInput').val(description);
         $('#editCreditsInput').val(credits);
         $('#editHandlerInput').val(handler);

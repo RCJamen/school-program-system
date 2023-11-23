@@ -19,7 +19,7 @@ $(document).ready(function () {
             // Send an AJAX request to delete subject
             $.ajax({
                 type: 'POST',
-                url: `/subjects/delete/${subjectCode}/${section}`,
+                url: `/subjects/delete/${subjectCode}/${section}/${handler}`,
                 headers: {
                     'X-CSRFToken': csrfToken
                 },

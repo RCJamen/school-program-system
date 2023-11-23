@@ -45,11 +45,34 @@ def create_subject():
         return redirect(url_for(".index", message=flash_message))
     return redirect(url_for(".index"))
 
-@subject.route("/subjects/delete/<string:subjectCode>/<string:section>", methods=["POST"])
-def delete_subject(subjectCode, section):
+@subject.route("/subjects/delete/<string:subjectCode>/<string:section>/<string:handler>", methods=["POST"])
+def delete_subject(subjectCode, section, handler):
     try:
-        result = subjectModel.Subjects.delete(subjectCode, section)
-        print(result)
+        result = subjectModel.Subjects.delete(subjectCode, section, handler)
         return jsonify({'success': result == 'Subject deleted successfully'})
     except Exception as e:
         return jsonify({'success': False, 'error': str(e)})
+    
+@subject.route("/subjects/update", methods=["POST"])
+def update_subject():
+    if request.method == "POST":
+        subjectCode = request.form["subjectCode"]
+        old_subjectCode = request.form["editCodeInputHidden"]
+        section = request.form["section"]
+        old_sectionCode = request.form["editSectionInputHidden"]
+        description = request.form["description"]
+        credits = request.form["credits"]
+        handler = request.form["handler"]
+        old_handlerCode = request.form["editHandlerInput"]
+        print(handler)
+        print(old_handlerCode)
+        result = subjectModel.Subjects.update(subjectCode, old_subjectCode, section, old_sectionCode, description, credits, handler, old_handlerCode)
+        if "success" in result:
+            credentials_message = f"ASDASD"
+            flash_message = {"type": "success", "message": f"Subject Edited successfully - {credentials_message}"}
+            session['flash_message'] = flash_message
+        else:
+            flash_message = {"type": "danger", "message": f"Failed to Edit Subject: {result}"}
+            session['flash_message'] = flash_message
+        return redirect(url_for(".index", message=flash_message))
+    return redirect(url_for(".index"))

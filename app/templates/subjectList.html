@@ -159,7 +159,8 @@
 <div class="modal fade" id="editSubjectModal" data-bs-backdrop="static" tabindex="-1" role="dialog"
   aria-labelledby="editFacultyModalLabel" aria-hidden="true">
   <div class="modal-dialog" role="document">
-    <form action="" method="POST">
+    <form action="{{ url_for('subject.update_subject') }}" method="POST">
+      <input type="hidden" name="csrf_token" value="{{ csrf_token()}}">
       <div class="modal-content">
         <div class="modal-header subject-list-modal-header">
           <h5 class="modal-title">Update Subject Information</h5>
@@ -168,23 +169,36 @@
         <div class="modal-body subject-list-modal-body">
           <div class="form-group">
             <label for="editCodeInput">Subject Code</label>
-            <input value="" type="text" name="name" class="form-control" id="editCodeInput">
+            <input value="" type="text" name="subjectCode" class="form-control" id="editCodeInput">
+            <input type="hidden" name="editCodeInputHidden" id="editCodeInputHidden">
           </div>
           <div class="form-group">
             <label for="editSectionInput">Section</label>
-            <input value="" type="text" name="name" class="form-control" id="editSectionInput">
+            <select name="section" class="form-select" id="editSectionInput">
+              <option value="" disabled selected>Select Section</option>
+              {% for section in sectionInfo %}
+              <option value="{{ section[0] }}">{{ section[0] }}</option>
+              {% endfor %}
+            </select>
+            <input type="hidden" name="editSectionInputHidden" id="editSectionInputHidden">
           </div>
           <div class="form-group">
             <label for="editDescriptionInput">Description</label>
-            <input value="" type="text" name="name" class="form-control" id="editDescriptionInput">
+            <input value="" type="text" name="description" class="form-control" id="editDescriptionInput">
           </div>
           <div class="form-group">
             <label for="editCreditsInput">Credits</label>
-            <input value="" type="text" name="name" class="form-control" id="editCreditsInput">
+            <input value="" type="text" name="credits" class="form-control" id="editCreditsInput">
           </div>
           <div class="form-group">
             <label for="editHandlerInput">Handler</label>
-            <input value="" type="text" name="name" class="form-control" id="editHandlerInput">
+            <input type="hidden" name="editHandlerInput" id="editHandlerInput">
+            <select name="handler" class="form-select" id="editHandlerInput">
+              <option value="" disabled selected>Select Handler</option>
+              {% for handler in handlerInfo %}
+              <option value="{{ handler[0] }}">{{ handler[0]}} - {{handler[2]}}, {{handler[1]}}</option>
+              {% endfor %}
+            </select>
           </div>
         </div>
         <div class="modal-footer subject-list-modal-footer">
@@ -202,6 +216,6 @@
 
 {% block pagescript %}
 <script type="text/javascript" src="../static/js/editSubject.js"></script>
-<script type="text/javascript" src="../static/js/deleteFaculty.js"></script>
+<script type="text/javascript" src="../static/js/deleteSubject.js"></script>
 
 {% endblock %}
