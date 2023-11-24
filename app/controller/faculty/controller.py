@@ -84,3 +84,18 @@ def edit_faculty(facultyID):
             return jsonify({"success": False, "errors": errors})
     except Exception as e:
         return jsonify({"success": False, "error": str(e)})
+
+
+@faculty.route("/faculty/add-schedule", methods=["POST"])
+def add_schedule():
+    try:
+        subject_id = request.form.get("subject-id")
+        section_id = request.form.get("section-id")
+        day = request.form.get("day")
+        time_start = request.form.get("time-start")
+        time_end = request.form.get("time-end")
+
+        result = faculty_model.create_schedule(subject_id, section_id, day, time_start, time_end)
+        return jsonify({"success": result == "Schedule created successfully"})
+    except Exception as e:
+        return jsonify({"success": False, "error": str(e)})

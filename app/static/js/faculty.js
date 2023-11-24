@@ -131,6 +131,8 @@ $(".edit-faculty").click(function() {
     $("#editFacultyEmail").val(facultyEmail);
 });
 
+
+
 $("#editFacultyForm").submit(function(e) {
     e.preventDefault();
 
@@ -221,6 +223,7 @@ function goBack() {
 }
 
 var currentFacultyID = null;
+var facultyName = null;
 var isEditState = false;
 
 function toggleFunctions(button) {
@@ -233,8 +236,13 @@ function toggleFunctions(button) {
 }
 
 function showAcademicLoad(button) {
-    currentFacultyID = button.getAttribute('data-facultyID-academic');
+    currentFacultyID = button.getAttribute('data-facultyid-academic');
+    facultyName = button.getAttribute('data-academic-name');
+    $("#academic-faculty-name").html("<strong>" + facultyName + "</strong>");
+    $("#academic-faculty-id").text(currentFacultyID); // You can modify this part accordingly
+
     console.log('Faculty ID:', currentFacultyID);
+    console.log('Faculty Name:', facultyName);
 
     $.ajax({
         url: "/faculty_data",
@@ -289,21 +297,30 @@ function editAcademicLoad(button) {
 
             for (var i = 0; i < data.length; i++) {
                 var subject = data[i];
-                var row = '<tr>' +
-                    '<th scope="row">' + subject['Subject Code'] + '</th>' +
-                    '<td>' + subject['Section ID'] + '</td>' +
-                    '<td>' + subject['Description'] + '</td>' +
-                    '<td>' + subject['Schedule'] + '</td>' +
-                    '<td>' + subject['Credits'] + '</td>' +
-                    '<td>' +
-                    '<button type="button" class="btn btn-warning editSchedule"><i class="fa-solid fa-pen-to-square" style="color: #ffffff;"></i></button>' +
-                    '    ' +
-                    '<button type="button" class="btn btn-danger addSchedule" onclick="openSecondModal()"><i class="fa-solid fa-calendar-plus" style="color: #ffffff;"></i></button> ' +
-                    '</td>' +
-                    '</tr>';
-
+                var row = `
+                    <tr>
+                        <th scope="row">${subject['Subject Code']}</th>
+                        <td>${subject['Section ID']}</td>
+                        <td>${subject['Description']}</td>
+                        <td>${subject['Schedule']}</td>
+                        <td>${subject['Credits']}</td>
+                        <td>
+                            <button type="button" class="btn btn-warning editSchedule">
+                                <i class="fa-solid fa-pen-to-square" style="color: #ffffff;"></i>
+                            </button>
+                            <button type="button" class="btn btn-danger addSchedule"
+                                data-subject-code="${subject['Subject Code']}"
+                                data-section-id="${subject['Section ID']}"
+                                onclick="openSecondModal(this)">
+                                <i class="fa-solid fa-calendar-plus" style="color: #ffffff;"></i>
+                            </button>
+                        </td>
+                    </tr>
+                `;
+            
                 tbody.append(row);
             }
+            
 
             $('#academic-load').modal('show');
         },
@@ -314,11 +331,53 @@ function editAcademicLoad(button) {
     });
 }
 
-
-function openSecondModal() {
+function openSecondModal(button) {
     // Create a new instance of the Bootstrap Modal for the second modal
     var secondModal = new bootstrap.Modal(document.getElementById('secondModal'), { backdrop: 'static' });
-    
+    var subjectCode = $(button).data('subject-code');
+    var sectionID = $(button).data('section-id');
+
+    // Use subjectCode and sectionID as needed in your function
+    console.log('Subject Code:', subjectCode);
+    console.log('Section ID:', sectionID);
+
+    $("#subject-id").val(subjectCode);
+    $("#section-id").val(sectionID);
     // Show the second modal
     secondModal.show();
+    
 }
+
+
+$("#addScheduleForm").submit(function (e) {
+    e.preventDefault();
+
+    var subjectID = $("#subject-id").val();
+    var sectionID = $("#section-id").val();
+    var day = $("#day").val();
+    var timeStart = $("#time-start").val();
+    var timeEnd = $("#time-end").val();
+
+    $.ajax({
+        type: 'POST',
+        url: '/faculty/add-schedule',
+        data: {
+            'subject-id': subjectID,
+            'section-id': sectionID,
+            'day': day,
+            'time-start': timeStart,
+            'time-end': timeEnd,
+        },
+        headers: {
+            'X-CSRFToken': csrfToken
+        },
+        success: function (response) {
+            console.log('Schedule added successfully:', response);
+            // Handle success, e.g., display a success message
+        },
+        error: function (error) {
+            // Handle error, e.g., display an error message
+            console.error('Error adding schedule:', error);
+        },
+    });
+});

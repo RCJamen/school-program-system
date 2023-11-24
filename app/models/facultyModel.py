@@ -19,7 +19,7 @@ class facultyModel:
     def get_faculty(cls):
         try:
             cur = mysql.new_cursor(dictionary=True)
-            cur.execute("SELECT facultyID, firstname, lastname, email FROM faculty")
+            cur.execute("SELECT facultyID, firstname, lastname, email FROM faculty WHERE facultyID != 'None'")
             faculties = cur.fetchall()
             return faculties
         except Exception as e:
@@ -90,7 +90,16 @@ class facultyModel:
         except Exception as e:
             return f"Failed to retrieve assigned subject to faculty data: {str(e)}"
 
-
-
-
+    @classmethod
+    def create_schedule(cls, subjectID, sectionID, day, time_start, time_end):
+        try:
+            cur = mysql.new_cursor(dictionary=True)
+            cur.execute(
+                "INSERT INTO schedule (subjectID, sectionID, day, time_start, time_end) VALUES (%s, %s, %s, %s, %s)",
+                (subjectID, sectionID, day, time_start, time_end),
+            )
+            mysql.connection.commit()
+            return "Schedule created successfully"
+        except Exception as e:
+            return f"Failed to create schedule: {str(e)}"
 

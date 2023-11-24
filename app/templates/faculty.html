@@ -88,7 +88,8 @@
                                 style="color: #000000;"></i></button>
                                 
                                 <button type="button" class="btn btn-outline-light show-academic-load"><i class="fa-solid fa-chalkboard-user" 
-                                style="color: #000000;" data-bs-toggle="modal" data-bs-target="#academic-load" data-facultyID-academic="{{ faculty.facultyID }}" onclick="showAcademicLoad(this)"></i></button>
+                                style="color: #000000;" data-bs-toggle="modal" data-bs-target="#academic-load" data-facultyid-academic="{{ faculty.facultyID }}" onclick="showAcademicLoad(this)"
+                                data-academic-name=" {{faculty.lastname}}, {{faculty.firstname}}"></i></button>
                               </td>
                             </tr>
                             {% endfor %}
@@ -260,8 +261,8 @@
               <img src="../static/pictures/orv.jpg" alt="Profile Picture">
             </div>
             <div class = "profile-content">
-              <h6>Juan Dela Curz</h6>
-              <p>Description</p>
+              <h6  class id = "academic-faculty-name"></h6>
+              <p id = academic-faculty-id></p>
             </div>
           </div>
         </div>
@@ -334,16 +335,25 @@
   <div class="modal-dialog">
       <div class="modal-content">
           <div class="modal-header">
-              <h5 class="modal-title" id="secondModalLabel">Second Modal</h5>
+              <h5 class="modal-title" id="secondModalLabel">Add Schedule For</h5>
               <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
           </div>
           <div class="modal-body">
             <div class="add-schedule-container">
-              <h1>Add Schedule</h1>
-              <form>
+              <form id="addScheduleForm">
+                <!-- Existing form fields -->
+            
                 <div class="form-group">
-                  <label for="day">Day</label>
-                  <select id="day" name="day" required>
+                    <label for="subject-id">Subject</label>
+                    <input type="text" id="subject-id" name="subject-id" required readonly>
+                </div>
+                <div class="form-group">
+                    <label for="section-id">Section</label>
+                    <input type="text" id="section-id" name="section-id" required readonly>
+                </div>
+                <div class="form-group">
+                    <label for="day">Day</label>
+                    <select id="day" name="day" required>
                       <option value="Monday">Monday</option>
                       <option value="Tuesday">Tuesday</option>
                       <option value="Wednesday">Wednesday</option>
@@ -352,20 +362,20 @@
                       <option value="Saturday">Saturday</option>
                       <option value="Sunday">Sunday</option>
                   </select>
-              </div>
-              
-                <div class="form-group">
-                  <label for="time-start">Time start</label>
-                  <input type="time" id="time-start" name="time-start" required>
                 </div>
                 <div class="form-group">
-                  <label for="time-end">Time End</label>
-                  <input type="time" id="time-end" name="time-end" required>
+                    <label for="time-start">Time start</label>
+                    <input type="time" id="time-start" name="time-start" required>
                 </div>
                 <div class="form-group">
-                  <input type="submit" value="Add Schedule">
+                    <label for="time-end">Time End</label>
+                    <input type="time" id="time-end" name="time-end" required>
                 </div>
-              </form>
+                <div class="form-group">
+                    <input type="submit" value="Add Schedule">
+                </div>
+            </form>
+            
             </div>
           </div>
       </div>
