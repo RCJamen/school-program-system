@@ -156,7 +156,6 @@ margin: 16px
   transform: scaleX(1); /* Display and scale to full width for active tab */
 }
 
-
 .add-schedule-container {
   width: 80%;
   max-width: 600px;
@@ -178,6 +177,16 @@ margin: 16px
   display: block;
   font-weight: bold;
   margin-bottom: 5px;
+}
+
+.add-schedule-container select,
+.add-schedule-container input[type="time"],
+.add-schedule-container input[type="text"] {
+  display: block;
+  width: 100%;
+  padding: 10px;
+  border: 1px solid #ccc;
+  border-radius: 5px;
 }
 
 .add-schedule-container input, .add-schedule-container textarea {

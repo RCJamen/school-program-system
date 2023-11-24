@@ -1,64 +1,53 @@
-.subjects-list-container {
-    margin: 10px;
-    width: auto;
+.subject-list-title {
+    padding: 24px 32px 24px 32px;
 }
 
-.subjects-list-header,
-.subjects-list-sy {
-    margin-left: 20px;
+.subject-list-header {
+    padding: 24px 32px 24px 32px;
 }
 
-.subjects-list-sy select {
-    padding: 2px 0px;
-    width: 200px;
+.subject-list-body .subject-list-table .table {
+    width: 96.5%;
+    margin-left: 21px;
 }
 
-#placeholder {
-    color: gray;
+.subject-list-modal-body .form-group {
+    margin-bottom: 24px;
+
 }
 
-.subjects-list-content {
-    margin: 10px 50px;
-    text-align: left;
+.subject-list-modal-body {
+    margin: 16px
 }
 
-.subjects-list-content table {
-    margin-top: 30px;
-    border-collapse: collapse;
-    width: 100%;
+.subject-list-modal-header {
+    margin-left: 16px;
+    margin-right: 16px
 }
 
-.subjects-list-content th {
-    border-bottom: 2px solid black;
-    padding: 10px 10px;
-    width: fit-content;
-    background-color: #f8f9fa;
+.subject-list-modal-footer {
+    margin-left: 16px;
+    margin-right: 16px
 }
 
-.subjects-list-content td {
-    border-bottom: 1px solid black;
-    padding: 5px 10px;
-    width: fit-content;
+.subject-list-modal-body .form-group select.form-control.form-select {
+    padding-top: 12px;
+    padding-bottom: 12px;
+    padding-left: 16px;
+    border-radius: 16px;
 }
 
-#noSubjectsAvailable {
-    text-align: center;
-    color: gray;
+.AddSubjectBtn {
+    background-color: rgba(164, 29, 33, 1) !important;
+    color: #ffffff !important;
+    border-color: rgba(164, 29, 33, 1) !important
 }
 
-.subjects-list-content button {
-    background-color: #a41d21;
-    color: white;
-    padding: 0px 10px;
-    border-color: transparent;
-    border-radius: 5px;
-    text-align: center;
-}
-
-.subjects-list-content button:hover {
-    background-color: #711316;
-}
-
-.subjects-list-content button:active {
-    background-color: #a41d21;
+.AddSubject {
+    background-color: rgba(164, 29, 33, 1) !important;
+    color: #ffffff
+        /* Text color, assuming you want it to be white */
+        !important;
+    border-color: rgba(164, 29, 33, 1) !important
+        /* Add any other styles you need */
 }

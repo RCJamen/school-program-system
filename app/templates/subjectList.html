@@ -1,51 +1,221 @@
-{% extends "master_layout.html" %} {% block pagetitle %}
+{% extends "master_layout.html" %}
+
+{% block pagetitle %}
 <title>Subject List</title>
-{% endblock %} {% block pagestyle %}
+{% endblock %}
+
+{% block pagestyle %}
 <link rel="stylesheet" href="../static/css/subjectList.css" />
-{% endblock %} {% block pages %}
-<div class="subjects-list-container">
-  <div class="subjects-list-header">
-    <h1>Subject Lists</h1>
+{% endblock %}
+
+{% block pages %}
+<meta name="csrf-token" content="{{ csrf_token() }}">
+<div class="subject-list-container">
+  <div class="subject-list-title">
+    <h1 class="m-0">Subject Lists</h1>
   </div>
   <hr />
-  <div class="subjects-list-sy">
-    <h4>Semester</h4>
-    <select name="semester" id="semester">
-      <option id="placeholder" disabled selected>Please select...</option>
-      <option value="1">Semester 1</option>
-      <option value="2">Semester 2</option>
-    </select>
-  </div>
-  <div class="subjects-list-content">
-    <table>
-      <tr class="subjects-list-table-head">
-        <th>Subject Code</th>
-        <th>Section</th>
-        <th>Description</th>
-        <th>Credits</th>
-        <th>Handler</th>
-        <th>Action</th>
-      </tr>
+  <div class="subject-list-content">
+    <div class="subject-list-header">
+      <h6>School Year</h6>
+      <div class="row">
+        <div class="col-3">
+          <select class="form-select custom-select-size" aria-label="Default select example">
+            <option selected>Feature Available Soon</option>
+            <option value="1">One</option>
+            <option value="2">Two</option>
+            <option value="3">Three</option>
+          </select>
+        </div>
+        <div class="col-4" id="flash-messages-container">
+          {% if flash_message %}
+          <div class="alert alert-{{ flash_message.type }} alert-dismissible fade show" role="alert">
+            <div class="d-flex justify-content-between align-items-center">
+              <span>{{ flash_message.message | safe }}</span>
+              <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+            </div>
+          </div>
+          {% endif %}
 
-      {% if subjectInfo|length == 0 %}
-      <tr>
-        <td colspan="6" id="noSubjectsAvailable">No subjects available.</td>
-      </tr>
-      {% else %} {% for subject in subjectInfo %}
-      <tr class="subjects-list-table-data">
-        <td class="fw-bold">{{ subject[0] }}</td>
-        <td>{{ subject[1] }}</td>
-        <td>{{ subject[2] }}</td>
-        <td>{{ subject[3] }}</td>
-        <td class="fw-bold">{{ subject[4] }}</td>
-        <td>
-          <button type="button">Edit Subject</button>
-        </td>
-      </tr>
-      {% endfor %} {% endif %}
-    </table>
+        </div>
+        <div class="col-5"> <button type="button" class="btn btn-primary float-end AddSubjectBtn" data-bs-toggle="modal"
+            data-bs-target="#addFacultyModal"><i class="fa-solid fa-user-plus"></i> Add Subject </button> </div>
+      </div>
+    </div>
+    <div class="subject-list-body">
+      <div class="bs-example container subject-list-body table-responsive" data-example-id="striped-table">
+        <table class="table table-hover">
+          <thead>
+            <tr>
+              <th>Subject Code</th>
+              <th>Section</th>
+              <th>Description</th>
+              <th>Credits</th>
+              <th>Handler</th>
+              <th>Action</th>
+            </tr>
+          </thead>
+          <tbody class="table-group-divider">
+            {% if subjectInfo|length == 0 %}
+            <tr>
+              <td colspan="6" id="noSubjectsAvailable">No subjects available.</td>
+            </tr>
+            {% else %} {% for subject in subjectInfo %}
+            <tr class="subjects-list-table-data">
+              <td class="fw-bold">{{ subject[0] }}</td>
+              <td>{{ subject[1] }}</td>
+              <td>{{ subject[2] }}</td>
+              <td>{{ subject[3] }}</td>
+              <td class="fw-bold">{{ subject[4] }}</td>
+              <td>
+                <button type="button" class="btn btn-outline-light edit-subject" data-bs-target="#editSubjectModal"
+                  data-subject-code="{{subject[0]}}" data-section="{{subject[1]}}" data-description="{{subject[2]}}"
+                  data-credits="{{subject[3]}}" data-handler="{{subject[4]}}" data-bs-toggle="modal"><i
+                    class="fa-solid fa-pen" style="color: #000000;"></i></button>
+                <button type="button" class="btn btn-outline-light delete-subject" data-subject-code="{{subject[0]}}"
+                  data-section="{{subject[1]}}" data-handler="{{subject[4]}}" data-bs-toggle="modal"
+                  data-bs-target="#deleteSubjectModal"><i class="fa-solid fa-trash"
+                    style="color: #000000;"></i></button>
+              </td>
+            </tr>
+            {% endfor %} {% endif %}
+          </tbody>
+        </table>
+      </div>
+    </div>
   </div>
 </div>
-{% endblock %} {% block pagescript %}
-<script></script>
+
+<div class="modal fade" id="addFacultyModal" data-bs-backdrop="static" tabindex="-1" role="dialog"
+  aria-labelledby="editFacultyModalLabel" aria-hidden="true">
+  <div class="modal-dialog" role="document">
+    <form action="{{ url_for('subject.create_subject') }}" method="POST">
+      <input type="hidden" name="csrf_token" value="{{ csrf_token()}}">
+      <div class="modal-content">
+        <div class="modal-header subject-list-modal-header">
+          <h5 class="modal-title">Add Subject Information</h5>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+        <div class="modal-body subject-list-modal-body">
+          <div class="form-group">
+            <label>Subject Code</label>
+            <input type="text" name="subjectCode" class="form-control" placeholder="Enter Code">
+          </div>
+          <div class="form-group">
+            <label>Section</label>
+            <select name="section" class="form-select" id="Section">
+              <option value="" disabled selected>Enter Section</option>
+              {% for section in sectionInfo %}
+              <option value="{{ section[0] }}">{{ section[0] }}</option>
+              {% endfor %}
+            </select>
+          </div>
+          <div class="form-group">
+            <label>Description</label>
+            <input type="text" name="description" class="form-control" placeholder="Enter Description">
+          </div>
+          <div class="form-group">
+            <label>Credits</label>
+            <input type="text" name="credits" class="form-control" placeholder="Enter Credits">
+          </div>
+          <div class="form-group">
+            <label>Handler</label>
+            <select name="handler" class="form-select" id="Handler">
+              <option value="" disabled selected>Enter Handler</option>
+              {% for handler in handlerInfo %}
+              <option value="{{ handler[0] }}">{{ handler[0]}} - {{handler[2]}}, {{handler[1]}}</option>
+              {% endfor %}
+            </select>
+          </div>
+        </div>
+        <div class="modal-footer subject-list-modal-footer">
+          <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">
+            <i class="fa-solid fa-xmark" style="color: #ffffff;"></i> Close
+          </button>
+          <button type="submit" class="btn btn-success UpdateFaculty" data-bs-dismiss="modal"> <i
+              class="fa-solid fa-user-pen"></i>Add Subject</button>
+        </div>
+      </div>
+    </form>
+  </div>
+</div>
+<div class="modal" tabindex="-1" id="deleteSubjectModal" data-bs-backdrop="static">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title">Confirmation</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body delete-modal-body">
+        <!-- Faculty details will be dynamically inserted here -->
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">No</button>
+        <button type="button" class="btn btn-primary delete-button">Yes</button>
+      </div>
+    </div>
+  </div>
+</div>
+<div class="modal fade" id="editSubjectModal" data-bs-backdrop="static" tabindex="-1" role="dialog"
+  aria-labelledby="editFacultyModalLabel" aria-hidden="true">
+  <div class="modal-dialog" role="document">
+    <form action="{{ url_for('subject.update_subject') }}" method="POST">
+      <input type="hidden" name="csrf_token" value="{{ csrf_token()}}">
+      <div class="modal-content">
+        <div class="modal-header subject-list-modal-header">
+          <h5 class="modal-title">Update Subject Information</h5>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+        <div class="modal-body subject-list-modal-body">
+          <div class="form-group">
+            <label for="editCodeInput">Subject Code</label>
+            <input value="" type="text" name="subjectCode" class="form-control" id="editCodeInput">
+            <input type="hidden" name="editCodeInputHidden" id="editCodeInputHidden">
+          </div>
+          <div class="form-group">
+            <label for="editSectionInput">Section</label>
+            <select name="section" class="form-select" id="editSectionInput">
+              <option value="" disabled selected>Select Section</option>
+              {% for section in sectionInfo %}
+              <option value="{{ section[0] }}">{{ section[0] }}</option>
+              {% endfor %}
+            </select>
+            <input type="hidden" name="editSectionInputHidden" id="editSectionInputHidden">
+          </div>
+          <div class="form-group">
+            <label for="editDescriptionInput">Description</label>
+            <input value="" type="text" name="description" class="form-control" id="editDescriptionInput">
+          </div>
+          <div class="form-group">
+            <label for="editCreditsInput">Credits</label>
+            <input value="" type="text" name="credits" class="form-control" id="editCreditsInput">
+          </div>
+          <div class="form-group">
+            <label for="editHandlerInput">Handler</label>
+            <input type="hidden" name="editHandlerInput" id="editHandlerInput">
+            <select name="handler" class="form-select" id="editHandlerInput">
+              <option value="" disabled selected>Select Handler</option>
+              {% for handler in handlerInfo %}
+              <option value="{{ handler[0] }}">{{ handler[0]}} - {{handler[2]}}, {{handler[1]}}</option>
+              {% endfor %}
+            </select>
+          </div>
+        </div>
+        <div class="modal-footer subject-list-modal-footer">
+          <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">
+            <i class="fa-solid fa-xmark" style="color: #ffffff;"></i> Close
+          </button>
+          <button type="submit" class="btn btn-success UpdateFaculty" data-bs-dismiss="modal"> <i
+              class="fa-solid fa-user-pen"></i>Update Subject</button>
+        </div>
+      </div>
+    </form>
+  </div>
+</div>
+{% endblock %}
+
+{% block pagescript %}
+<script type="text/javascript" src="../static/js/editSubject.js"></script>
+<script type="text/javascript" src="../static/js/deleteSubject.js"></script>
+
 {% endblock %}

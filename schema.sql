@@ -1,4 +1,4 @@
-    DROP DATABASE IF EXISTS `progsys_db`;
+DROP DATABASE IF EXISTS `progsys_db`;
 CREATE DATABASE IF NOT EXISTS `progsys_db`;
 use `progsys_db`;
 
@@ -86,15 +86,6 @@ lastname VARCHAR(255) NOT NULL,
 PRIMARY KEY(chairID)
 );
 
-DROP TABLE IF EXISTS `faculty`;
-CREATE TABLE IF NOT EXISTS `faculty`(
-facultyID VARCHAR (9) NOT NULL,
-firstname VARCHAR(255) NOT NULL,
-lastname VARCHAR(255) NOT NULL,
-email VARCHAR(255) NOT NULL,
-PRIMARY KEY(facultyID)
-);
-
 DROP TABLE IF EXISTS `students`;
 CREATE TABLE IF NOT EXISTS `students`(
 studentID INT AUTO_INCREMENT NOT NULL,
@@ -106,6 +97,14 @@ PRIMARY KEY(studentID),
 FOREIGN KEY(courseID) REFERENCES courses(courseID)
 );
 
+DROP TABLE IF EXISTS `faculty`;
+CREATE TABLE IF NOT EXISTS `faculty`(
+facultyID VARCHAR (10) PRIMARY KEY DEFAULT 'None',
+firstname VARCHAR(255) NOT NULL,
+lastname VARCHAR(255) NOT NULL,
+email VARCHAR(255) NOT NULL
+);
+
 DROP TABLE IF EXISTS `section`;
 CREATE TABLE IF NOT EXISTS `section`(
 sectionCode VARCHAR(255) PRIMARY KEY
@@ -113,52 +112,45 @@ sectionCode VARCHAR(255) PRIMARY KEY
 
 DROP TABLE IF EXISTS `subject`;
 CREATE TABLE IF NOT EXISTS `subject`(
-subjectCode VARCHAR(255) PRIMARY KEY NOT NULL UNIQUE,
+subjectID INT AUTO_INCREMENT PRIMARY KEY,
+subjectCode VARCHAR(10) NOT NULL,
 description VARCHAR(255) NOT NULL,
 credits INT,
-semester INT
+UNIQUE KEY unique_subject (subjectCode, description, credits)
 );
 
 -- Drop the existing schedule table if it exists
 
 DROP TABLE IF EXISTS `subject_section`;
 CREATE TABLE IF NOT EXISTS `subject_section`(
-subjectID VARCHAR(9),
+subsecID INT NOT NULL AUTO_INCREMENT PRIMARY KEY,
+subjectID VARCHAR(10),
 sectionID VARCHAR(255),
-PRIMARY KEY (subjectID, sectionID),
-FOREIGN KEY (subjectID) REFERENCES subject(subjectCode),
-FOREIGN KEY (sectionID) REFERENCES section(sectionCode)
+UNIQUE KEY unique_subject_section (subjectID, sectionID)
 );
 
 DROP TABLE IF EXISTS `schedule`;
-
--- Create the schedule table
 CREATE TABLE IF NOT EXISTS `schedule`(
     scheduleID INT PRIMARY KEY AUTO_INCREMENT,
-    subjectID VARCHAR(255),
-    sectionID VARCHAR(255),
+    subjectID VARCHAR(10),  -- Match the data type with subject_section
+    sectionID VARCHAR(255),  -- Match the data type with subject_section
     day VARCHAR(255),
     time_start TIME,
     time_end TIME,
     FOREIGN KEY (subjectID, sectionID) REFERENCES subject_section(subjectID, sectionID)
 );
 
+
 -- to handle 1 section of the same subject
 -- but can handle many subjects (subjectID not unique) of the same section-- Drop the existing assignFaculty table if it exists
 DROP TABLE IF EXISTS `assignFaculty`;
-
--- Create the assignFaculty table with foreign key constraints
 CREATE TABLE IF NOT EXISTS `assignFaculty`(
-    facultyID VARCHAR(9),
-    subjectID VARCHAR(255),
-    sectionID VARCHAR(255),
-    PRIMARY KEY (subjectID, sectionID),  -- Change the primary key
-    FOREIGN KEY (facultyID) REFERENCES faculty(facultyID) ON DELETE SET NULL,
-    FOREIGN KEY (subjectID) REFERENCES subject(subjectCode) ON DELETE CASCADE,
-    FOREIGN KEY (sectionID) REFERENCES section(sectionCode) ON DELETE CASCADE
+assignFacultyID INT NOT NULL AUTO_INCREMENT PRIMARY KEY,
+facultyID VARCHAR(10),
+subjectID VARCHAR(255),
+sectionID VARCHAR(255),
+UNIQUE KEY unique_assignFaculty (facultyID, subjectID, sectionID)
 );
-
-
 
 DROP TABLE IF EXISTS `class_records`;
 CREATE TABLE IF NOT EXISTS `class_records`(
@@ -173,51 +165,86 @@ FOREIGN KEY(subjectCode) REFERENCES subject(subjectCode),
 FOREIGN KEY(assessID) REFERENCES assessments(assessID)
 );
 
+INSERT INTO `faculty` (facultyID, firstname ,lastname, email)
+VALUES ('None', 'None', 'None', 'None');
+
 INSERT INTO `faculty` (facultyID, firstname, lastname, email)
-VALUES ('2023-0001', 'Fulgent', 'Travesores', 'fulgent.travesores@g.msuiit.edu.ph'),
+VALUES ('2023-0001', 'Fulgent', 'Lavesores', 'fulgent.lavesores@g.msuiit.edu.ph'),
 ('2023-0002', 'Alrick', 'Gicole', 'alrick.gicole@g.msuiit.edu.ph'),
 ('2023-0003', 'Janella', 'Balantac', 'janella.balantac@g.msuiit.edu.ph'),
 ('2023-0004', 'Ramel Cary', 'Jamen', 'ramelcary.jamen@g.msuiit.edu.ph');
 
-INSERT INTO subject (subjectCode, description, credits, semester)
+INSERT INTO subject (subjectCode, description, credits)
 VALUES 
-('CCC181', 'Application Development', 3, 1),
-('CSC181', 'Software Engineering', 3, 2),
-('CSC173', 'Intelligent Systems', 3, 1),
-('CCC102', 'Computer Programming II', 3, 2);
+('CCC100', 'Fundamentals of Computing', 3),
+('CCC101', 'Computer Programming 1', 3),
+('CCC102', 'Computer Programming 2', 3),
+('CCC121', 'Data Structures and Algorithm', 3),
+('CCC151', 'Information Management', 3),
+('CSC112', 'Computer Organization and Architecture', 3),
+('CSC124', 'Design and Analysis of Algorithms', 3),
+('CSC186', 'Human-Computer Interaction', 3),
+('CCC181', 'Applications Development and
+Emerging Technologies', 3),
+('CSC145', 'Programming Languages', 3);
 
 INSERT INTO section (sectionCode)
 VALUES
-('CS1'),
-('CS2'),
+('None'),
+('CS1A'),
+('CS1B'),
+('CS1C'),
+('CS2A'),
+('CS2B'),
+('CS2C'),
 ('CS3A'),
 ('CS3B'),
-('CS4');
+('CS3C'),
+('CS4A'),
+('CS4B'),
+('CS4C');
 
+-- First, insert data into subject_section
 INSERT INTO subject_section (subjectID, sectionID)
-VALUES
-('CCC102', 'CS2'),
-('CCC181', 'CS3A'),
-('CCC181', 'CS3B'),
-('CSC181', 'CS3A'),
-('CSC181', 'CS3B');
+VALUES 
+('CCC100', 'CS1C'),
+('CCC101', 'CS2B'),
+('CCC102', 'CS1A'),
+('CCC121', 'CS1A'),
+('CCC151', 'CS4B'),
+('CSC112', 'CS4B'),
+('CSC124', 'CS4C'),
+('CSC186', 'CS4C'),
+('CCC181', 'CS2B'),
+('CSC145', 'CS4C');
 
+-- Then, insert data into the schedule table
 INSERT INTO assignFaculty (facultyID, subjectID, sectionID)
 VALUES
-('2023-0001', 'CSC181', 'CS3A'),
-('2023-0001', 'CCC181', 'CS3A'),
-('2023-0002', 'CSC181', 'CS3B'),
-('2023-0002', 'CCC181', 'CS3B'),
-('2023-0004', 'CCC102', 'CS2');
+('None', 'CCC100', 'CS1C'),
+('None', 'CCC101', 'CS2B'),
+('None', 'CCC102', 'CS1A'),
+('None', 'CCC121', 'CS1A'),
+('None', 'CCC151', 'CS4B'),
+('None', 'CSC112', 'CS4B'),
+('None', 'CSC124', 'CS4C'),
+('None', 'CSC186', 'CS4C'),
+('None', 'CCC181', 'CS2B'),
+('None', 'CSC145', 'CS4C');
 
 
-INSERT INTO `schedule` (subjectID, sectionID, day, time_start, time_end)
-VALUES 
-    ('CCC181', 'CS3A', 'Wednesday', '10:30:00', '12:00:00'),
-    ('CCC181', 'CS3A', 'Thursday', '09:00:00', '10:30:00'),
-    ('CSC181', 'CS3A', 'Wednesday', '10:30:00', '12:00:00'),
-    ('CSC181', 'CS3A', 'Thursday', '09:00:00', '10:30:00'),
-    ('CSC181', 'CS3B', 'Wednesday', '10:30:00', '12:00:00'),
-    ('CSC181', 'CS3B', 'Thursday', '09:00:00', '10:30:00'),
-    ('CCC181', 'CS3B', 'Wednesday', '10:30:00', '12:00:00'),
-    ('CCC181', 'CS3B', 'Thursday', '09:00:00', '10:30:00');
+-- -- Insert data into the schedule table
+-- INSERT INTO `schedule` (subjectID, sectionID, day, time_start, time_end)
+-- VALUES 
+-- ('CCC100', 'CS1C', 'Monday', '09:00:00', '10:30:00'),
+-- ('CCC101', 'CS2B', 'Tuesday', '10:30:00', '12:00:00'),
+-- ('CCC102', 'CS1A', 'Wednesday', '13:00:00', '14:30:00'),
+-- ('CCC121', 'CS1A', 'Thursday', '15:00:00', '16:30:00'),
+-- ('CCC151', 'CS4B', 'Friday', '14:00:00', '15:30:00'),
+-- ('CSC112', 'CS4B', 'Monday', '09:00:00', '10:30:00'),
+-- ('CSC124', 'CS4C', 'Tuesday', '10:30:00', '12:00:00'),
+-- ('CSC186', 'CS4C', 'Wednesday', '13:00:00', '14:30:00'),
+-- ('CCC181', 'CS2B', 'Thursday', '15:00:00', '16:30:00'),
+-- ('CSC145', 'CS4C', 'Friday', '14:00:00', '15:30:00');
+
+

@@ -69,10 +69,18 @@ class facultyModel:
                 "   subject.description AS 'Description', "
                 "   subject.credits AS 'Credits', "
                 "   af.sectionID AS 'Section ID', "
-                "   CONCAT(s.day, ' ', TIME_FORMAT(s.time_start, '%h:%i %p'), ' - ', TIME_FORMAT(s.time_end, '%h:%i %p')) AS 'Schedule' "
+                "   CASE "
+                "       WHEN CONCAT(IFNULL(s.day, 'None'), ' ', "
+                "                   IFNULL(TIME_FORMAT(s.time_start, '%h:%i %p'), 'None'), ' - ', "
+                "                   IFNULL(TIME_FORMAT(s.time_end, '%h:%i %p'), 'None')) = 'None None - None' "
+                "       THEN 'None' "
+                "       ELSE CONCAT(IFNULL(s.day, 'None'), ' ', "
+                "                   IFNULL(TIME_FORMAT(s.time_start, '%h:%i %p'), 'None'), ' - ', "
+                "                   IFNULL(TIME_FORMAT(s.time_end, '%h:%i %p'), 'None')) "
+                "   END AS 'Schedule' "
                 "FROM assignFaculty af "
                 "JOIN subject ON subject.subjectCode = af.subjectID "
-                "JOIN schedule s ON af.subjectID = s.subjectID AND af.sectionID = s.sectionID "
+                "LEFT JOIN schedule s ON af.subjectID = s.subjectID AND af.sectionID = s.sectionID "
                 "WHERE af.facultyID = %s"
             )
             cur.execute(query, (faculty_id,))
@@ -81,5 +89,8 @@ class facultyModel:
             return assigned_subjects
         except Exception as e:
             return f"Failed to retrieve assigned subject to faculty data: {str(e)}"
+
+
+
 
 
