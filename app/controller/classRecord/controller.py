@@ -19,4 +19,4 @@ def class_record():
 # @login_is_required
 # def add_class_record():
 #     # codes here 
-#     return 0
+#     return 
