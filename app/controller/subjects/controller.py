@@ -38,10 +38,9 @@ def create_subject():
 
         if existing_subject:
             result = subjects.add_section()
-            flash_message = {"type": "success", "message": f"Successfully Added Section: {result}"}
+            flash_message = {"type": "success", "message": f"Successfully Added Subject!"}
             session['flash_message'] = flash_message
             return redirect(url_for(".index", message=flash_message))
-        
         else:
             result = subjects.add()
             if "success" in result:
@@ -53,13 +52,21 @@ def create_subject():
                 session['flash_message'] = flash_message
             return redirect(url_for(".index", message=flash_message))
     return redirect(url_for(".index"))
-1
+
 @subject.route("/subjects/delete/<string:subjectCode>/<string:section>/<string:handler>", methods=["POST"])
 def delete_subject(subjectCode, section, handler):
     try:
-        result = subjectModel.Subjects.delete(subjectCode, section, handler)
-        return jsonify({'success': result == 'Subject deleted successfully'})
+        existing_subject = subjectModel.Subjects.exists_many(subjectCode)
+        if existing_subject > 1 :
+            result = subjectModel.Subjects.delete_section(subjectCode, section, handler)
+            flash_message = {"type": "success", "message": f"Successfully Deleted Section: {result}"}
+            session['flash_message'] = flash_message
+            return redirect(url_for(".index", message=flash_message))
+        else:
+            result = subjectModel.Subjects.delete(subjectCode, section, handler)
+            return jsonify({'success': result == 'Subject deleted successfully'})
     except Exception as e:
+        print(e)
         return jsonify({'success': False, 'error': str(e)})
     
 @subject.route("/subjects/update", methods=["POST"])
@@ -73,8 +80,7 @@ def update_subject():
         credits = request.form["credits"]
         handler = request.form["handler"]
         old_handlerCode = request.form["editHandlerInput"]
-        print(handler)
-        print(old_handlerCode)
+
         result = subjectModel.Subjects.update(subjectCode, old_subjectCode, section, old_sectionCode, description, credits, handler, old_handlerCode)
         if "success" in result:
             credentials_message = f"Subject Code: <strong>{subjectCode}</strong><br>Section: <strong>{section}</strong><br> Description: <strong>{description}</strong><br>Credits: <strong>{credits}</strong><br>Handler: <strong>{handler}</strong>"

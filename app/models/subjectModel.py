@@ -78,6 +78,42 @@ class Subjects(object):
         finally:
             cursor.close()
 
+    @classmethod
+    def delete_section(cls, subjectCode, section, handler):
+        try:
+            cursor = mysql.connection.cursor()
+
+            sql_get_faculty_id = "SELECT facultyID FROM faculty WHERE CONCAT(firstname, ' ', lastname) LIKE %s"
+            cursor.execute(sql_get_faculty_id, (f"%{handler}%",))
+            faculty_id_result = cursor.fetchone()
+            facultyID = faculty_id_result[0]
+
+            sql_get_assignFaculty = "SELECT assignFacultyID FROM assignFaculty WHERE facultyID = %s AND subjectID = %s AND sectionID = %s"
+            cursor.execute(sql_get_assignFaculty, (facultyID, subjectCode, section))
+            assignFacultyID_result = cursor.fetchone()
+            assignFacultyID = assignFacultyID_result[0]
+
+            sql_get_subject_section = "SELECT subsecID FROM subject_section WHERE subjectID = %s AND sectionID = %s"
+            cursor.execute(sql_get_subject_section, (subjectCode, section))
+            subsecID_result = cursor.fetchone()
+            subsecID = subsecID_result[0]
+            
+            subject_section = "DELETE FROM subject_section WHERE subsecID = %s"
+            assignFaculty = "DELETE FROM assignFaculty WHERE assignFacultyID = %s"         
+
+            params_subject_section = (subsecID,)
+            params_assignFaculty = (assignFacultyID,)
+
+            cursor.execute(subject_section, params_subject_section)
+            cursor.execute(assignFaculty, params_assignFaculty)
+            mysql.connection.commit()
+            return "Subject deleted successfully"
+        except Exception as e:
+            return f"Failed to delete Subject: {str(e)}"
+        finally:
+            cursor.close()
+
+
     @staticmethod
     def update(subjectCode, old_subjectCode, section, old_sectionCode, description, credits, handler, old_handlerCode):
         try:
@@ -115,6 +151,7 @@ class Subjects(object):
         except Exception as e:
             return f"Failed to edit subject: {str(e)}"
         
+
     @classmethod
     def exists(cls, code):
         cursor = mysql.connection.cursor()
@@ -122,6 +159,17 @@ class Subjects(object):
         cursor.execute(check_sql, (code,))
         existing_subject = cursor.fetchone()
         return existing_subject is not None
+
+    @classmethod
+    def exists_many(cls, code):
+        cursor = mysql.connection.cursor()
+        check_sql = "SELECT COUNT(*) FROM subject_section WHERE subjectID = %s"
+        cursor.execute(check_sql, (code,))
+        result = cursor.fetchone()
+        count = result[0]
+        cursor.close()
+        print(f"Count of existing subjects: {count}")
+        return count > 0
 
     @classmethod
     def refer_section(cls):
