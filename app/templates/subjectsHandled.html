@@ -10,7 +10,6 @@
 <div class="subHandled-container">
   <div class="subHandled-title">
     <h1 class="m-0">Subjects Handled</h1>
-  </div>
   <hr />
   <div class="subHandled-content">
     <div class="subHandled-header">
@@ -18,11 +17,11 @@
       <div class="row">
         <div class="col-3">
           <select class="form-select custom-select-size" aria-label="Default select example">
-            <option selected>Feature Available Soon</option>
-            <option value="1">One</option>
-            <option value="2">Two</option>
-            <option value="3">Three</option>
-          </select>
+            <option disabled selected>Select S.Y.</option>
+            <option value="year1">2019-2020</option>
+            <option value="year2">2020-2021</option>
+            <option value="year3">2021-2022</option>
+        </select>
         </div>
       </div>
     </div>
@@ -40,23 +39,32 @@
             </tr>
           </thead>
           <tbody class="table-group-divider">
+            {% if subjectsHandledList|length == 0 %}
+              <tr>
+                <td colspan="6" id="noSubjectsAvailable">No subjects available.</td>
+              </tr>
+            {% else %}
+            {% for subject in subjectsHandledList %}
             <tr class="subHandled-table-data">
-              <td>CSC181</td>
-              <td>CS3</td>
-              <td>Software Engineering</td>
-              <td>3</td>
+              <td scope="row" class="fw-bold">{{ subject[0] }}</td>
+              <td>{{ subject[1] }}</td>
+              <td>{{ subject[2] }}</td>
+              <td>{{ subject[3] }}</td>
               <td>
                 <a href="/class-record"> <button type="button" class="btn btn-primary ShowClassRecordBtn"><i
                       class="fa-solid fa-search-plus"></i>
                     Show Class Record </button></a>
               </td>
             </tr>
+            {% endfor %}
+            {% endif %}
           </tbody>
+          <!-- <tfoot>
+            <tr class="note"><th>Source</th><td colspan=3><a href="https://getbootstrap.com/css/#tables">BootStrap documentation</a></td></tr>
+          </tfoot> -->
         </table>
       </div>
     </div>
-  </div>
-</div>
 {% endblock %}
 
 {% block pagescript %}

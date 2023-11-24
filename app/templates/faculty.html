@@ -2,11 +2,14 @@
 
 {% block pagetitle %} <title>Faculty</title> {% endblock %}
 
+
 {% block pagestyle %}
 <link rel="stylesheet" href="../static/css/faculty.css">
 {% endblock %}
 
 {% block pages %}
+
+
 <meta name="csrf-token" content="{{ csrf_token() }}">
 <div class="faculty-container">
   <div class="faculty-title">
@@ -14,6 +17,7 @@
   </div>
   <hr>
   <div class="faculty-content">
+
     <div class="faculty-header">
       <h6>School Year</h6>
       <div class="row">
@@ -34,20 +38,27 @@
             </div>
           </div>
           {% endif %}
+
           {% for field, errors in add_form.errors.items() %}
           <div class="alert alert-danger alert-dismissible fade show" role="alert">
             <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
             {{ ', '.join(errors) }}
           </div>
           {% endfor %}
+
+
         </div>
+
+
         <div class="col-5"> <button type="button" class="btn btn-primary float-end AddFacultyBtn" data-bs-toggle="modal"
             data-bs-target="#addFacultyModal"><i class="fa-solid fa-user-plus"></i> Add Faculty </button> </div>
+
       </div>
     </div>
     <div class="faculty-body ">
       <div class="bs-example container faculty-table table-responsive" data-example-id="striped-table">
-        <table class="table table-hover">
+        <table class="table table-hover ">
+
           <thead>
             <tr>
               <th>ID</th>
@@ -82,11 +93,15 @@
             </tr>
             {% endfor %}
           </tbody>
+          <!-- <tfoot>
+                          <tr class="note"><th>Source</th><td colspan=3><a href="https://getbootstrap.com/css/#tables">BootStrap documentation</a></td></tr>
+                          </tfoot> -->
         </table>
       </div>
     </div>
   </div>
 </div>
+
 <div class="modal fade" id="addFacultyModal" data-bs-backdrop="static" tabindex="-1" role="dialog"
   aria-labelledby="FacultyModalLabel" aria-hidden="true">
   <div class="modal-dialog" role="document">
@@ -99,6 +114,7 @@
           <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
         </div>
         <div class="modal-body faculty-modal-body">
+
           <div class="form-group">
             <label for="facultyIDInput">ID</label>
             {{ add_form.facultyIDInput(class="form-control", placeholder="Faculty ID", required=True,
@@ -109,6 +125,7 @@
             {{ add_form.facultyfirstName(class="form-control", placeholder="First Name", required=True,
             id="facultyfirstName") }}
           </div>
+          <!-- Properly closed the second form-group -->
           <div class="form-group">
             <label for="facultylastName">Last Name</label>
             {{ add_form.facultylastName(class="form-control", placeholder="Last Name", required=True,
@@ -119,6 +136,7 @@
             {{ add_form.facultyEmail(class="form-control", placeholder="Email", required=True, id="facultyEmail") }}
           </div>
         </div>
+
         <div class="modal-footer faculty-modal-footer">
           <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">
             <i class="fa-solid fa-xmark" style="color: #ffffff;"></i> Close
@@ -130,6 +148,7 @@
     </form>
   </div>
 </div>
+
 <div class="modal" tabindex="-1" id="askDelete" data-bs-backdrop="static">
   <div class="modal-dialog">
     <div class="modal-content">
@@ -138,6 +157,7 @@
         <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
       </div>
       <div class="modal-body delete-modal-body">
+        <!-- Faculty details will be dynamically inserted here -->
       </div>
       <div class="modal-footer">
         <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">No</button>
@@ -146,10 +166,13 @@
     </div>
   </div>
 </div>
+
+
 <div class="modal fade" id="editFacultyModal" data-bs-backdrop="static" tabindex="-1" role="dialog"
   aria-labelledby="editFacultyModalLabel" aria-hidden="true">
   <div class="modal-dialog" role="document">
-    <form method="POST" id="editFacultyForm">
+    <form method="POST" id="editFacultyForm">4
+
       {{ update_form.csrf_token }}
       {{ update_form.hidden_tag() }}
       <div class="modal-content">
@@ -158,6 +181,7 @@
           <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
         </div>
         <div class="modal-body faculty-modal-body">
+
           <div class="form-group">
             <label for="editFacultyIDInput">ID</label>
             {{ update_form.editFacultyIDInput(class="form-control", placeholder="Faculty ID", required=True,
@@ -168,6 +192,7 @@
             {{ update_form.editFacultyfirstName(class="form-control", placeholder="First Name", required=True,
             id="editFacultyfirstName") }}
           </div>
+          <!-- Properly closed the second form-group -->
           <div class="form-group">
             <label for="editFacultylastName">Last Name</label>
             {{ update_form.editFacultylastName(class="form-control", placeholder="Last Name", required=True,
@@ -179,17 +204,21 @@
             id="editFacultyEmail") }}
           </div>
         </div>
+
         <div class="modal-footer faculty-modal-footer">
           <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">
             <i class="fa-solid fa-xmark" style="color: #ffffff;"></i> Close
           </button>
           <button type="submit" class="btn btn-success UpdateFaculty" data-bs-dismiss="modal"> <i
               class="fa-solid fa-user-pen"></i>Update Faculty</button>
+
         </div>
       </div>
     </form>
   </div>
 </div>
+
+
 {% endblock %}
 
 {% block pagescript %}
