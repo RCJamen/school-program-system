@@ -30,7 +30,7 @@
     margin-right: 16px
 }
 
-.subject-list-modal-body .form-group input.form-control {
+.subject-list-modal-body .form-group select.form-control.form-select {
     padding-top: 12px;
     padding-bottom: 12px;
     padding-left: 16px;
