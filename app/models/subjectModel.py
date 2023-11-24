@@ -182,7 +182,7 @@ class Subjects(object):
     @classmethod
     def refer_handler(cls):
         cursor = mysql.connection.cursor()
-        sql = f"SELECT facultyID, firstname, lastname FROM faculty"
+        sql = f"SELECT facultyID, firstname, lastname FROM faculty WHERE facultyID != 'None'"
         cursor.execute(sql)
         result = cursor.fetchall()
         return result

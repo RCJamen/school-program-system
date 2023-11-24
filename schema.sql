@@ -233,18 +233,18 @@ VALUES
 ('None', 'CSC145', 'CS4C');
 
 
--- -- Insert data into the schedule table
+-- Insert data into the schedule table
 -- INSERT INTO `schedule` (subjectID, sectionID, day, time_start, time_end)
 -- VALUES 
--- ('CCC100', 'CS1C', 'Monday', '09:00:00', '10:30:00'),
--- ('CCC101', 'CS2B', 'Tuesday', '10:30:00', '12:00:00'),
--- ('CCC102', 'CS1A', 'Wednesday', '13:00:00', '14:30:00'),
--- ('CCC121', 'CS1A', 'Thursday', '15:00:00', '16:30:00'),
--- ('CCC151', 'CS4B', 'Friday', '14:00:00', '15:30:00'),
--- ('CSC112', 'CS4B', 'Monday', '09:00:00', '10:30:00'),
--- ('CSC124', 'CS4C', 'Tuesday', '10:30:00', '12:00:00'),
--- ('CSC186', 'CS4C', 'Wednesday', '13:00:00', '14:30:00'),
--- ('CCC181', 'CS2B', 'Thursday', '15:00:00', '16:30:00'),
--- ('CSC145', 'CS4C', 'Friday', '14:00:00', '15:30:00');
+-- ('CCC100', 'CS1C', 'Monday', '09:00', '10:30'),
+-- ('CCC101', 'CS2B', 'Tuesday', '10:30', '12:00'),
+-- ('CCC102', 'CS1A', 'Wednesday', '13:00', '14:30'),
+-- ('CCC121', 'CS1A', 'Thursday', '15:00', '16:30'),
+-- ('CCC151', 'CS4B', 'Friday', '14:00', '15:30'),
+-- ('CSC112', 'CS4B', 'Monday', '09:00', '10:30'),
+-- ('CSC124', 'CS4C', 'Tuesday', '10:30', '12:00'),
+-- ('CSC186', 'CS4C', 'Wednesday', '13:00', '14:30'),
+-- ('CCC181', 'CS2B', 'Thursday', '15:00', '16:30'),
+-- ('CSC145', 'CS4C', 'Friday', '14:00', '15:30');
 
 
