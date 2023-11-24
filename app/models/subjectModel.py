@@ -207,7 +207,8 @@ class Subjects(object):
                         ss.sectionID,
                         s.description,
                         s.credits,
-                        SUBSTRING_INDEX(CONCAT(f.firstname, ' ', f.lastname), ' ', -1) AS handlerLastName
+                        CASE WHEN f.firstname = f.lastname THEN f.firstname
+                            ELSE CONCAT(f.firstname, ' ', f.lastname) END AS handlerName
                     FROM 
                         subject AS s
                     LEFT JOIN 
