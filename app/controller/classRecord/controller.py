@@ -14,3 +14,9 @@ def class_record():
     # Pass the data to the template
     return render_template('class-record.html', subject_code=subject_code, section_code=section_code)
 
+
+# @classRecord.route("/class-record/add")
+# @login_is_required
+# def add_class_record():
+#     # codes here 
+#     return 0
