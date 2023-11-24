@@ -23,4 +23,20 @@
     overflow-x: auto;
     max-width: 100%; /* optional: restrict the maximum width of the container */
 }
+.grade-distribution table,
+.grade-distribution h3,
+.grade-conversion table,
+.grade-conversion h3 {
+    text-align: center;
+}
 
+.grade-conversion tbody tr:nth-of-type(even)
+{
+    background: #a09595;
+}
+
+.dist-con,
+.accordion
+{
+    padding: 40px;
+}

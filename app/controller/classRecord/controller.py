@@ -7,4 +7,10 @@ from app.controller.admin.controller import login_is_required
 @classRecord.route("/class-record")
 @login_is_required
 def class_record():
-    return render_template("class-record.html")
+
+    subject_code = request.args.get('subject_code')
+    section_code = request.args.get('section_code')
+
+    # Pass the data to the template
+    return render_template('class-record.html', subject_code=subject_code, section_code=section_code)
+
