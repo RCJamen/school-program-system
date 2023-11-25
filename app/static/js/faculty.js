@@ -170,10 +170,10 @@ editFacultyBtn.forEach(button => {
     });
 });
 
-// function goBack() {
-//     // You can use window.location.href to navigate to the /faculty route
-//     window.location.href = '/faculty';
-// }
+function goBack() {
+    // You can use window.location.href to navigate to the /faculty route
+    window.location.href = '/faculty';
+}
 
 var currentFacultyID = null;
 var facultyName = null;
@@ -187,81 +187,6 @@ function toggleFunctions(button) {
     }
     isEditState = !isEditState;
 }
-
-function formatTime(time) {
-    // Assuming time is in HH:mm:ss format
-    try {
-        const [hours, minutes] = time.split(':');
-        return `${hours}:${minutes}`;
-    } catch (error) {
-        console.error("Error formatting time:", error);
-        return ""; // or handle the error in an appropriate way
-    }
-}
-
-// Attach click event handler
-// Flag to track whether schedule.js has been loaded
-
-
-$(document).on('click', '#classSchedule-tab', function () {
-    console.log("clicked");
-
-    $.ajax({
-        url: "/faculty_schedule",
-        method: "GET",
-        success: function (response) {
-            if (response) {
-                var data = response.data;
-                console.log(data);
-
-                // Assuming you have a container with the class 'events-group Monday'
-                var eventsGroup = $(".events-group.Monday");
-
-                // Clear existing content inside the ul element
-                eventsGroup.find("#schedule-monday").empty();
-
-                // Iterate through the data and create list items
-                for (var i = 0; i < data.length; i++) {
-                    var schedule = data[i];
-                    var formattedStartTime = formatTime(schedule.time_start);
-                    var formattedEndTime = formatTime(schedule.time_end);
-
-                    var listItem = `
-                        <li class="single-event" data-start="${formattedStartTime}" data-end="${formattedEndTime}" data-event="event-1">
-                            <a href="#0">
-                                <em class="event-name">${schedule.subjectID} ${schedule.sectionID}</em>
-                            </a>
-                        </li>`;
-
-                    // Append the new list item to the ul element
-                    eventsGroup.find("#schedule-monday").append(listItem);
-
-                    console.log(formattedStartTime, formattedEndTime, schedule.subjectID, schedule.sectionID);
-                }
-
-                // After updating the schedule data, reinitialize the schedule events
-                // and recalculate their placements by calling the appropriate functions
-                $.getScript("../static/js/schedule.js", function () {
-                    console.log("schedule.js loaded");
-                });
-
-            } else {
-                console.error("Error fetching data:", response.error);
-            }
-        },
-        error: function (error) {
-            console.error("Error fetching data:", error);
-        }
-    });
-});
-
-
-
-
-
-
-
-
 
 
 function showAcademicLoad(button) {
@@ -360,6 +285,78 @@ function editAcademicLoad(button) {
         }
     });
 }
+function formatTime(time) {
+    // Check if time is defined
+    if (time) {
+        // Assuming time is in HH:mm:ss format
+        const [hours, minutes] = time.split(':');
+        return `${hours}:${minutes}`;
+    } else {
+        // Return a default value or handle it based on your requirements
+        return 'N/A';
+    }
+}
+
+
+$(document).on('click', '#classSchedule-tab', function () {
+    console.log(currentFacultyID);
+    console.log("clicked");
+
+    // Check if currentFacultyID is defined
+    if (typeof currentFacultyID !== 'undefined') {
+        $.ajax({
+            url: "/faculty_schedule",
+            method: "GET",
+            data: { faculty_id: currentFacultyID },
+            success: function (response) {
+                if (response.success) {
+                    var data = response.data;
+                    console.log(data);
+
+                    // Assuming you have a container with the class 'events-group Monday'
+                    var eventsGroup = $(".events-group.Monday");
+
+                    // Clear existing content inside the ul element
+                    eventsGroup.find("#schedule-monday").empty();
+
+                    // Iterate through the data and create list items
+                    for (var i = 0; i < data.length; i++) {
+                        var schedule = data[i];
+                        var formattedStartTime = formatTime(schedule.time_start);
+                        var formattedEndTime = formatTime(schedule.time_end);
+
+                        var listItem = `
+                            <li class="single-event" data-start="${formattedStartTime}" data-end="${formattedEndTime}" data-event="event-1">
+                                <a href="#0">
+                                    <em class="event-name">${schedule.subjectID} ${schedule.sectionID}</em>
+                                </a>
+                            </li>`;
+
+                        // Append the new list item to the ul element
+                        eventsGroup.find("#schedule-monday").append(listItem);
+
+                        console.log(formattedStartTime, formattedEndTime, schedule.subjectID, schedule.sectionID);
+                    }
+
+                    // After updating the schedule data, reinitialize the schedule events
+                    // and recalculate their placements by calling the appropriate functions
+                    $.getScript("../static/js/schedule.js", function () {
+                        console.log("schedule.js loaded");
+                    });
+
+                } else {
+                    console.error("Error fetching data:", response.error);
+                }
+            },
+            error: function (error) {
+                console.error("Error fetching data:", error);
+            }
+        });
+    } else {
+        console.error("currentFacultyID is not defined");
+    }
+});
+
 
 function openSecondModal(button) {
     // Create a new instance of the Bootstrap Modal for the second modal

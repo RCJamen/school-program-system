@@ -99,9 +99,9 @@ jQuery(document).ready(function($){
 			var start = getScheduleTimestamp($(this).attr('data-start')),
 				duration = getScheduleTimestamp($(this).attr('data-end')) - start;
 
-				console.log('start:', start);
-				console.log('duration:', duration);
-				console.log("executed")
+				// console.log('start:', start);
+				// console.log('duration:', duration);
+				// console.log("executed")
 			var eventTop = self.eventSlotHeight*(start - self.timelineStart)/self.timelineUnitDuration,
 				eventHeight = self.eventSlotHeight*duration/self.timelineUnitDuration;
 			

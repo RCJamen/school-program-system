@@ -109,12 +109,19 @@ def add_schedule():
     except Exception as e:
         return jsonify({"success": False, "error": str(e)})
 
+
 @faculty.route('/faculty_schedule', methods=["GET"])
 def show_monday_schedule():
     try:
+        # Extract faculty ID from query parameters
+        faculty_id = request.args.get('faculty_id')
+        print("faculty_id:", faculty_id)  # Add this line for debugging
         # Assuming YourModel has a method get_schedule_monday
-        monday_schedule = faculty_model.get_schedule_monday()
+        monday_schedule = faculty_model.get_schedule_monday(faculty_id)
+
         # Use jsonify to send JSON response
         return jsonify({"data": monday_schedule, "success": True})
     except Exception as e:
         return jsonify({"error": str(e), "success": False})
+
+

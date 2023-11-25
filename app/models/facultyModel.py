@@ -124,10 +124,12 @@ class facultyModel:
     #     return conflicting_schedules
 
     @classmethod
-    def get_schedule_monday(cls):
+    def get_schedule_monday(self, faculty_id):
         try:
             cur = mysql.new_cursor(dictionary=True)
-            cur.execute("""
+
+            # Print the SQL query and parameters for debugging
+            query = f"""
                 SELECT
                     schedule.scheduleID,
                     schedule.subjectID,
@@ -137,11 +139,22 @@ class facultyModel:
                     TIME_FORMAT(schedule.time_end, '%H:%i:%s') as time_end
                 FROM
                     schedule
+                JOIN
+                    assignFaculty ON schedule.subjectID = assignFaculty.subjectID AND schedule.sectionID = assignFaculty.sectionID
+                JOIN
+                    faculty ON assignFaculty.facultyID = faculty.facultyID
                 WHERE
                     schedule.day = 'Monday'
-            """)
+                    AND faculty.facultyID = '{faculty_id}';
+            """
+
+            print("SQL Query:", query)
+
+            cur.execute(query)
             schedules = cur.fetchall()
             cur.close()
             return schedules
         except Exception as e:
             return f"Failed to retrieve Monday schedule data: {str(e)}"
+
+
