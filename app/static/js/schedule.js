@@ -33,9 +33,12 @@ jQuery(document).ready(function($){
 		this.initSchedule();
 	}
 
+	window.SchedulePlan = SchedulePlan;
+
 	SchedulePlan.prototype.initSchedule = function() {
 		this.scheduleReset();
 		this.initEvents();
+		this.placeEvents();
 	};
 
 	SchedulePlan.prototype.scheduleReset = function() {
@@ -61,7 +64,9 @@ jQuery(document).ready(function($){
 		}
 	};
 
+	
 	SchedulePlan.prototype.initEvents = function() {
+		console.log("initEvents executed");
 		var self = this;
 
 		this.singleEvents.each(function(){
@@ -87,12 +92,16 @@ jQuery(document).ready(function($){
 	};
 
 	SchedulePlan.prototype.placeEvents = function() {
+		console.log("executed")
 		var self = this;
 		this.singleEvents.each(function(){
 			//place each event in the grid -> need to set top position and height
 			var start = getScheduleTimestamp($(this).attr('data-start')),
 				duration = getScheduleTimestamp($(this).attr('data-end')) - start;
 
+				console.log('start:', start);
+				console.log('duration:', duration);
+				console.log("executed")
 			var eventTop = self.eventSlotHeight*(start - self.timelineStart)/self.timelineUnitDuration,
 				eventHeight = self.eventSlotHeight*duration/self.timelineUnitDuration;
 			

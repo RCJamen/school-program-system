@@ -1,50 +1,3 @@
-// $(document).ready(function() {
-//     $('.delete-faculty').click(function(event) {
-//         event.preventDefault();
-//         var facultyID = $(this).data('faculty-id');
-//         var name = $(this).data('faculty-name')
-//         var csrfToken = $('meta[name=csrf-token]').attr('content');
-
-//         // Update modal content with faculty details
-//         $('#askDelete .modal-body').html('<p>Do you want to delete the following faculty?</p>'+facultyID+name);
-
-//         // Fetch faculty details using an AJAX request
-//         $.ajax({
-//             type: 'GET',
-//             url: '/faculty/' + facultyID,  // Adjust the URL to your Flask route for fetching a single faculty
-//             success: function(faculty) {
-
-//                 $('#askDelete').modal('show');
-//             },
-//             error: function(error) {
-//                 console.error('Error fetching faculty details:', error);
-//             }
-//         });
-
-//         // Handle "Yes" button click in the modal
-//         $('#askDelete .delete-button').off('click').on('click', function() {
-//             // Send an AJAX request to delete faculty
-//             $.ajax({
-//                 type: 'DELETE',
-//                 url: '/faculty/delete/' + facultyID,
-//                 headers: {
-//                     'X-CSRFToken': csrfToken
-//                 },
-//                 success: function(response) {
-//                     // Handle success, e.g., refresh the page or update UI
-//                     console.log('Faculty deleted successfully:', response);
-//                 },
-//                 error: function(error) {
-//                     // Handle error, e.g., display an error message
-//                     console.error('Error deleting faculty:', error);
-//                 }
-//             });
-
-//             // Hide the modal after the "Yes" button is clicked
-//             $('#askDelete').modal('hide');
-//         });
-//     });
-// });
 
 $(document).ready(function() {
     $('.delete-faculty').click(function(event) {
@@ -217,10 +170,10 @@ editFacultyBtn.forEach(button => {
     });
 });
 
-function goBack() {
-    // You can use window.location.href to navigate to the /faculty route
-    window.location.href = '/faculty';
-}
+// function goBack() {
+//     // You can use window.location.href to navigate to the /faculty route
+//     window.location.href = '/faculty';
+// }
 
 var currentFacultyID = null;
 var facultyName = null;
@@ -234,6 +187,82 @@ function toggleFunctions(button) {
     }
     isEditState = !isEditState;
 }
+
+function formatTime(time) {
+    // Assuming time is in HH:mm:ss format
+    try {
+        const [hours, minutes] = time.split(':');
+        return `${hours}:${minutes}`;
+    } catch (error) {
+        console.error("Error formatting time:", error);
+        return ""; // or handle the error in an appropriate way
+    }
+}
+
+// Attach click event handler
+// Flag to track whether schedule.js has been loaded
+
+
+$(document).on('click', '#classSchedule-tab', function () {
+    console.log("clicked");
+
+    $.ajax({
+        url: "/faculty_schedule",
+        method: "GET",
+        success: function (response) {
+            if (response) {
+                var data = response.data;
+                console.log(data);
+
+                // Assuming you have a container with the class 'events-group Monday'
+                var eventsGroup = $(".events-group.Monday");
+
+                // Clear existing content inside the ul element
+                eventsGroup.find("#schedule-monday").empty();
+
+                // Iterate through the data and create list items
+                for (var i = 0; i < data.length; i++) {
+                    var schedule = data[i];
+                    var formattedStartTime = formatTime(schedule.time_start);
+                    var formattedEndTime = formatTime(schedule.time_end);
+
+                    var listItem = `
+                        <li class="single-event" data-start="${formattedStartTime}" data-end="${formattedEndTime}" data-event="event-1">
+                            <a href="#0">
+                                <em class="event-name">${schedule.subjectID} ${schedule.sectionID}</em>
+                            </a>
+                        </li>`;
+
+                    // Append the new list item to the ul element
+                    eventsGroup.find("#schedule-monday").append(listItem);
+
+                    console.log(formattedStartTime, formattedEndTime, schedule.subjectID, schedule.sectionID);
+                }
+
+                // After updating the schedule data, reinitialize the schedule events
+                // and recalculate their placements by calling the appropriate functions
+                $.getScript("../static/js/schedule.js", function () {
+                    console.log("schedule.js loaded");
+                });
+
+            } else {
+                console.error("Error fetching data:", response.error);
+            }
+        },
+        error: function (error) {
+            console.error("Error fetching data:", error);
+        }
+    });
+});
+
+
+
+
+
+
+
+
+
 
 function showAcademicLoad(button) {
     currentFacultyID = button.getAttribute('data-facultyid-academic');
@@ -249,6 +278,7 @@ function showAcademicLoad(button) {
         method: "GET",
         data: { faculty_id: currentFacultyID },
         success: function (data) {
+            console.log(data);
             var tbody = $('#academic-table-body');
             tbody.empty();
 
@@ -381,3 +411,7 @@ $("#addScheduleForm").submit(function (e) {
         },
     });
 });
+
+
+
+

@@ -1,5 +1,5 @@
 from app import mysql
-
+from datetime import timedelta
 
 class facultyModel:
     @classmethod
@@ -103,3 +103,45 @@ class facultyModel:
         except Exception as e:
             return f"Failed to create schedule: {str(e)}"
 
+    # def check_schedule_conflict(self, subjectID, sectionID, day, time_start, time_end, current_schedule_id=None):
+    #     cur = mysql.connection.cursor(dictionary=True)
+
+    #     # Prepare the query
+    #     query = (
+    #         "SELECT * FROM schedule "
+    #         "WHERE subjectID = %s AND sectionID = %s AND day = %s "
+    #         "AND NOT (time_end <= %s OR time_start >= %s)"
+    #     )
+
+    #     # If current_schedule_id is provided, exclude it from the conflict check
+    #     if current_schedule_id:
+    #         query += " AND scheduleID != %s"
+
+    #     cur.execute(query, (subjectID, sectionID, day, time_start, time_end, current_schedule_id))
+    #     conflicting_schedules = cur.fetchall()
+    #     cur.close()
+
+    #     return conflicting_schedules
+
+    @classmethod
+    def get_schedule_monday(cls):
+        try:
+            cur = mysql.new_cursor(dictionary=True)
+            cur.execute("""
+                SELECT
+                    schedule.scheduleID,
+                    schedule.subjectID,
+                    schedule.sectionID,
+                    schedule.day,
+                    TIME_FORMAT(schedule.time_start, '%H:%i:%s') as time_start,
+                    TIME_FORMAT(schedule.time_end, '%H:%i:%s') as time_end
+                FROM
+                    schedule
+                WHERE
+                    schedule.day = 'Monday'
+            """)
+            schedules = cur.fetchall()
+            cur.close()
+            return schedules
+        except Exception as e:
+            return f"Failed to retrieve Monday schedule data: {str(e)}"

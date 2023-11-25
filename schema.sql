@@ -130,15 +130,18 @@ UNIQUE KEY unique_subject_section (subjectID, sectionID)
 );
 
 DROP TABLE IF EXISTS `schedule`;
-CREATE TABLE IF NOT EXISTS `schedule`(
+
+CREATE TABLE IF NOT EXISTS `schedule` (
     scheduleID INT PRIMARY KEY AUTO_INCREMENT,
-    subjectID VARCHAR(10),  -- Match the data type with subject_section
-    sectionID VARCHAR(255),  -- Match the data type with subject_section
+    subjectID VARCHAR(10),
+    sectionID VARCHAR(255),
     day VARCHAR(255),
     time_start TIME,
     time_end TIME,
+    CONSTRAINT unique_schedule_time UNIQUE (day, time_start, time_end),
     FOREIGN KEY (subjectID, sectionID) REFERENCES subject_section(subjectID, sectionID)
 );
+
 
 
 -- to handle 1 section of the same subject
