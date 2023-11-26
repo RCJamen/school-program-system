@@ -7,7 +7,7 @@ $(document).ready(function() {
         var csrfToken = $('meta[name=csrf-token]').attr('content');
 
         // Update modal content with faculty details
-        $('#askDelete .delete-modal-body').html(`<p>Do you want to delete the following faculty?</p><strong>ID:</strong> ${facultyID}<br><strong>Name:</strong> ${facultyName}`);
+        $('#askDelete .delete-modal-body').html(`<p>Do you want to delete the following faculty?</p><strong>ID:</strong> <em>${facultyID}</em><br><strong>Name:</strong> <em>${facultyName}</em>`);
 
         // Show the modal
         $('#askDelete').modal('show');
@@ -65,6 +65,7 @@ $(document).ready(function() {
 
     
 });
+
 
 
 var csrfToken = $('meta[name=csrf-token]').attr('content');  // Move it outside the click event handler
@@ -193,7 +194,7 @@ function showAcademicLoad(button) {
     currentFacultyID = button.getAttribute('data-facultyid-academic');
     facultyName = button.getAttribute('data-academic-name');
     $("#academic-faculty-name").html("<strong>" + facultyName + "</strong>");
-    $("#academic-faculty-id").text(currentFacultyID); // You can modify this part accordingly
+    $("#academic-faculty-id").text(currentFacultyID);
 
     console.log('Faculty ID:', currentFacultyID);
     console.log('Faculty Name:', facultyName);
@@ -204,16 +205,32 @@ function showAcademicLoad(button) {
         data: { faculty_id: currentFacultyID },
         success: function (data) {
             console.log(data);
+            var groupedSchedules = groupSchedules(data);
+
             var tbody = $('#academic-table-body');
             tbody.empty();
 
-            for (var i = 0; i < data.length; i++) {
-                var subject = data[i];
+            for (var i = 0; i < groupedSchedules.length; i++) {
+                var subject = groupedSchedules[i];
                 var row = '<tr>' +
                     '<th scope="row">' + subject['Subject Code'] + '</th>' +
                     '<td>' + subject['Section ID'] + '</td>' +
                     '<td>' + subject['Description'] + '</td>' +
-                    '<td>' + subject['Schedule'] + '</td>' +
+                    '<td>';
+
+                // Iterate through the schedules for the current subject
+                for (var j = 0; j < subject['Schedules'].length; j++) {
+                    var schedule = subject['Schedules'][j];
+
+                    if (schedule['Day'] === 'None') {
+                        // Show "None" if the day is None
+                        row += 'None<br>';
+                    } else {
+                        row += `${schedule['Day']} ${schedule['Time Start']} - ${schedule['Time End']}<br>`;
+                    }
+                }
+
+                row += '</td>' +
                     '<td>' + subject['Credits'] + '</td>' +
                     '<td>' +
                     '<button type="button" class="btn btn-info classRecordBtn" style="color: white;">Class Record</button>' +
@@ -227,10 +244,47 @@ function showAcademicLoad(button) {
         },
         error: function (error) {
             console.error("Error fetching data:", error);
-            console.log(data);
         }
     });
 }
+
+// Helper function to group schedules by subject code and section ID
+function groupSchedules(data) {
+    var groupedSchedules = [];
+
+    for (var i = 0; i < data.length; i++) {
+        var schedule = data[i];
+        var existingSubject = groupedSchedules.find(subject => subject['Subject Code'] === schedule['Subject Code'] && subject['Section ID'] === schedule['Section ID']);
+
+        if (existingSubject) {
+            // Subject already exists in the groupedSchedules array, add the schedule to its 'Schedules' array
+            existingSubject['Schedules'].push({
+                'Day': schedule['Schedule'].split(' ')[0], // Extract the day from the 'Schedule' field
+                'Time Start': schedule['Schedule'].split(' ')[1],
+                'Time End': schedule['Schedule'].split(' - ')[1]
+            });
+        } else {
+            // Subject does not exist in the groupedSchedules array, create a new entry
+            groupedSchedules.push({
+                'Subject Code': schedule['Subject Code'],
+                'Section ID': schedule['Section ID'],
+                'Description': schedule['Description'],
+                'Schedules': [{
+                    'Day': schedule['Schedule'].split(' ')[0], // Extract the day from the 'Schedule' field
+                    'Time Start': schedule['Schedule'].split(' ')[1],
+                    'Time End': schedule['Schedule'].split(' - ')[1]
+                }],
+                'Credits': schedule['Credits']
+            });
+        }
+    }
+
+    return groupedSchedules;
+}
+
+
+
+
 
 $('.academicEditBtn').on('click', function () {
     var button = $(this);
@@ -260,8 +314,9 @@ function editAcademicLoad(button) {
                         <td>${subject['Schedule']}</td>
                         <td>${subject['Credits']}</td>
                         <td>
-                            <button type="button" class="btn btn-warning editSchedule">
-                                <i class="fa-solid fa-pen-to-square" style="color: #ffffff;"></i>
+                            <button type="button" class="btn btn-warning delete-schedule" data-schedule-id = "${subject['Schedule ID']}"
+                            data-schedule = "${subject['Schedule']}" data-schedule-subject = "${subject['Subject Code']} ${subject['Section ID']}" onclick="openDeleteModal()" >
+                                <i class="fa-solid fa-trash" style="color: #ffffff;"></i>
                             </button>
                             <button type="button" class="btn btn-danger addSchedule"
                                 data-subject-code="${subject['Subject Code']}"
@@ -285,6 +340,7 @@ function editAcademicLoad(button) {
         }
     });
 }
+
 function formatTime(time) {
     // Check if time is defined
     if (time) {
@@ -296,6 +352,8 @@ function formatTime(time) {
         return 'N/A';
     }
 }
+// Assuming #academic-table-body is a static parent element
+
 
 
 $(document).on('click', '#classSchedule-tab', function () {
@@ -382,6 +440,12 @@ function openSecondModal(button) {
     
 }
 
+function openDeleteModal() {
+    var deleteModal = new bootstrap.Modal(document.getElementById('deleteSchedule'), { backdrop: 'static' });
+    deleteModal.show();
+    console.log("clicked");
+}
+
 
 $("#addScheduleForm").submit(function (e) {
     e.preventDefault();
@@ -408,7 +472,7 @@ $("#addScheduleForm").submit(function (e) {
         success: function (response) {
             if (response.success) {
                 console.log('Schedule added successfully:', response);
-                showAcademicLoad({ getAttribute: function () { return currentFacultyID; } });
+                editAcademicLoad({ getAttribute: function () { return currentFacultyID; } });
                 scheduleFlashMessage("success", `Schedule Added Successfully: ${subjectID} - ${sectionID} <strong>(${day} ${timeStart} - ${timeEnd})</strong>`);
             } else {
                 scheduleFlashMessage("danger", "Failed to add schedule: it already exists");
@@ -436,4 +500,66 @@ $("#addScheduleForm").submit(function (e) {
 });
 
 
+$('#academic-table-body').on('click', '.delete-schedule', function (event) {
+    event.preventDefault();
+    var scheduleId = $(this).data('schedule-id');
+    var schedule = $(this).data('schedule');
+    var classhandled = $(this).data('schedule-subject');
+    
+    // Perform your delete logic here or trigger another function
+    console.log('Delete Schedule ID:', scheduleId);
+    console.log('Schedule:', schedule);
+    console.log('subject:', classhandled);
+
+    $('#deleteSchedule .delete-schedule-modal-body').html(`<p>Do you want to delete the following Schedule?</p><strong>Class Handled:</strong> <em>${classhandled}</em><br><strong>Schedule:</strong> <em>${schedule}</em>`);
+
+    // // Show the modal
+    $('#deleteSchedule').modal('show');
+
+    $('#deleteSchedule .delete-schedule-button').off('click').on('click', function() {
+         // Send an AJAX request to delete faculty
+         $.ajax({
+            type: 'DELETE',
+            url: `/faculty/delete-schedule/${scheduleId}`,
+            headers: {
+                'X-CSRFToken': csrfToken
+            },
+            success: function(response) {
+                console.log('Response:', response);
+        
+                if (response.success) {
+                    editAcademicLoad({ getAttribute: function () { return currentFacultyID; } });
+                    console.log('Schedule deleted successfully:', response);
+                    deleteScheduleFM("success", `Schedule Deleted Successfully: <strong>Class Handled:</strong> <em>${classhandled}</em><br><strong>Schedule:</strong> <em>${schedule}</em>`);
+                } else {
+                    // Handle failure
+                    console.error('Error Schedule faculty:', response.error);
+                    deleteScheduleFM("success", `Schedule Added Successfully: <strong>Class Handled:</strong> <em>${classhandled}</em><br><strong>Schedule:</strong> <em>${schedule}</em>`);
+                }
+            },
+            error: function(jqXHR, textStatus, errorThrown) {
+                console.error('AJAX Error:', textStatus, errorThrown);
+            }
+        });
+        
+
+        // Hide the modal after the "Yes" button is clicked
+        $('#deleteSchedule').modal('hide');
+    });
+
+    function deleteScheduleFM(type, message) {
+        // Create flash message HTML
+        var deleteScheduleFM = `
+            <div class="alert alert-${type} alert-dismissible fade show" role="alert">
+                <div class="d-flex justify-content-between align-items-center">
+                    <span>${message}</span>
+                    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                </div>
+            </div>
+        `;
+
+        // Append flash message HTML to a container (adjust the selector accordingly)
+        $('#academic-flash-container').append(deleteScheduleFM);
+    }
+});
 

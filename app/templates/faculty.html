@@ -182,6 +182,7 @@
 </div>
 
 
+
 <div
   class="modal fade"
   id="editFacultyModal"
@@ -306,7 +307,7 @@
               <div class="tab-pane fade show active" id="academicLoad">
                   <div class="academic-table">
                       <div class="bs-example container academic-table table-responsive" data-example-id="striped-table">
-                          <table class="table table-hover">
+                          <table class="table table-hover" id ="myTable" data-auto-refresh="true">
                               <thead>
                               <tr>
                                   <th>Subject Code</th>
@@ -384,7 +385,23 @@
       </div>
   </div>
 </div>
-
+<div class="modal fade" tabindex="-1" id="deleteSchedule" data-bs-backdrop="static" tabindex="-1" aria-labelledby="deleteScheduleLabel" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title">Confirmation</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body delete-schedule-modal-body">
+        <!-- Faculty details will be dynamically inserted here -->
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">No</button>
+        <button type="button" class="btn btn-primary delete-schedule-button">Yes</button>
+      </div>
+    </div>
+  </div>
+</div>
 {% endblock %}
 
 {% block pagescript %}
@@ -394,7 +411,7 @@
       src="../static/js/faculty.js"
     ></script>
 
-
+    <script src="extensions/auto-refresh/bootstrap-table-auto-refresh.js"></script>
     
 {% endblock %}
 

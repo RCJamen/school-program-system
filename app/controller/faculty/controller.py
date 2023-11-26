@@ -45,7 +45,7 @@ def get_faculty_data():
     faculty_id = request.args.get('faculty_id')
     print(faculty_id)
     faculty_data = faculty_model.get_assigned_subjects(faculty_id)
-
+    print("faculty data:", faculty_data)
     # Return the faculty data as JSON
     return jsonify(faculty_data)
 
@@ -57,17 +57,6 @@ def delete_faculty(facultyID):
         return jsonify({'success': result == 'Faculty deleted successfully'})
     except Exception as e:
         return jsonify({'success': False, 'error': str(e)})
-    
-# @faculty.route("/faculty/edit/<string:facultyID>", methods=["POST"])
-# def edit_faculty(facultyID):
-#     try:
-#         new_firstname = request.form.get("editFacultyfirstName")
-#         new_lastname = request.form.get("editFacultylastName")
-#         new_email = request.form.get("editFacultyEmail")  # Corrected key
-#         result = faculty_model.update_faculty(facultyID, new_firstname, new_lastname, new_email)
-#         return jsonify({"success": result == "Faculty Information Updated Successfully"})
-#     except Exception as e:
-#         return jsonify({"success": False, "error": str(e)})
 
 @faculty.route("/faculty/edit/<string:facultyID>", methods=["POST"])
 def edit_faculty(facultyID):
@@ -95,14 +84,6 @@ def add_schedule():
         day = request.form.get("day")
         time_start = request.form.get("time-start")
         time_end = request.form.get("time-end")
-        # Check for schedule conflicts
-        # Check for schedule conflicts
-#         conflicts = faculty_model.check_schedule_conflict(
-#             subject_id, section_id, day, time_start, time_end, current_schedule_id=schedule_id
-#               )
-#         if conflicts:
-#             # Handle conflict, for example, return an error response
-#             return jsonify({"success": False, "error": "Schedule conflict detected."})
 
         result = faculty_model.create_schedule(subject_id, section_id, day, time_start, time_end)
         return jsonify({"success": result == "Schedule created successfully"})
@@ -126,8 +107,8 @@ def show_schedule():
         saturday_schedule = faculty_model.get_schedule_by_day(faculty_id, 'Saturday')
         sunday_schedule = faculty_model.get_schedule_by_day(faculty_id, 'Sunday')
       
-        print(monday_schedule)
-        print(tuesday_schedule)
+        print("Monday_sched:", monday_schedule)
+       
         # Use jsonify to send JSON response
         return jsonify({"data": {"monday_schedule": monday_schedule, "tuesday_schedule": tuesday_schedule, "wednesday_schedule": wednesday_schedule, "friday_schedule": friday_schedule,
                                  "thursday_schedule": thursday_schedule, "saturday_schedule": saturday_schedule,"sunday_schedule": sunday_schedule }, "success": True})
@@ -136,4 +117,14 @@ def show_schedule():
 
 
 
+@faculty.route("/faculty/delete-schedule/<int:scheduleID>", methods=["DELETE"])
+def delete_schedule(scheduleID):
+    try:
+        result = faculty_model.delete_schedule(scheduleID)
+        if result == "Schedule deleted successfully":
+            return jsonify({'success': True})
+        else:
+            return jsonify({'success': False, 'error': result})
+    except Exception as e:
+        return jsonify({'success': False, 'error': str(e)})
 

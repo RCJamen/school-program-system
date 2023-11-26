@@ -69,6 +69,7 @@ class facultyModel:
                 "   subject.description AS 'Description', "
                 "   subject.credits AS 'Credits', "
                 "   af.sectionID AS 'Section ID', "
+                "   s.scheduleID AS 'Schedule ID', "
                 "   CASE "
                 "       WHEN CONCAT(IFNULL(s.day, 'None'), ' ', "
                 "                   IFNULL(TIME_FORMAT(s.time_start, '%h:%i %p'), 'None'), ' - ', "
@@ -128,7 +129,7 @@ class facultyModel:
                     AND faculty.facultyID = '{faculty_id}';
             """
 
-            print("SQL Query:", query)
+            # print("SQL Query:", query)
 
             cur.execute(query)
             schedules = cur.fetchall()
@@ -138,3 +139,12 @@ class facultyModel:
             return f"Failed to retrieve {day} schedule data: {str(e)}"
 
 
+    @classmethod
+    def delete_schedule(cls, scheduleID):
+        try:
+            cur = mysql.new_cursor(dictionary=True)
+            cur.execute("DELETE FROM schedule WHERE scheduleID = %s", (scheduleID,))
+            mysql.connection.commit()
+            return "Schedule deleted successfully"
+        except Exception as e:
+            return f"Failed to delete Schedule: {str(e)}"
