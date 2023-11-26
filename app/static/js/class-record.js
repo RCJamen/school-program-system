@@ -1,32 +1,33 @@
-   // Sample data for demonstration
-   var studentsData = [
-    { id: 1, studentId: '2019-2093', name: 'Jamen, Ramel Cary' },
-    // Add more student data as needed
-];
+// Function to fetch data from the backend and populate the table
+async function fetchDataAndPopulateTable() {
+    try {
+        const response = await fetch('/api/students');  // Assuming Flask route for getting students data
+        const studentsData = await response.json();
 
-// Function to populate the table with dynamic data
-function populateTable() {
-    var tableBody = document.getElementById('dynamic-table').getElementsByTagName('tbody')[0];
+        var tableBody = document.getElementById('dynamic-table').getElementsByTagName('tbody')[0];
+        tableBody.innerHTML = '';  // Clear existing table rows
 
-    // Clear existing table rows
-    tableBody.innerHTML = '';
+        studentsData.forEach(function(student, index) {
+            var row = tableBody.insertRow(index);
 
-    // Loop through the data and create table rows
-    studentsData.forEach(function(student, index) {
-        var row = tableBody.insertRow(index);
+            var cell1 = row.insertCell(0);
+            cell1.textContent = index + 1;
 
-        var cell1 = row.insertCell(0);
-        cell1.textContent = index + 1;
+            var cell2 = row.insertCell(1);
+            cell2.textContent = student.studentId;
 
-        var cell2 = row.insertCell(1);
-        cell2.textContent = student.studentId;
+            var cell3 = row.insertCell(2);
+            cell3.textContent = student.lastname;
 
-        var cell3 = row.insertCell(2);
-        cell3.textContent = student.name;
+            var cell4 = row.insertCell(3);
+            cell4.textContent = student.firstname;
 
-        // Add more cells/columns as needed
-    });
+            // Add more cells/columns as needed
+        });
+    } catch (error) {
+        console.error('Error fetching data:', error);
+    }
 }
 
-// Call the function to initially populate the table
-populateTable();
+// Call the function to fetch data and populate the table
+fetchDataAndPopulateTable();

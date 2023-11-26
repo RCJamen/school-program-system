@@ -30,9 +30,9 @@
             </div>
         </div>
     </div>
-    <div class="table-containter mx-5">
+    <div class="table-container mx-5">
         <div class="classRecord-body">
-            <table class="table">
+            <table class="table" id="dynamic-table">
                 <thead>
                     <tr>
                         <th></th>
@@ -214,7 +214,7 @@
                             <td>4.00-BELOW</td>
                         </tr>
                         <tr>
-                            <td></td>
+                            <td>--</td>
                             <td>INC/DROP</td>
                         </tr>
                     </tbody>
@@ -267,5 +267,6 @@
 {% endblock %}
 
 {% block pagescript %}
-<script></script>
+<script type="text/javascript" src="../static/js/class-record.js"></script>
+
 {% endblock %}
