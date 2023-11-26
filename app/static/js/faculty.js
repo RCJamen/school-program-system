@@ -313,30 +313,36 @@ $(document).on('click', '#classSchedule-tab', function () {
                     var data = response.data;
                     console.log(data);
 
-                    // Assuming you have a container with the class 'events-group Monday'
-                    var eventsGroup = $(".events-group.Monday");
+                    // Iterate through the days
+                    var days = ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday', 'Sunday'];
+                    days.forEach(function (day) {
+                        var eventsGroup = $(`.events-group.${day}`);
+                        
+                        // Clear existing content inside the ul element
+                        eventsGroup.find(`#schedule-${day.toLowerCase()}`).empty();
 
-                    // Clear existing content inside the ul element
-                    eventsGroup.find("#schedule-monday").empty();
+                        // Check if the schedule data for the current day is available
+                        if (data[`${day.toLowerCase()}_schedule`]) {
+                            // Iterate through the data for the current day and create list items
+                            for (var i = 0; i < data[`${day.toLowerCase()}_schedule`].length; i++) {
+                                var schedule = data[`${day.toLowerCase()}_schedule`][i];
+                                var formattedStartTime = formatTime(schedule.time_start);
+                                var formattedEndTime = formatTime(schedule.time_end);
 
-                    // Iterate through the data and create list items
-                    for (var i = 0; i < data.length; i++) {
-                        var schedule = data[i];
-                        var formattedStartTime = formatTime(schedule.time_start);
-                        var formattedEndTime = formatTime(schedule.time_end);
+                                var listItem = `
+                                    <li class="single-event" data-start="${formattedStartTime}" data-end="${formattedEndTime}" data-event="event-${(i % 4) + 1}">
+                                        <a href="#0">
+                                            <em class="event-name">${schedule.subjectID} ${schedule.sectionID}</em>
+                                        </a>
+                                    </li>`;
 
-                        var listItem = `
-                            <li class="single-event" data-start="${formattedStartTime}" data-end="${formattedEndTime}" data-event="event-1">
-                                <a href="#0">
-                                    <em class="event-name">${schedule.subjectID} ${schedule.sectionID}</em>
-                                </a>
-                            </li>`;
+                                // Append the new list item to the ul element
+                                eventsGroup.find(`#schedule-${day.toLowerCase()}`).append(listItem);
 
-                        // Append the new list item to the ul element
-                        eventsGroup.find("#schedule-monday").append(listItem);
-
-                        console.log(formattedStartTime, formattedEndTime, schedule.subjectID, schedule.sectionID);
-                    }
+                                console.log(formattedStartTime, formattedEndTime, schedule.subjectID, schedule.sectionID);
+                            }
+                        }
+                    });
 
                     // After updating the schedule data, reinitialize the schedule events
                     // and recalculate their placements by calling the appropriate functions
@@ -356,6 +362,7 @@ $(document).on('click', '#classSchedule-tab', function () {
         console.error("currentFacultyID is not defined");
     }
 });
+
 
 
 function openSecondModal(button) {
@@ -399,16 +406,34 @@ $("#addScheduleForm").submit(function (e) {
             'X-CSRFToken': csrfToken
         },
         success: function (response) {
-            console.log('Schedule added successfully:', response);
-            // Handle success, e.g., display a success message
+            if (response.success) {
+                console.log('Schedule added successfully:', response);
+                showAcademicLoad({ getAttribute: function () { return currentFacultyID; } });
+                scheduleFlashMessage("success", `Schedule Added Successfully: ${subjectID} - ${sectionID} <strong>(${day} ${timeStart} - ${timeEnd})</strong>`);
+            } else {
+                scheduleFlashMessage("danger", "Failed to add schedule: it already exists");
+            }
         },
         error: function (error) {
             // Handle error, e.g., display an error message
             console.error('Error adding schedule:', error);
         },
     });
-});
+    function scheduleFlashMessage(type, message) {
+        // Create flash message HTML
+        var flashMessageAcademic = `
+            <div class="alert alert-${type} alert-dismissible fade show" role="alert">
+                <div class="d-flex justify-content-between align-items-center">
+                    <span>${message}</span>
+                    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                </div>
+            </div>
+        `;
 
+        // Append flash message HTML to a container (adjust the selector accordingly)
+        $('#academic-flash-container').append(flashMessageAcademic);
+    }
+});
 
 
 

@@ -102,29 +102,9 @@ class facultyModel:
             return "Schedule created successfully"
         except Exception as e:
             return f"Failed to create schedule: {str(e)}"
-
-    # def check_schedule_conflict(self, subjectID, sectionID, day, time_start, time_end, current_schedule_id=None):
-    #     cur = mysql.connection.cursor(dictionary=True)
-
-    #     # Prepare the query
-    #     query = (
-    #         "SELECT * FROM schedule "
-    #         "WHERE subjectID = %s AND sectionID = %s AND day = %s "
-    #         "AND NOT (time_end <= %s OR time_start >= %s)"
-    #     )
-
-    #     # If current_schedule_id is provided, exclude it from the conflict check
-    #     if current_schedule_id:
-    #         query += " AND scheduleID != %s"
-
-    #     cur.execute(query, (subjectID, sectionID, day, time_start, time_end, current_schedule_id))
-    #     conflicting_schedules = cur.fetchall()
-    #     cur.close()
-
-    #     return conflicting_schedules
-
+        
     @classmethod
-    def get_schedule_monday(self, faculty_id):
+    def get_schedule_by_day(self, faculty_id, day):
         try:
             cur = mysql.new_cursor(dictionary=True)
 
@@ -144,7 +124,7 @@ class facultyModel:
                 JOIN
                     faculty ON assignFaculty.facultyID = faculty.facultyID
                 WHERE
-                    schedule.day = 'Monday'
+                    schedule.day = '{day}'
                     AND faculty.facultyID = '{faculty_id}';
             """
 
@@ -155,6 +135,6 @@ class facultyModel:
             cur.close()
             return schedules
         except Exception as e:
-            return f"Failed to retrieve Monday schedule data: {str(e)}"
+            return f"Failed to retrieve {day} schedule data: {str(e)}"
 
 

@@ -111,17 +111,29 @@ def add_schedule():
 
 
 @faculty.route('/faculty_schedule', methods=["GET"])
-def show_monday_schedule():
+def show_schedule():
     try:
         # Extract faculty ID from query parameters
         faculty_id = request.args.get('faculty_id')
         print("faculty_id:", faculty_id)  # Add this line for debugging
-        # Assuming YourModel has a method get_schedule_monday
-        monday_schedule = faculty_model.get_schedule_monday(faculty_id)
 
+        # Assuming YourModel has a method get_schedule_by_day
+        monday_schedule = faculty_model.get_schedule_by_day(faculty_id, 'Monday')
+        tuesday_schedule = faculty_model.get_schedule_by_day(faculty_id, 'Tuesday')
+        wednesday_schedule = faculty_model.get_schedule_by_day(faculty_id, 'Wednesday')
+        thursday_schedule = faculty_model.get_schedule_by_day(faculty_id, 'Thursday')
+        friday_schedule = faculty_model.get_schedule_by_day(faculty_id, 'Friday')
+        saturday_schedule = faculty_model.get_schedule_by_day(faculty_id, 'Saturday')
+        sunday_schedule = faculty_model.get_schedule_by_day(faculty_id, 'Sunday')
+      
+        print(monday_schedule)
+        print(tuesday_schedule)
         # Use jsonify to send JSON response
-        return jsonify({"data": monday_schedule, "success": True})
+        return jsonify({"data": {"monday_schedule": monday_schedule, "tuesday_schedule": tuesday_schedule, "wednesday_schedule": wednesday_schedule, "friday_schedule": friday_schedule,
+                                 "thursday_schedule": thursday_schedule, "saturday_schedule": saturday_schedule,"sunday_schedule": sunday_schedule }, "success": True})
     except Exception as e:
         return jsonify({"error": str(e), "success": False})
+
+
 
 
