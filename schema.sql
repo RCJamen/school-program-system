@@ -136,19 +136,6 @@ sectionID VARCHAR(255),
 UNIQUE KEY unique_assignFaculty (facultyID, subjectID, sectionID)
 );
 
-DROP TABLE IF EXISTS `class_records`;
-CREATE TABLE IF NOT EXISTS `class_records`(
-classRecordID INT AUTO_INCREMENT NOT NULL,
-studentID INT NOT NULL,
-subjectCode VARCHAR(255) NOT NULL,
-assessID INT NOT NULL,
-totalGrade INT NOT NULL,
-PRIMARY KEY(classRecordID),
-FOREIGN KEY(studentID) REFERENCES students(studentID),
-FOREIGN KEY(subjectCode) REFERENCES subject(subjectCode),
-FOREIGN KEY(assessID) REFERENCES assessments(assessID)
-);
-
 INSERT INTO `faculty` (facultyID, firstname ,lastname, email)
 VALUES ('None', 'None', 'None', 'None');
 
@@ -208,4 +195,52 @@ VALUES
 -- ('2023-0002', 'CSC181', 'None'),
 -- ('2023-0002', 'CCC181', 'None'),
 -- ('2023-0004', 'CCC102', 'None');
+
+
+-- FOR CLASS RECORD -- 
+CREATE INDEX idx_lastname ON students (lastname);
+CREATE TABLE ClassRecord (
+    RecordNo INT,
+    studentID INT,
+    lastname VARCHAR(255),
+    firstname VARCHAR(255),
+    WrittenWork1 INT,
+    WrittenWork2 INT,
+    -- Add more columns for additional written works if needed
+    PerformanceTask1 INT,
+    PerformanceTask2 INT,
+    -- Add more columns for additional performance tasks if needed
+    TotalScoreWrittenWork INT,
+    TotalScorePerformanceTask INT,
+    TotalGradePercentage DECIMAL(5, 2),
+    -- Add more columns as needed
+    PRIMARY KEY (RecordNo),
+    FOREIGN KEY (studentID) REFERENCES students (studentID) ON UPDATE CASCADE ON DELETE CASCADE,
+    FOREIGN KEY (lastname) REFERENCES students (lastname) ON UPDATE CASCADE ON DELETE CASCADE,
+    FOREIGN KEY (firstname) REFERENCES students (firstname) ON UPDATE CASCADE ON DELETE CASCADE
+);
+
+-- DROP TABLE IF EXISTS `class_records`;
+-- CREATE TABLE IF NOT EXISTS `class_records`(
+-- classRecordID INT AUTO_INCREMENT NOT NULL,
+-- studentID INT NOT NULL,
+-- subjectCode VARCHAR(255) NOT NULL,
+-- assessID INT NOT NULL,
+-- totalGrade INT NOT NULL,
+-- PRIMARY KEY(classRecordID),
+-- FOREIGN KEY(studentID) REFERENCES students(studentID),
+-- FOREIGN KEY(subjectCode) REFERENCES subject(subjectCode),
+-- FOREIGN KEY(assessID) REFERENCES assessments(assessID)
+-- );
+
+
+DROP TABLE IF EXISTS `gradeDistribution`;
+CREATE TABLE IF NOT EXISTS `gradeDistribution`(
+name VARCHAR(255) NOT NULL,
+percentage INT NOT NULL,
+FOREIGN KEY(name) REFERENCES assessments(name)
+);
+
+INSERT INTO gradeDistribution (name,percentage)
+('Written Works','40')
 
