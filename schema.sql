@@ -119,6 +119,8 @@ credits INT,
 UNIQUE KEY unique_subject (subjectCode, description, credits)
 );
 
+-- Drop the existing schedule table if it exists
+
 DROP TABLE IF EXISTS `subject_section`;
 CREATE TABLE IF NOT EXISTS `subject_section`(
 subsecID INT NOT NULL AUTO_INCREMENT PRIMARY KEY,
@@ -127,6 +129,23 @@ sectionID VARCHAR(255),
 UNIQUE KEY unique_subject_section (subjectID, sectionID)
 );
 
+DROP TABLE IF EXISTS `schedule`;
+
+CREATE TABLE IF NOT EXISTS `schedule` (
+    scheduleID INT PRIMARY KEY AUTO_INCREMENT,
+    subjectID VARCHAR(10),
+    sectionID VARCHAR(255),
+    day VARCHAR(255),
+    time_start TIME,
+    time_end TIME,
+    CONSTRAINT unique_schedule_time UNIQUE (day, time_start, time_end),
+    FOREIGN KEY (subjectID, sectionID) REFERENCES subject_section(subjectID, sectionID)
+);
+
+
+
+-- to handle 1 section of the same subject
+-- but can handle many subjects (subjectID not unique) of the same section-- Drop the existing assignFaculty table if it exists
 DROP TABLE IF EXISTS `assignFaculty`;
 CREATE TABLE IF NOT EXISTS `assignFaculty`(
 assignFacultyID INT NOT NULL AUTO_INCREMENT PRIMARY KEY,
@@ -158,19 +177,19 @@ VALUES ('2023-0001', 'Fulgent', 'Lavesores', 'fulgent.lavesores@g.msuiit.edu.ph'
 ('2023-0003', 'Janella', 'Balantac', 'janella.balantac@g.msuiit.edu.ph'),
 ('2023-0004', 'Ramel Cary', 'Jamen', 'ramelcary.jamen@g.msuiit.edu.ph');
 
--- INSERT INTO subject (subjectCode, description, credits)
--- VALUES 
--- ('CCC100', 'Fundamentals of Computing', 3),
--- ('CCC101', 'Computer Programming 1', 3),
--- ('CCC102', 'Computer Programming 2', 3),
--- ('CCC121', 'Data Structures and Algorithm', 3),
--- ('CCC151', 'Information Management', 3),
--- ('CSC112', 'Computer Organization and Architecture', 3),
--- ('CSC124', 'Design and Analysis of Algorithms', 3),
--- ('CSC186', 'Human-Computer Interaction', 3),
--- ('CCC181', 'Applications Development and
--- Emerging Technologies', 3),
--- ('CSC145', 'Programming Languages', 3);
+INSERT INTO subject (subjectCode, description, credits)
+VALUES 
+('CCC100', 'Fundamentals of Computing', 3),
+('CCC101', 'Computer Programming 1', 3),
+('CCC102', 'Computer Programming 2', 3),
+('CCC121', 'Data Structures and Algorithm', 3),
+('CCC151', 'Information Management', 3),
+('CSC112', 'Computer Organization and Architecture', 3),
+('CSC124', 'Design and Analysis of Algorithms', 3),
+('CSC186', 'Human-Computer Interaction', 3),
+('CCC181', 'Applications Development and
+Emerging Technologies', 3),
+('CSC145', 'Programming Languages', 3);
 
 INSERT INTO section (sectionCode)
 VALUES
@@ -188,23 +207,47 @@ VALUES
 ('CS4B'),
 ('CS4C');
 
--- INSERT INTO subject_section (subjectID, sectionID)
--- VALUES 
--- ('CCC100', 'None'),
--- ('CCC101', 'None'),
--- ('CCC102', 'None'),
--- ('CCC121', 'None'),
--- ('CCC151', 'None'),
--- ('CSC112', 'None'),
--- ('CSC124', 'None'),
--- ('CSC186', 'None'),
--- ('CCC181', 'None'),
--- ('CSC145', 'None');
+-- First, insert data into subject_section
+INSERT INTO subject_section (subjectID, sectionID)
+VALUES 
+('CCC100', 'CS1C'),
+('CCC101', 'CS2B'),
+('CCC102', 'CS1A'),
+('CCC121', 'CS1A'),
+('CCC151', 'CS4B'),
+('CSC112', 'CS4B'),
+('CSC124', 'CS4C'),
+('CSC186', 'CS4C'),
+('CCC181', 'CS2B'),
+('CSC145', 'CS4C');
 
--- INSERT INTO assignFaculty (facultyID, subjectID, sectionID)
--- VALUES
--- ('2023-0001', 'CSC181', 'None'),
--- ('2023-0001', 'CCC181', 'None'),
--- ('2023-0002', 'CSC181', 'None'),
--- ('2023-0002', 'CCC181', 'None'),
--- ('2023-0004', 'CCC102', 'None');
+-- Then, insert data into the schedule table
+INSERT INTO assignFaculty (facultyID, subjectID, sectionID)
+VALUES
+('None', 'CCC100', 'CS1C'),
+('None', 'CCC101', 'CS2B'),
+('None', 'CCC102', 'CS1A'),
+('None', 'CCC121', 'CS1A'),
+('None', 'CCC151', 'CS4B'),
+('None', 'CSC112', 'CS4B'),
+('None', 'CSC124', 'CS4C'),
+('None', 'CSC186', 'CS4C'),
+('None', 'CCC181', 'CS2B'),
+('None', 'CSC145', 'CS4C');
+
+
+-- Insert data into the schedule table
+-- INSERT INTO `schedule` (subjectID, sectionID, day, time_start, time_end)
+-- VALUES 
+-- ('CCC100', 'CS1C', 'Monday', '09:00', '10:30'),
+-- ('CCC101', 'CS2B', 'Tuesday', '10:30', '12:00'),
+-- ('CCC102', 'CS1A', 'Wednesday', '13:00', '14:30'),
+-- ('CCC121', 'CS1A', 'Thursday', '15:00', '16:30'),
+-- ('CCC151', 'CS4B', 'Friday', '14:00', '15:30'),
+-- ('CSC112', 'CS4B', 'Monday', '09:00', '10:30'),
+-- ('CSC124', 'CS4C', 'Tuesday', '10:30', '12:00'),
+-- ('CSC186', 'CS4C', 'Wednesday', '13:00', '14:30'),
+-- ('CCC181', 'CS2B', 'Thursday', '15:00', '16:30'),
+-- ('CSC145', 'CS4C', 'Friday', '14:00', '15:30');
+
+
