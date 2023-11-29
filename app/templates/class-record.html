@@ -18,8 +18,8 @@
         <div class="row">
             <div class="col-10">
             <!--SUBJECT FLASH MESSAGE  -->
-                <p>Subject Code: <b>{{ subject_code }}</b></p>
-                <p>Section Code: <b>{{ section_code }}</b></p>
+                <p>Subject Code: <b></b></p>
+                <p>Section Code: <b></b></p>
                 <p>Assessment ID: <b></b></p>
            </div>
             <div class="col-2 float-end">
@@ -47,7 +47,7 @@
                         <th></th>
                         <th></th>
                         <th></th>
-                        <th>Performance Task</th>
+                        <th>Oral Participation</th>
                     </tr>
                     <tr>
                         <th> </th>
@@ -105,25 +105,33 @@
                     </tr>
                 </thead>
                 <tbody>
+                    {% for student in students %}
+
                     <tr>
-                        <td>1</td>
-                        <td>2019-2093</td>
-                        <td>Jamen</td>
-                        <td>Ramel Cary</td>
+                        <td>{{ student.id }}</td>
+                        <td>{{ student.student_id }}</td>
+                        <td>{{ student.last_name }}</td>
+                        <td>{{ student.first_name }}</td>
                         <td>10</td>
                         <td>10</td>
-                        <td> </td>
-                        <td><b>20</b></td>
+                        <td></td>
+                        <td>20</td>
                         <td>10</td>
                         <td>10</td>
-                        <td> </td>
-                        <td><b>20</b></td>
+                        <td></td>
+                        <td>20</td>
                         <td>10</td>
                         <td>10</td>
-                        <td> </td>
-                        <td><b>20</b></td>
-                        <td><b>%</b></td>
-                        <td><button type="button" class="btn btn-primary">Notify Grade</button></td>
+                        <td></td>
+                        <td>20</td>
+                        <td>%</td>
+                        <td><button type="button" class="btn btn-primary">Notify</button></td>
+                        <td>
+                            <button type="button" class="btn btn-primary">
+                                <i class="fa-solid fa-user-minus"></i>
+                            </button>
+                        </td>
+                        
                     </tr>
                 </tbody>
             </table>
@@ -144,12 +152,18 @@
                         </tr>
                     </thead>
                     <tbody>
-                        {% for row in result %}
                         <tr>
-                            <td>{{ row.assessment }}</td>
-                            <td>{{ row.percentage }}%</td>
+                            <td>Written Work</td>
+                            <td>%</td>
                         </tr>
-                    {% endfor %}
+                        <tr>
+                            <td>Performance Task</td>
+                            <td>%</td>
+                        </tr>
+                        <tr>
+                            <td>Oral Participation</td>
+                            <td>%</td>
+                        </tr>
                     </tbody>
                 </table>
                 <button type="button" class="btn btn-secondary">
@@ -267,6 +281,5 @@
 {% endblock %}
 
 {% block pagescript %}
-<script type="text/javascript" src="../static/js/class-record.js"></script>
-
+    <script type="text/javascript" src="{{ url_for('static', filename='js/class-record.js') }}"></script>
 {% endblock %}

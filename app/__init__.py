@@ -33,4 +33,5 @@ def create_app():
     app.register_blueprint(subject)
     app.register_blueprint(classRecord)
 
+
     return app
