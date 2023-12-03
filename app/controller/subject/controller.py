@@ -12,6 +12,6 @@ def index():
     subjectInfo = SubjectList.all()
     return render_template("subjectList.html", subjectInfo=subjectInfo)
 
-@subject.route("/class-record")
-def class_record():
-    return render_template("class-record.html")
+# @subject.route("/class-record")
+# def class_record():
+#     return render_template("class-record.html")

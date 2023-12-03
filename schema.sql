@@ -201,17 +201,17 @@ VALUES
 
 
 DROP TABLE IF EXISTS `class_records`;
-CREATE TABLE IF NOT EXISTS `class_records`(
-classRecordID INT AUTO_INCREMENT NOT NULL,
-studentID INT NOT NULL,
-subjectCode VARCHAR(255) NOT NULL,
-assessID INT NOT NULL,
-totalGrade INT NOT NULL,
-PRIMARY KEY(classRecordID),
-FOREIGN KEY(studentID) REFERENCES students(studentID),
-FOREIGN KEY(subjectCode) REFERENCES subject(subjectCode),
-FOREIGN KEY(assessID) REFERENCES assessments(assessID)
+
+CREATE TABLE IF NOT EXISTS `class_records` (
+    classRecordno INT AUTO_INCREMENT NOT NULL,
+    studentID INT NOT NULL,
+    lastname VARCHAR(255) NOT NULL,
+    firstname VARCHAR(255) NOT NULL,
+    email VARCHAR(255) NOT NULL,
+    PRIMARY KEY (classRecordno),
+    UNIQUE KEY (studentID)
 );
+
 
 
 DROP TABLE IF EXISTS `gradeDistribution`;

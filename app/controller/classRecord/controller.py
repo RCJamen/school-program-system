@@ -1,12 +1,26 @@
-# app/controller/classRecord/controller.py
+
 from flask import Blueprint, render_template
 from app.models.classRecordModel import Student
+from app import mysql 
 
-classRecord_bp = Blueprint('classRecord', __name__, url_prefix='/class-record')
+classRecord = Blueprint('classRecord', __name__)
 
-@classRecord_bp.route('/class-record')
+@classRecord.route('/class-record')
 def show_class_record():
-    # Fetch data from the database
-    students = Student.query.all()
+
+    conn = mysql.connection
+    cursor = conn.cursor(dictionary=True)
+
+    try:
+
+        cursor.execute("SELECT * FROM class_records")
+        students = cursor.fetchall()
+    except Exception as e:
+
+        print(f"Error fetching data from the database: {e}")
+        students = []
+
+
+    cursor.close()
 
     return render_template('class-record.html', students=students)

@@ -1,3 +1,4 @@
+
 from flask import Blueprint
 
 classRecord = Blueprint("classRecord", __name__)
