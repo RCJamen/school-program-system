@@ -88,13 +88,14 @@ PRIMARY KEY(chairID)
 
 DROP TABLE IF EXISTS `students`;
 CREATE TABLE IF NOT EXISTS `students`(
-studentID INT AUTO_INCREMENT NOT NULL,
+studentID VARCHAR(10) NOT NULL,
 firstname VARCHAR(255) NOT NULL,
 lastname VARCHAR(255) NOT NULL,
 courseID INT NOT NULL,
 gmail VARCHAR(255) NOT NULL,
 PRIMARY KEY(studentID),
 FOREIGN KEY(courseID) REFERENCES courses(courseID)
+FOREIGN KEY(studentID) REFERENCES class_records(studentID)
 );
 
 DROP TABLE IF EXISTS `faculty`;
@@ -204,7 +205,7 @@ DROP TABLE IF EXISTS `class_records`;
 
 CREATE TABLE IF NOT EXISTS `class_records` (
     classRecordno INT AUTO_INCREMENT NOT NULL,
-    studentID INT NOT NULL,
+    studentID VARCHAR (10) NOT NULL,
     lastname VARCHAR(255) NOT NULL,
     firstname VARCHAR(255) NOT NULL,
     email VARCHAR(255) NOT NULL,
