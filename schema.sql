@@ -174,7 +174,7 @@ VALUES ('None', 'None', 'None', 'None');
 INSERT INTO `faculty` (facultyID, firstname, lastname, email)
 VALUES ('2023-0001', 'Fulgent', 'Lavesores', 'fulgent.lavesores@g.msuiit.edu.ph'),
 ('2023-0002', 'Alrick', 'Gicole', 'alrick.gicole@g.msuiit.edu.ph'),
-('2023-0003', 'Janella', 'Balantac', 'janella.balantac@g.msuiit.edu.ph'),
+('2023-0003', 'Janella', 'Balantac', 'janellasuzanne.balantac@g.msuiit.edu.ph'),
 ('2023-0004', 'Ramel Cary', 'Jamen', 'ramelcary.jamen@g.msuiit.edu.ph');
 
 INSERT INTO subject (subjectCode, description, credits)
