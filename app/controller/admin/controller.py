@@ -68,6 +68,7 @@ def callback():
     )
     session["google_id"] = id_info.get("sub")
     session["name"] = id_info.get("name")
+    session["email"] = id_info.get("email")
 
     user_info_endpoint = "https://www.googleapis.com/oauth2/v1/userinfo"
     user_info_response = requests.get(
