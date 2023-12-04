@@ -182,7 +182,7 @@ class Subjects(object):
     @classmethod
     def refer_handler(cls):
         cursor = mysql.connection.cursor()
-        sql = f"SELECT facultyID, firstname, lastname FROM faculty"
+        sql = f"SELECT facultyID, firstname, lastname FROM faculty WHERE facultyID != 'None'"
         cursor.execute(sql)
         result = cursor.fetchall()
         return result
@@ -225,7 +225,7 @@ class Subjects(object):
             return f"Failed to load Subject List: {str(e)}"
     
     @classmethod    
-    def getSubjectsHandled(cls, handlerName):
+    def getSubjectsHandled(cls, userEmail):
         try:
             cursor = mysql.connection.cursor()
             sql = '''SELECT 
@@ -239,14 +239,30 @@ class Subjects(object):
                         subject AS s ON af.subjectID = s.subjectCode
                     LEFT JOIN
                         faculty AS f ON af.facultyID = f.facultyID
-                    WHERE 
-                        CONCAT(f.firstname, ' ', f.lastname) = %s
+                    WHERE
+                        f.email = %s
                     ORDER BY s.subjectCode, af.sectionID'''
-            cursor.execute(sql, (handlerName,))
+                        # f.facultyID = (SELECT facultyID from faculty where email = %s)
+            cursor.execute(sql, (userEmail,))
             result = cursor.fetchall()
             return result
         except Exception as e:
             return f"Failed to load list of Subjects Handled: {str(e)}"
+
+    # supposedly, to map google_id to user's facultyID
+    # @classmethod
+    # def setGoogleID(cls, googleID, userEmail):
+    #     try:
+    #         cursor = mysql.connection.cursor()
+    #         sql = '''UPDATE faculty
+    #                 SET
+    #                     googleID = %s
+    #                 WHERE
+    #                     email = %s'''
+    #         cursor.execute(sql, (googleID, userEmail,))
+    #         mysql.connection.commit()
+    #     except Exception as e:
+    #         return f"Failed to set Google ID: {str(e)}"
 
     
     # GET LIST OF SUBJECTS BY SEMESTER

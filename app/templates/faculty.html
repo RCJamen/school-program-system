@@ -4,6 +4,8 @@
 
 
 {% block pagestyle %}
+{% block schedulestyle %}
+{% endblock %}
 <link rel="stylesheet" href="../static/css/faculty.css">
 {% endblock %}
 
@@ -11,99 +13,105 @@
 
 
 <meta name="csrf-token" content="{{ csrf_token() }}">
-<div class="faculty-container">
-  <div class="faculty-title">
-    <h1 class="m-0"> Faculty List </h1>
-  </div>
-  <hr>
-  <div class="faculty-content">
-
-    <div class="faculty-header">
-      <h6>School Year</h6>
-      <div class="row">
-        <div class="col-3">
-          <select class="form-select custom-select-size" aria-label="Default select example">
-            <option selected>Feature Available Soon</option>
-            <option value="1">One</option>
-            <option value="2">Two</option>
-            <option value="3">Three</option>
-          </select>
-        </div>
-        <div class="col-4" id="flash-messages-container">
-          {% if flash_message %}
-          <div class="alert alert-{{ flash_message.type }} alert-dismissible fade show" role="alert">
-            <div class="d-flex justify-content-between align-items-center">
-              <span>{{ flash_message.message | safe }}</span>
-              <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
-            </div>
-          </div>
-          {% endif %}
-
-          {% for field, errors in add_form.errors.items() %}
-          <div class="alert alert-danger alert-dismissible fade show" role="alert">
-            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
-            {{ ', '.join(errors) }}
-          </div>
-          {% endfor %}
-
-
-        </div>
-
-
-        <div class="col-5"> <button type="button" class="btn btn-primary float-end AddFacultyBtn" data-bs-toggle="modal"
-            data-bs-target="#addFacultyModal"><i class="fa-solid fa-user-plus"></i> Add Faculty </button> </div>
-
-      </div>
+<div class = "faculty-container">
+    <div class = "faculty-title">
+        <h1 class ="m-0"> Faculty List </h1>
     </div>
-    <div class="faculty-body ">
-      <div class="bs-example container faculty-table table-responsive" data-example-id="striped-table">
-        <table class="table table-hover ">
+        <hr>
+        <div class = "faculty-content"> 
+        
+            <div class = "faculty-header">
+                 <h6>School Year</h6>
+                    <div class = "row">
+                        <div class="col-3">
+                            <select class="form-select custom-select-size" aria-label="Default select example">
+                                <option selected>Feature Available Soon</option>
+                                <option value="1">One</option>
+                                <option value="2">Two</option>
+                                <option value="3">Three</option>
+                            </select>
+                        </div>
+                        <div class="col-4" id = "flash-messages-container">
+                          {% if flash_message %}
+                              <div class="alert alert-{{ flash_message.type }} alert-dismissible fade show" role="alert">
+                                  <div class="d-flex justify-content-between align-items-center">
+                                      <span>{{ flash_message.message | safe }}</span>
+                                      <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                                  </div>
+                              </div>
+                          {% endif %}
 
-          <thead>
-            <tr>
-              <th>ID</th>
-              <th>First Name</th>
-              <th>Last Name</th>
-              <th>Email</th>
-              <th>Action</th>
-            </tr>
-          </thead>
-          <tbody class="table-group-divider">
-            {% for faculty in faculties %}
-            <tr>
-              <th scope="row">{{faculty.facultyID}}</th>
-              <td>{{faculty.firstname}}</td>
-              <td>{{faculty.lastname}}</td>
-              <td>{{faculty.email}}</td>
-              <td>
-                <button type="button" class="btn btn-outline-light edit-faculty"
-                  data-faculty-edit-firstname="{{faculty.firstname}}" data-bs-target="#editFacultyModal"
-                  data-faculty-edit-lastname="{{faculty.lastname}}" data-faculty-edit-id="{{faculty.facultyID}}"
-                  data-faculty-edit-email="{{faculty.email}}" data-bs-toggle="modal"><i class="fa-solid fa-pen"
-                    style="color: #000000;"></i></button>
+                          {% for field, errors in add_form.errors.items() %}
+                              <div class="alert alert-danger alert-dismissible fade show" role="alert">
+                                  <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                                  {{ ', '.join(errors) }}
+                              </div>
+                          {% endfor %}
 
-                <button type="button" class="btn btn-outline-light delete-faculty"
-                  data-faculty-name=" {{faculty.lastname}}, {{faculty.firstname}}"
-                  data-faculty-id="{{ faculty.facultyID }}" data-bs-toggle="modal" data-bs-target="#askDelete"><i
-                    class="fa-solid fa-trash" style="color: #000000;"></i></button>
 
-                <button type="button" class="btn btn-outline-light show-academic-load"><i
-                    class="fa-solid fa-chalkboard-user" style="color: #000000;"></i></button>
-              </td>
-            </tr>
-            {% endfor %}
-          </tbody>
-          <!-- <tfoot>
+                      </div>
+                        
+
+                        <div class = "col-5"> <button type="button" class="btn btn-primary float-end AddFacultyBtn" 
+                          data-bs-toggle="modal" data-bs-target="#addFacultyModal"><i class="fa-solid fa-user-plus"></i> Add Faculty </button> </div>
+
+                    </div>
+            </div>
+            <div class="faculty-body ">
+                <div class="bs-example container faculty-table table-responsive" data-example-id="striped-table">
+                    <table class="table table-hover ">
+                          
+                          <thead>
+                            <tr>
+                              <th>ID</th>
+                              <th>First Name</th>
+                              <th>Last Name</th>
+                              <th>Email</th>
+                              <th>Action</th>
+                            </tr>
+                          </thead>
+                          <tbody class = "table-group-divider">
+                            {% for faculty in faculties %}
+                            <tr>
+                              <th scope="row">{{faculty.facultyID}}</th>
+                              <td>{{faculty.firstname}}</td>
+                              <td>{{faculty.lastname}}</td>
+                              <td>{{faculty.email}}</td>
+                              <td>
+                                <button type="button" class="btn btn-outline-light edit-faculty" data-faculty-edit-firstname="{{faculty.firstname}}"
+                                data-bs-target="#editFacultyModal" data-faculty-edit-lastname="{{faculty.lastname}}" data-faculty-edit-id="{{faculty.facultyID}}"
+                                data-faculty-edit-email="{{faculty.email}}" data-bs-toggle="modal"><i class="fa-solid fa-pen" 
+                                style="color: #000000;"></i></button>
+
+                                <button type="button" class="btn btn-outline-light delete-faculty" data-faculty-name=" {{faculty.lastname}}, {{faculty.firstname}}" 
+                                data-faculty-id="{{ faculty.facultyID }}" data-bs-toggle="modal" data-bs-target="#askDelete"><i class="fa-solid fa-trash" 
+                                style="color: #000000;"></i></button>
+                                
+                                <button type="button" class="btn btn-outline-light show-academic-load"><i class="fa-solid fa-chalkboard-user" 
+                                style="color: #000000;" data-bs-toggle="modal" data-bs-target="#academic-load" data-facultyid-academic="{{ faculty.facultyID }}" onclick="showAcademicLoad(this)"
+                                data-academic-name=" {{faculty.lastname}}, {{faculty.firstname}}"></i></button>
+                              </td>
+                            </tr>
+                            {% endfor %}
+                          </tbody>
+                          <!-- <tfoot>
                           <tr class="note"><th>Source</th><td colspan=3><a href="https://getbootstrap.com/css/#tables">BootStrap documentation</a></td></tr>
                           </tfoot> -->
-        </table>
-      </div>
-    </div>
-  </div>
+                        </table>
+                      </div>
+                    </div>      
+        </div>
 </div>
 
-<div class="modal fade" id="addFacultyModal" data-bs-backdrop="static" tabindex="-1" role="dialog"
-  aria-labelledby="FacultyModalLabel" aria-hidden="true">
+<div
+  class="modal fade"
+  id="addFacultyModal"
+  data-bs-backdrop="static"
+  tabindex="-1"
+  role="dialog"
+  aria-labelledby="FacultyModalLabel"
+  aria-hidden="true"
+>
   <div class="modal-dialog" role="document">
     <form action="/faculty" method="POST">
       {{ add_form.csrf_token }}
@@ -111,37 +119,43 @@
       <div class="modal-content">
         <div class="modal-header faculty-modal-header">
           <h5 class="modal-title">Personal Faculty Information</h5>
-          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+          <button
+            type="button"
+            class="btn-close"
+            data-bs-dismiss="modal"
+            aria-label="Close"
+          ></button>
         </div>
         <div class="modal-body faculty-modal-body">
-
+          
           <div class="form-group">
             <label for="facultyIDInput">ID</label>
-            {{ add_form.facultyIDInput(class="form-control", placeholder="Faculty ID", required=True,
-            id="facultyIDInput") }}
+            {{ add_form.facultyIDInput(class="form-control", placeholder="Faculty ID", required=True, id="facultyIDInput") }}
           </div>
           <div class="form-group">
             <label for="facultyfirstName">First Name</label>
-            {{ add_form.facultyfirstName(class="form-control", placeholder="First Name", required=True,
-            id="facultyfirstName") }}
+            {{ add_form.facultyfirstName(class="form-control", placeholder="First Name", required=True, id="facultyfirstName") }}
           </div>
           <!-- Properly closed the second form-group -->
           <div class="form-group">
             <label for="facultylastName">Last Name</label>
-            {{ add_form.facultylastName(class="form-control", placeholder="Last Name", required=True,
-            id="facultylastName") }}
+            {{ add_form.facultylastName(class="form-control", placeholder="Last Name", required=True, id="facultylastName") }}
           </div>
           <div class="form-group">
             <label for="facultyEmail">MSU-IIT Email</label>
             {{ add_form.facultyEmail(class="form-control", placeholder="Email", required=True, id="facultyEmail") }}
           </div>
         </div>
-
+        
         <div class="modal-footer faculty-modal-footer">
-          <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">
-            <i class="fa-solid fa-xmark" style="color: #ffffff;"></i> Close
+          <button
+            type="button"
+            class="btn btn-secondary"
+            data-bs-dismiss="modal"
+          >
+          <i class="fa-solid fa-xmark" style="color: #ffffff;"></i> Close 
           </button>
-          <button type="submit" class="btn btn-warning AddFaculty"> <i class="fa-solid fa-user-plus"></i> Add Faculty
+          <button type="submit" class="btn btn-warning AddFaculty"> <i class="fa-solid fa-user-plus"></i> Add Faculty 
           </button>
         </div>
       </div>
@@ -168,50 +182,62 @@
 </div>
 
 
-<div class="modal fade" id="editFacultyModal" data-bs-backdrop="static" tabindex="-1" role="dialog"
-  aria-labelledby="editFacultyModalLabel" aria-hidden="true">
-  <div class="modal-dialog" role="document">
-    <form method="POST" id="editFacultyForm">4
 
+<div
+  class="modal fade"
+  id="editFacultyModal"
+  data-bs-backdrop="static"
+  tabindex="-1"
+  role="dialog"
+  aria-labelledby="editFacultyModalLabel"
+  aria-hidden="true"
+>
+  <div class="modal-dialog" role="document">
+    <form method="POST" id ="editFacultyForm">4
+    
       {{ update_form.csrf_token }}
       {{ update_form.hidden_tag() }}
       <div class="modal-content">
         <div class="modal-header edit-faculty-modal-header">
           <h5 class="modal-title">Update Personal Faculty Information</h5>
-          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+          <button
+            type="button"
+            class="btn-close"
+            data-bs-dismiss="modal"
+            aria-label="Close"
+          ></button>
         </div>
         <div class="modal-body faculty-modal-body">
-
+          
           <div class="form-group">
             <label for="editFacultyIDInput">ID</label>
-            {{ update_form.editFacultyIDInput(class="form-control", placeholder="Faculty ID", required=True,
-            id="editFacultyIDInput", readonly=True) }}
+            {{ update_form.editFacultyIDInput(class="form-control", placeholder="Faculty ID", required=True, id="editFacultyIDInput", readonly=True) }}
           </div>
           <div class="form-group">
             <label for="editFacultyfirstName">First Name</label>
-            {{ update_form.editFacultyfirstName(class="form-control", placeholder="First Name", required=True,
-            id="editFacultyfirstName") }}
+            {{ update_form.editFacultyfirstName(class="form-control", placeholder="First Name", required=True, id="editFacultyfirstName") }}
           </div>
           <!-- Properly closed the second form-group -->
           <div class="form-group">
             <label for="editFacultylastName">Last Name</label>
-            {{ update_form.editFacultylastName(class="form-control", placeholder="Last Name", required=True,
-            id="editFacultylastName") }}
+            {{ update_form.editFacultylastName(class="form-control", placeholder="Last Name", required=True, id="editFacultylastName") }}
           </div>
           <div class="form-group">
             <label for="editFacultyEmail">MSU-IIT Email</label>
-            {{ update_form.editFacultyEmail(class="form-control", placeholder="Email", required=True,
-            id="editFacultyEmail") }}
+            {{ update_form.editFacultyEmail(class="form-control", placeholder="Email", required=True, id="editFacultyEmail") }}
           </div>
         </div>
-
+        
         <div class="modal-footer faculty-modal-footer">
-          <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">
-            <i class="fa-solid fa-xmark" style="color: #ffffff;"></i> Close
+          <button
+            type="button"
+            class="btn btn-secondary"
+            data-bs-dismiss="modal"
+          >
+          <i class="fa-solid fa-xmark" style="color: #ffffff;"></i> Close 
           </button>
-          <button type="submit" class="btn btn-success UpdateFaculty" data-bs-dismiss="modal"> <i
-              class="fa-solid fa-user-pen"></i>Update Faculty</button>
-
+          <button type="submit" class="btn btn-success UpdateFaculty" data-bs-dismiss="modal"> <i class="fa-solid fa-user-pen"></i>Update Faculty</button>
+          
         </div>
       </div>
     </form>
@@ -219,8 +245,173 @@
 </div>
 
 
+<div class="modal" tabindex="-1" id = academic-load>
+  <div class="modal-dialog modal-fullscreen modal-dialog-scrollable" >
+    <div class="modal-content">
+      
+     
+      <div class="modal-body academic-modal-body">
+        <div class="academic-header">
+          <button type="button" class="btn btn-outline-light" data-bs-dismiss="modal" aria-label="Close" cursor: pointer; onclick="goBack()">
+            <!-- Use an arrow-left icon from FontAwesome -->
+            <i class="fa-solid fa-arrow-left" style="color: #000000;"></i> back</button></div>
+        <div class = "row body-header">
+          <div class="col-3">
+            <div class = col-3-content>
+            <div class="profile-picture">
+              <img src="../static/pictures/orv.jpg" alt="Profile Picture">
+            </div>
+            <div class = "profile-content">
+              <h6  class id = "academic-faculty-name"></h6>
+              <p id = academic-faculty-id></p>
+            </div>
+          </div>
+        </div>
+          
+          <div class = "col-9"><button type="button" class="btn btn-danger float-end academicEditBtn" id = "academicEditBtn" >Edit</button></div>
+
+        </div>
+        <div class = "row body-sort" >
+          <div class = "col-2 school-year">
+            <h6>School Year</h6>
+            <select class="form-select custom-select-size" aria-label="Default select example">
+              <option selected>Feature Available Soon</option>
+              <option value="1">One</option>
+              <option value="2">Two</option>
+              <option value="3">Three</option>
+          </select>
+          </div>
+          <div class = "col-2 semester">
+            <h6>School Year</h6>
+            <select class="form-select custom-select-size" aria-label="Default select example">
+              <option selected>Feature Available Soon</option>
+              <option value="1">One</option>
+              <option value="2">Two</option>
+              <option value="3">Three</option>
+          </select>
+          </div>
+          <div class = "col-3" id="academic-flash-container">
+
+          </div>
+        </div>
+        <div class="container-fluid">
+          <ul class="nav nav-underline" id="myTabs">
+              <li class="nav-item">
+                  <a class="nav-link active" id="academicLoad-tab" data-bs-toggle="tab" href="#academicLoad">Academic Load</a>
+              </li>
+              <li class="nav-item">
+                  <a class="nav-link" id="classSchedule-tab" data-bs-toggle="tab" href="#classSchedule">Class Schedule</a>
+              </li>
+          </ul>
+          <div class="tab-content mt-3">
+              <div class="tab-pane fade show active" id="academicLoad">
+                  <div class="academic-table">
+                      <div class="bs-example container academic-table table-responsive" data-example-id="striped-table">
+                          <table class="table table-hover" id ="myTable" data-auto-refresh="true">
+                              <thead>
+                              <tr>
+                                  <th>Subject Code</th>
+                                  <th>Section</th>
+                                  <th>Description</th>
+                                  <th>Schedule</th>
+                                  <th>Credits</th>
+                                  <th>Action</th>
+                              </tr>
+                              </thead>
+                              <tbody class="table-group-divider" id="academic-table-body">
+                              <!-- DOM TO DYNAMICALLY ADD DATA IN TABLE -->
+                              </tbody>
+                          </table>
+                      </div>
+                  </div>
+              </div>
+              <div class="tab-pane fade" id="classSchedule">
+                {% include "schedule.html" %}
+              </div>
+          </div>
+      </div>
+        </div>
+    </div>
+  </div>
+</div>
+
+<div class="modal fade" id="secondModal" tabindex="-1" aria-labelledby="secondModalLabel" aria-hidden="true">
+  <div class="modal-dialog">
+      <div class="modal-content">
+          <div class="modal-header">
+              <h5 class="modal-title" id="secondModalLabel">Add Schedule For</h5>
+              <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+          </div>
+          <div class="modal-body">
+            <div class="add-schedule-container">
+              <form id="addScheduleForm">
+                <!-- Existing form fields -->
+            
+                <div class="form-group">
+                    <label for="subject-id">Subject</label>
+                    <input type="text" id="subject-id" name="subject-id" required readonly>
+                </div>
+                <div class="form-group">
+                    <label for="section-id">Section</label>
+                    <input type="text" id="section-id" name="section-id" required readonly>
+                </div>
+                <div class="form-group">
+                    <label for="day">Day</label>
+                    <select id="day" name="day" required>
+                      <option value="Monday">Monday</option>
+                      <option value="Tuesday">Tuesday</option>
+                      <option value="Wednesday">Wednesday</option>
+                      <option value="Thursday">Thursday</option>
+                      <option value="Friday">Friday</option>
+                      <option value="Saturday">Saturday</option>
+                      <option value="Sunday">Sunday</option>
+                  </select>
+                </div>
+                <div class="form-group">
+                    <label for="time-start">Time start</label>
+                    <input type="time" id="time-start" name="time-start" required>
+                </div>
+                <div class="form-group">
+                    <label for="time-end">Time End</label>
+                    <input type="time" id="time-end" name="time-end" required>
+                </div>
+                <div class="form-group">
+                    <input type="submit" value="Add Schedule" id = "addScheduleBtn" data-bs-dismiss="modal" aria-label="Close"> 
+                </div>
+            </form>
+            
+            </div>
+          </div>
+      </div>
+  </div>
+</div>
+<div class="modal fade" tabindex="-1" id="deleteSchedule" data-bs-backdrop="static" tabindex="-1" aria-labelledby="deleteScheduleLabel" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title">Confirmation</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body delete-schedule-modal-body">
+        <!-- Faculty details will be dynamically inserted here -->
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">No</button>
+        <button type="button" class="btn btn-primary delete-schedule-button">Yes</button>
+      </div>
+    </div>
+  </div>
+</div>
 {% endblock %}
 
 {% block pagescript %}
-<script type="text/javascript" src="../static/js/faculty.js"></script>
+
+<script
+      type="text/javascript"
+      src="../static/js/faculty.js"
+    ></script>
+
+    <script src="extensions/auto-refresh/bootstrap-table-auto-refresh.js"></script>
+    
 {% endblock %}
+
