@@ -72,11 +72,11 @@
                           </thead>
                           <tbody class = "table-group-divider">
                             {% for faculty in faculties %}
-                            <tr>
-                              <th scope="row">{{faculty.facultyID}}</th>
-                              <td>{{faculty.firstname}}</td>
-                              <td>{{faculty.lastname}}</td>
-                              <td>{{faculty.email}}</td>
+                            <tr id="faculty-row-{{ faculty.facultyID }}">
+                              <th id="faculty-id"  scope="row">{{faculty.facultyID}}</th>
+                              <td id="faculty-firstname">{{faculty.firstname}}</td>
+                              <td id="faculty-lastname">{{faculty.lastname}}</td>
+                              <td id="faculty-email">{{faculty.email}}</td>
                               <td>
                                 <button type="button" class="btn btn-outline-light edit-faculty" data-faculty-edit-firstname="{{faculty.firstname}}"
                                 data-bs-target="#editFacultyModal" data-faculty-edit-lastname="{{faculty.lastname}}" data-faculty-edit-id="{{faculty.facultyID}}"

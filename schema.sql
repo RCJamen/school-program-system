@@ -143,9 +143,7 @@ CREATE TABLE IF NOT EXISTS `schedule` (
     FOREIGN KEY (subjectID, sectionID) REFERENCES subject_section(subjectID, sectionID)
 );
 
-
-
--- to handle 1 section of the same subject
+--facultyID, section, semester, school year, subjectID
 -- but can handle many subjects (subjectID not unique) of the same section-- Drop the existing assignFaculty table if it exists
 DROP TABLE IF EXISTS `assignFaculty`;
 CREATE TABLE IF NOT EXISTS `assignFaculty`(
