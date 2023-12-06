@@ -55,7 +55,7 @@
                 <td>{{ subject[4] }}</td>
                 <td>{{ subject[5] }}</td>
                 <td>
-                  <a href="{{ url_for('classRecord.index', subject_code=subject[0], section_code=subject[1], description=subject[2] )}}"
+                  <a href="{{ url_for('classRecord.index', subject_code=subject[0], section_code=subject[1], description=subject[2], sem=subject[3], school_year=subject[5] )}}"
                     class="btn btn-outline-light class-record"><i class="fa-solid fa-clipboard fa-lg"
                       style="color: #000000;"></i></a>
                   </a>

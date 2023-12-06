@@ -15,7 +15,6 @@ def classRecord_route(rule, **options):
     return decorator
 
 
-@classRecord.route('/class_record/<string:subject_code>/<string:section_code>', methods=['GET'])
-def index(subject_code, section_code):
-    return render_template("class-record.html", subject_code=subject_code, section_code=section_code)
-
+@classRecord.route('/class_record/<string:subject_code>-<string:description>-<string:section_code>-<string:sem>-<string:school_year>', methods =['GET', 'POST'])
+def index(subject_code, section_code, description, sem, school_year):
+    return render_template("class-record.html")
