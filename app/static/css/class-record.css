@@ -9,7 +9,8 @@
 .classRecord-body .classRecord-table {
     width: 96.5%;
     margin-left: 21px;
-    overflow-x: auto;  /* Add this line to enable horizontal scrolling */
+    overflow-x: auto;
+    /* Add this line to enable horizontal scrolling */
 
 }
 
@@ -21,8 +22,10 @@
 
 .table-container {
     overflow-x: auto;
-    max-width: 100%; /* optional: restrict the maximum width of the container */
+    max-width: 100%;
+    /* optional: restrict the maximum width of the container */
 }
+
 .grade-distribution table,
 .grade-distribution h3,
 .grade-conversion table,
@@ -30,13 +33,11 @@
     text-align: center;
 }
 
-.grade-conversion tbody tr:nth-of-type(even)
-{
+.grade-conversion tbody tr:nth-of-type(even) {
     background: #a09595;
 }
 
 .dist-con,
-.accordion
-{
+.accordion {
     padding: 40px;
 }
