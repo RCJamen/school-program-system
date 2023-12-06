@@ -35,6 +35,8 @@
                 <th>Section</th>
                 <th>Description</th>
                 <th>Credits</th>
+                <th>Semester</th>
+                <th>School Year</th>
                 <th>Action</th>
               </tr>
             </thead>
@@ -50,10 +52,12 @@
                 <td>{{ subject[1] }}</td>
                 <td>{{ subject[2] }}</td>
                 <td>{{ subject[3] }}</td>
+                <td>{{ subject[4] }}</td>
+                <td>{{ subject[5] }}</td>
                 <td>
-                  <a href="{{ url_for('classRecord.index', subject_code=subject[0], section_code=subject[1]) }}"
-                    class="btn btn-outline-light class-record">
-                    <i class="fa-solid fa-clipboard fa-lg" style="color: #000000;"></i>
+                  <a href="{{ url_for('classRecord.index', subject_code=subject[0], section_code=subject[1], description=subject[2] )}}"
+                    class="btn btn-outline-light class-record"><i class="fa-solid fa-clipboard fa-lg"
+                      style="color: #000000;"></i></a>
                   </a>
                 </td>
               </tr>
@@ -63,8 +67,10 @@
           </table>
         </div>
       </div>
-      {% endblock %}
+    </div>
+  </div>
+</div>
+{% endblock %}
 
-      {% block pagescript %}
-      <script></script>
-      {% endblock %}
+{% block pagescript %}
+{% endblock %}

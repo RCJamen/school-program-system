@@ -95,8 +95,10 @@ courseID INT NOT NULL,
 gmail VARCHAR(255) NOT NULL,
 PRIMARY KEY(studentID),
 FOREIGN KEY(courseID) REFERENCES courses(courseID)
-FOREIGN KEY(studentID) REFERENCES class_records(studentID)
 );
+-- FOREIGN KEY(studentID) REFERENCES class_records(studentID)
+
+
 
 DROP TABLE IF EXISTS `faculty`;
 CREATE TABLE IF NOT EXISTS `faculty`(
@@ -120,8 +122,6 @@ credits INT,
 UNIQUE KEY unique_subject (subjectCode, description, credits)
 );
 
--- Drop the existing schedule table if it exists
-
 DROP TABLE IF EXISTS `subject_section`;
 CREATE TABLE IF NOT EXISTS `subject_section`(
 subsecID INT NOT NULL AUTO_INCREMENT PRIMARY KEY,
@@ -131,19 +131,18 @@ UNIQUE KEY unique_subject_section (subjectID, sectionID)
 );
 
 DROP TABLE IF EXISTS `schedule`;
-
 CREATE TABLE IF NOT EXISTS `schedule` (
-    scheduleID INT PRIMARY KEY AUTO_INCREMENT,
-    subjectID VARCHAR(10),
-    sectionID VARCHAR(255),
-    day VARCHAR(255),
-    time_start TIME,
-    time_end TIME,
-    CONSTRAINT unique_schedule_time UNIQUE (day, time_start, time_end),
-    FOREIGN KEY (subjectID, sectionID) REFERENCES subject_section(subjectID, sectionID)
+scheduleID INT PRIMARY KEY AUTO_INCREMENT,
+subjectID VARCHAR(10),
+sectionID VARCHAR(255),
+day VARCHAR(255),
+time_start TIME,
+time_end TIME,
+CONSTRAINT unique_schedule_time UNIQUE (day, time_start, time_end),
+FOREIGN KEY (subjectID, sectionID) REFERENCES subject_section(subjectID, sectionID)
 );
 
---facultyID, section, semester, school year, subjectID
+-- facultyID, section, semester, school year, subjectID
 -- but can handle many subjects (subjectID not unique) of the same section-- Drop the existing assignFaculty table if it exists
 DROP TABLE IF EXISTS `assignFaculty`;
 CREATE TABLE IF NOT EXISTS `assignFaculty`(
@@ -151,8 +150,31 @@ assignFacultyID INT NOT NULL AUTO_INCREMENT PRIMARY KEY,
 facultyID VARCHAR(10),
 subjectID VARCHAR(255),
 sectionID VARCHAR(255),
-UNIQUE KEY unique_assignFaculty (facultyID, subjectID, sectionID)
+sem VARCHAR(1),             -- independent assignment
+schoolYear VARCHAR(10),     -- independent assignment
+UNIQUE KEY unique_assignFaculty (facultyID, subjectID, sectionID, sem, schoolYear)
 );
+
+
+-- FOR CLASS RECORD -- 
+DROP TABLE IF EXISTS `class_records`;
+CREATE TABLE IF NOT EXISTS `class_records` (
+classRecordno INT AUTO_INCREMENT NOT NULL,
+studentID VARCHAR (10) NOT NULL,
+lastname VARCHAR(255) NOT NULL,
+firstname VARCHAR(255) NOT NULL,
+email VARCHAR(255) NOT NULL,
+PRIMARY KEY (classRecordno),
+UNIQUE KEY (studentID)
+);
+
+
+DROP TABLE IF EXISTS `gradeDistribution`;
+CREATE TABLE IF NOT EXISTS `gradeDistribution`(
+name VARCHAR(255) NOT NULL,
+percentage INT NOT NULL
+);
+
 
 INSERT INTO `faculty` (facultyID, firstname ,lastname, email)
 VALUES ('None', 'None', 'None', 'None');
@@ -207,19 +229,19 @@ VALUES
 ('CCC181', 'CS2B'),
 ('CSC145', 'CS4C');
 
--- Then, insert data into the schedule table
-INSERT INTO assignFaculty (facultyID, subjectID, sectionID)
+INSERT INTO assignFaculty (facultyID, subjectID, sectionID, sem, schoolYear)
 VALUES
-('None', 'CCC100', 'CS1C'),
-('None', 'CCC101', 'CS2B'),
-('None', 'CCC102', 'CS1A'),
-('None', 'CCC121', 'CS1A'),
-('None', 'CCC151', 'CS4B'),
-('None', 'CSC112', 'CS4B'),
-('None', 'CSC124', 'CS4C'),
-('None', 'CSC186', 'CS4C'),
-('None', 'CCC181', 'CS2B'),
-('None', 'CSC145', 'CS4C');
+('None', 'CCC100', 'CS1C', '1', '2023-2024'),
+('None', 'CCC101', 'CS2B', '1', '2023-2024'),
+('None', 'CCC102', 'CS1A', '1', '2023-2024'),
+('None', 'CCC121', 'CS1A', '1', '2023-2024'),
+('None', 'CCC151', 'CS4B', '1', '2023-2024'),
+('None', 'CSC112', 'CS4B', '1', '2023-2024'),
+('None', 'CSC124', 'CS4C', '1', '2023-2024'),
+('None', 'CSC186', 'CS4C', '1', '2023-2024'),
+('None', 'CCC181', 'CS2B', '1', '2023-2024'),
+('None', 'CSC145', 'CS4C', '1', '2023-2024');
+
 
 
 -- Insert data into the schedule table
@@ -244,32 +266,3 @@ VALUES
 -- ('2023-0002', 'CSC181', 'None'),
 -- ('2023-0002', 'CCC181', 'None'),
 -- ('2023-0004', 'CCC102', 'None');
-
-
--- FOR CLASS RECORD -- 
-
-
-DROP TABLE IF EXISTS `class_records`;
-
-CREATE TABLE IF NOT EXISTS `class_records` (
-    classRecordno INT AUTO_INCREMENT NOT NULL,
-    studentID VARCHAR (10) NOT NULL,
-    lastname VARCHAR(255) NOT NULL,
-    firstname VARCHAR(255) NOT NULL,
-    email VARCHAR(255) NOT NULL,
-    PRIMARY KEY (classRecordno),
-    UNIQUE KEY (studentID)
-);
-
-
-
-DROP TABLE IF EXISTS `gradeDistribution`;
-CREATE TABLE IF NOT EXISTS `gradeDistribution`(
-name VARCHAR(255) NOT NULL,
-percentage INT NOT NULL,
-FOREIGN KEY(name) REFERENCES assessments(name)
-);
-
-INSERT INTO gradeDistribution (name,percentage)
-('Written Works','40')
-
