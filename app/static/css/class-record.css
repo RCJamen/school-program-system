@@ -1,0 +1,40 @@
+.classRecord-title {
+    padding: 24px 32px 24px 32px;
+}
+
+.classRecord-header {
+    padding: 24px 32px 24px 32px;
+}
+
+.classRecord-body {
+    width: 96.5%;
+    margin-left: 50px;
+}
+
+/* Override padding */
+.table> :not(caption)>*>* {
+    padding: .5rem .5rem !important;
+}
+
+
+.BtnStyle {
+    background-color: rgba(164, 29, 33, 1) !important;
+    color: #ffffff !important;
+    border-color: rgba(164, 29, 33, 1) !important
+}
+
+.grade-distribution table,
+.grade-distribution h3,
+.grade-conversion table,
+.grade-conversion h3 {
+    text-align: center;
+}
+
+.grade-conversion tbody tr:nth-of-type(even) {
+    background: #a09595;
+}
+
+.dist-con,
+.accordion {
+    padding: 40px;
+}

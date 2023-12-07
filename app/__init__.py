@@ -25,10 +25,13 @@ def create_app():
     from .controller.subjectsHandled import subjectsHandled
     from .controller.faculty import faculty
     from .controller.subjects import subject
+    from .controller.classRecord import classRecord
 
     app.register_blueprint(admin)
     app.register_blueprint(subjectsHandled)
     app.register_blueprint(faculty)
     app.register_blueprint(subject)
+    app.register_blueprint(classRecord)
+
 
     return app

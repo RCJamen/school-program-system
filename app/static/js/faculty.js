@@ -110,11 +110,11 @@ $("#editFacultyForm").submit(function(e) {
         success: function(response) {
             console.log('Faculty Updated successfully:', response);
             editFlashMessage('success', `Faculty updated successfully - ID: <strong>${facultyID}</strong>`);
-            
-            // After the flash message is shown, redirect to the faculty page
-            setTimeout(function() {
-                editRedirect();
-            }, 3000); // Adjust the timeout duration as needed
+            const row = document.querySelector(`#faculty-row-${facultyID}`)
+            console.log(row)
+            row.querySelector("#faculty-firstname").textContent = facultyfirstName
+            row.querySelector("#faculty-lastname").textContent = facultylastName
+            row.querySelector("#faculty-email").textContent = facultyEmail
         },
         error: function(error) {
             // Handle error, e.g., display an error message
