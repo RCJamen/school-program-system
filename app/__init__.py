@@ -31,7 +31,7 @@ def create_app():
     app.register_blueprint(subjectsHandled)
     app.register_blueprint(faculty)
     app.register_blueprint(subject)
-    app.register_blueprint(classRecord, url_prefix='/')
+    app.register_blueprint(classRecord)
 
 
     return app

@@ -6,23 +6,23 @@
     padding: 24px 32px 24px 32px;
 }
 
-.classRecord-body .classRecord-table {
+.classRecord-body {
     width: 96.5%;
-    margin-left: 21px;
-    overflow-x: auto;  /* Add this line to enable horizontal scrolling */
-
+    margin-left: 50px;
 }
 
-.btn {
+/* Override padding */
+.table> :not(caption)>*>* {
+    padding: .5rem .5rem !important;
+}
+
+
+.BtnStyle {
     background-color: rgba(164, 29, 33, 1) !important;
     color: #ffffff !important;
     border-color: rgba(164, 29, 33, 1) !important
 }
 
-.table-container {
-    overflow-x: auto;
-    max-width: 100%; /* optional: restrict the maximum width of the container */
-}
 .grade-distribution table,
 .grade-distribution h3,
 .grade-conversion table,
@@ -30,13 +30,11 @@
     text-align: center;
 }
 
-.grade-conversion tbody tr:nth-of-type(even)
-{
+.grade-conversion tbody tr:nth-of-type(even) {
     background: #a09595;
 }
 
 .dist-con,
-.accordion
-{
+.accordion {
     padding: 40px;
 }

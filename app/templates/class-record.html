@@ -1,152 +1,110 @@
-
 {% extends "master_layout.html" %}
 
-{% block pagetitle %}<title>Class-Record</title> {% endblock %}
+{% block pagetitle %}<title>Class Record</title> {% endblock %}
 
 {% block pagestyle %}
-<link rel="stylesheet" href="../static/css/class-record.css">
+<link rel="stylesheet" href="{{ url_for('static', filename='css/class-record.css') }}"">
 {% endblock %}
 
 {% block pages %}
-<meta name="csrf-token" content="{{ csrf_token() }}">
-<div class="classRecord-container">
-    <div class="classRecord-title">
-        <h1 class="m-0"> CLASS RECORD  - CCC181 Application Development</h1>
-        <p>School Year: 2023-2024, 1st Semester - {{session['name']}}</p>
-        <hr>
-    </div>
+<div class= " classRecord-container">
+<div class="classRecord-title">
+    <h1><b>Class Record</b>: {{ClassDetails[0]}} - {{ClassDetails[1]}}</h1>
+    <h3><b>Section</b>: {{ClassDetails[2]}} - {{session['name']}}</h3>
+    <p>
+        <b>School Year</b>: {{ClassDetails[5]}},
+        {% if ClassDetails[4] == '1' %}
+        <b>Semester</b>: {{ClassDetails[4]}}st
+        {% elif ClassDetails[4] == '2' %}
+        <b>Semester</b>: {{ClassDetails[4]}}2nd
+        {% elif ClassDetails[4] == 'S' %}
+        <b>Semester</b>: Summer
+        {% endif %}
+    </p>
+</div>
+<hr>
+<div class="classRecord-content">
     <div class="classRecord-header">
         <div class="row">
-            <div class="col-10">
-            <!--SUBJECT FLASH MESSAGE  -->
-                <p>Subject Code: <b></b></p>
-                <p>Section Code: <b></b></p>
-                <p>Assessment ID: <b></b></p>
-           </div>
             <div class="col-2 float-end">
-                <button type="button" class="btn btn-secondary">
+                <button type="button" class="btn btn-secondary BtnStyle">
                     Add Student
                     <i class="fa-solid fa-user-plus"></i>
                 </button>
             </div>
         </div>
     </div>
-    <div class="table-container mx-5">
+    <div class="table-container d-flex">
         <div class="classRecord-body">
-            <table class="table" id="dynamic-table">
+            <table class="table table-hover" id="dynamic-table">
                 <thead>
-                    <tr>
-                        <th></th>
-                        <th></th>
-                        <th></th>
-                        <th></th>
-                        <th>Written Work</th>
-                        <th></th>
-                        <th></th>
-                        <th></th>
-                        <th>Performance Task</th>
-                        <th></th>
-                        <th></th>
-                        <th></th>
-                        <th>Oral Participation</th>
-                    </tr>
-                    <tr>
-                        <th> </th>
-                        <th> </th>
-                        <th> </th>
-                        <th>Highest Possible Score:</th>
-                        <th>10</th>
-                        <th>10</th>
-                        <th> </th>
-                        <th></th>
-                        <th>20</th>
-                        <th>20</th>
-                        <th></th>
-                        <th></th>
-                        <th>20</th>
-                        <th>20</th>
-                    </tr>
                     <tr>
                         <th>#</th>
                         <th>Student ID</th>
-                        <th>Last Name</th>
                         <th>First Name</th>
-                        <th>S</th>
-                        <th>
-                            S
-                        </th>
-                        <th>
-                            <button type="button" class="btn btn-secondary">
-                                <i class="fa-solid fa-plus"></i>
-                            </button>
-                        </th>
-                        <th>TS</th>
-                        <th>S</th>
-                        <th>
-                            S
-                        </th>
-                        <th>
-                            <button type="button" class="btn btn-secondary">
-                                <i class="fa-solid fa-plus"></i>
-                            </button>
-                        </th>       
-                        <th>TS</th>
-                        <th>S</th>
-                        <th>
-                            S
-                        </th>
-                        <th>
-                            <button type="button" class="btn btn-secondary">
-                                <i class="fa-solid fa-plus"></i>
-                            </button>
-                        </th>
-                        <th>TS</th>
+                        <th>Last Name</th>
                         <th>Total Grade</th>
                         <th>Action</th>
                     </tr>
                 </thead>
                 <tbody>
-                    {% for student in students %}
-
                     <tr>
-                        <td>{{ student.classRecordno }}</td>
-                        <td>{{ student.student_id }}</td>
-                        <td>{{ student.last_name }}</td>
-                        <td>{{ student.first_name }}</td>
-                        <td>{{ student.email }}</td>
-                        <td>10</td>
-                        <td>10</td>
-                        <td></td>
-                        <td>20</td>
-                        <td>10</td>
-                        <td>10</td>
-                        <td></td>
-                        <td>20</td>
-                        <td>10</td>
-                        <td>10</td>
-                        <td></td>
-                        <td>20</td>
-                        <td>%</td>
-                        <td><button type="button" class="btn btn-primary">Notify</button></td>
+                        <td>1</td>
+                        <td>2020-2001</td>
+                        <td>Ramel Cary</td>
+                        <td>Jamen</td>
+                        <td>0</td>
                         <td>
-                            <button type="button" class="btn btn-primary">
-                                <i class="fa-solid fa-user-minus"></i>
-                            </button>
+                            <button type="button" class="btn btn-outline-light"><i class="fa-solid fa-plus"
+                                    style="color: #000000;"></i></button>
+                            <button type="button" class="btn btn-outline-light"><i class="fa-solid fa-bell"
+                                    style="color: #000000;"></i></button>
+                            <button type="button" class="btn btn-outline-light"><i class="fa-solid fa-trash"
+                                    style="color: #000000;"></i></button>
                         </td>
                     </tr>
-                    {% endfor %}
+                    <tr>
+                        <td>1</td>
+                        <td>2020-2001</td>
+                        <td>Ramel Cary</td>
+                        <td>Jamen</td>
+                        <td>0</td>
+                        <td>
+                            <button type="button" class="btn btn-outline-light"><i class="fa-solid fa-plus"
+                                    style="color: #000000;"></i></button>
+                            <button type="button" class="btn btn-outline-light"><i class="fa-solid fa-bell"
+                                    style="color: #000000;"></i></button>
+                            <button type="button" class="btn btn-outline-light"><i class="fa-solid fa-trash"
+                                    style="color: #000000;"></i></button>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>1</td>
+                        <td>2020-2001</td>
+                        <td>Ramel Cary</td>
+                        <td>Jamen</td>
+                        <td>0</td>
+                        <td>
+                            <button type="button" class="btn btn-outline-light"><i class="fa-solid fa-plus"
+                                    style="color: #000000;"></i></button>
+                            <button type="button" class="btn btn-outline-light"><i class="fa-solid fa-bell"
+                                    style="color: #000000;"></i></button>
+                            <button type="button" class="btn btn-outline-light"><i class="fa-solid fa-trash"
+                                    style="color: #000000;"></i></button>
+                        </td>
+                    </tr>
                 </tbody>
             </table>
         </div>
     </div>
-    
-    <section class="row dist-con mx-5">
+    <hr>
+    <div class="row dist-con mx-5">
         <div class="col-6 table-container">
-            <div class="grade-distribution">
+            <div class="grade-distribution mx-5">
                 <div>
                     <h3>Grade Distribution</h3>
                 </div>
-                <table class="table">
+                <table class="table table-hover">
                     <thead>
                         <tr>
                             <th>Assessments</th>
@@ -158,30 +116,23 @@
                             <td>Written Work</td>
                             <td>%</td>
                         </tr>
-                        <tr>
-                            <td>Performance Task</td>
-                            <td>%</td>
-                        </tr>
-                        <tr>
-                            <td>Oral Participation</td>
-                            <td>%</td>
-                        </tr>
                     </tbody>
                 </table>
-                <button type="button" class="btn btn-secondary">
+                <button type="button" class="btn btn-secondary BtnStyle">
                     <i class="fa-solid fa-plus"></i>
                 </button>
-                <button type="button" class="btn btn-secondary">
+                <button type="button" class="btn btn-secondary BtnStyle">
                     <i class="fa-solid fa-pen"></i>
                 </button>
             </div>
         </div>
+
         <div class="col-6 table-container">
-            <div class="grade-conversion">
+            <div class="grade-conversion mx-5">
                 <div>
                     <h3>Grade Conversion</h3>
                 </div>
-                <table class="table">
+                <table class="table table-hover">
                     <thead>
                         <tr>
                             <th>Grade Range</th>
@@ -235,53 +186,71 @@
                         </tr>
                     </tbody>
                 </table>
-                <button type="button" class="btn btn-secondary">
+                <button type="button" class="btn btn-secondary BtnStyle">
                     <i class="fa-solid fa-pen"></i>
                 </button>
             </div>
         </div>
-    </section>
+    </div>
+
     <div class="accordion" id="accordionPanelsStayOpenExample">
         <div class="accordion-item">
-          <h1 class="accordion-header">
-            <button class="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#panelsStayOpen-collapseOne" aria-expanded="true" aria-controls="panelsStayOpen-collapseOne">
-                <b>Learning Outcome 1</b>
-            </button>
-          </h1>
-          <div id="panelsStayOpen-collapseOne" class="accordion-collapse collapse show">
-            <div class="accordion-body">
-              <strong>This is the first item's accordion body.</strong> This is the first item's accordion body. It is hidden by default, until the collapse plugin adds the apprasdasdopriate classes that we use to style each element. These classes control the overall appearance, as well as the showing and hiding via CSS transitions.
+            <h1 class="accordion-header">
+                <button class="accordion-button" type="button" data-bs-toggle="collapse"
+                    data-bs-target="#panelsStayOpen-collapseOne" aria-expanded="true"
+                    aria-controls="panelsStayOpen-collapseOne">
+                    <b>Learning Outcome 1</b>
+                </button>
+            </h1>
+            <div id="panelsStayOpen-collapseOne" class="accordion-collapse collapse show">
+                <div class="accordion-body">
+                    <strong>This is the first item's accordion body.</strong> This is the first item's accordion body.
+                    It is hidden by default, until the collapse plugin adds the apprasdasdopriate classes that we use to
+                    style each element. These classes control the overall appearance, as well as the showing and hiding
+                    via CSS transitions.
+                </div>
             </div>
-          </div>
         </div>
         <div class="accordion-item">
-          <h2 class="accordion-header">
-            <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#panelsStayOpen-collapseTwo" aria-expanded="false" aria-controls="panelsStayOpen-collapseTwo">
-                <b>Learning Outcome 2</b>
-            </button>
-          </h2>
-          <div id="panelsStayOpen-collapseTwo" class="accordion-collapse collapse">
-            <div class="accordion-body">
-              <strong>This is the second item's accordion body.</strong>This is the first item's accordion body. It is hidden by default, until the collapse plugin adds the apprasdasdopriate classes that we use to style each element. These classes control the overall appearance, as well as the showing and hiding via CSS transitions.
+            <h2 class="accordion-header">
+                <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse"
+                    data-bs-target="#panelsStayOpen-collapseTwo" aria-expanded="false"
+                    aria-controls="panelsStayOpen-collapseTwo">
+                    <b>Learning Outcome 2</b>
+                </button>
+            </h2>
+            <div id="panelsStayOpen-collapseTwo" class="accordion-collapse collapse">
+                <div class="accordion-body">
+                    <strong>This is the second item's accordion body.</strong>This is the first item's accordion body.
+                    It is hidden by default, until the collapse plugin adds the apprasdasdopriate classes that we use to
+                    style each element. These classes control the overall appearance, as well as the showing and hiding
+                    via CSS transitions.
+                </div>
             </div>
-          </div>
         </div>
         <div class="accordion-item">
-          <h2 class="accordion-header">
-            <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#panelsStayOpen-collapseThree" aria-expanded="false" aria-controls="panelsStayOpen-collapseThree">
-              <b>Learning Outcome 3</b>
-            </button>
-          </h2>
-          <div id="panelsStayOpen-collapseThree" class="accordion-collapse collapse">
-            <div class="accordion-body">
-              <strong>This is the third item's accordion body.</strong> This is the first item's accordion body. It is hidden by default, until the collapse plugin adds the apprasdasdopriate classes that we use to style each element. These classes control the overall appearance, as well as the showing and hiding via CSS transitions.
+            <h2 class="accordion-header">
+                <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse"
+                    data-bs-target="#panelsStayOpen-collapseThree" aria-expanded="false"
+                    aria-controls="panelsStayOpen-collapseThree">
+                    <b>Learning Outcome 3</b>
+                </button>
+            </h2>
+            <div id="panelsStayOpen-collapseThree" class="accordion-collapse collapse">
+                <div class="accordion-body">
+                    <strong>This is the third item's accordion body.</strong> This is the first item's accordion body.
+                    It is hidden by default, until the collapse plugin adds the apprasdasdopriate classes that we use to
+                    style each element. These classes control the overall appearance, as well as the showing and hiding
+                    via CSS transitions.
+                </div>
             </div>
-          </div>
         </div>
     </div>
+</div>
+
 </div>
 {% endblock %}
 
 {% block pagescript %}
-    <script type="text/javascript" src="{{ url_for('static', filename='js/class-record.js') }}"></script>
+<script type="text/javascript" src="{{ url_for('static', filename='js/class-record.js') }}"></script>
 {% endblock %}

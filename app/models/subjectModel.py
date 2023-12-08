@@ -232,7 +232,9 @@ class Subjects(object):
                         s.subjectCode, 
                         af.sectionID, 
                         s.description, 
-                        s.credits 
+                        s.credits,
+                        af.sem,
+                        af.schoolYear 
                     FROM 
                         assignFaculty AS af
                     LEFT JOIN 

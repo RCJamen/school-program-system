@@ -10,6 +10,7 @@
 <div class="subHandled-container">
   <div class="subHandled-title">
     <h1 class="m-0">Subjects Handled</h1>
+  </div>
   <hr />
   <div class="subHandled-content">
     <div class="subHandled-header">
@@ -21,7 +22,7 @@
             <option value="year1">2019-2020</option>
             <option value="year2">2020-2021</option>
             <option value="year3">2021-2022</option>
-        </select>
+          </select>
         </div>
       </div>
     </div>
@@ -35,14 +36,16 @@
               <th>Section</th>
               <th>Description</th>
               <th>Credits</th>
+              <th>Semester</th>
+              <th>School Year</th>
               <th>Action</th>
             </tr>
           </thead>
           <tbody class="table-group-divider">
             {% if subjectsHandledList|length == 0 %}
-              <tr>
-                <td colspan="6" id="noSubjectsAvailable">No subjects available.</td>
-              </tr>
+            <tr>
+              <td colspan="6" id="noSubjectsAvailable">No subjects available.</td>
+            </tr>
             {% else %}
             {% for subject in subjectsHandledList %}
             <tr class="subHandled-table-data">
@@ -50,22 +53,25 @@
               <td>{{ subject[1] }}</td>
               <td>{{ subject[2] }}</td>
               <td>{{ subject[3] }}</td>
+              <td>{{ subject[4] }}</td>
+              <td>{{ subject[5] }}</td>
               <td>
-                <a href="{{ url_for('class_record', subject_code=subject[0], section_code=subject[1]) }}" class="btn btn-outline-light class-record">
-                <button type="button" class="btn btn-outline-light class-record"><i class="fa-solid fa-clipboard fa-lg" style="color: #000000;"></i></button>
+                <a href="{{ url_for('classRecord.index', subject_code=subject[0], section_code=subject[1], description=subject[2], credits=subject[3] , sem=subject[4], school_year=subject[5] )}}"
+                  class="btn btn-outline-light class-record"><i class="fa-solid fa-clipboard fa-lg"
+                    style="color: #000000;"></i></a>
+                </a>
               </td>
             </tr>
             {% endfor %}
             {% endif %}
           </tbody>
-          <!-- <tfoot>
-            <tr class="note"><th>Source</th><td colspan=3><a href="https://getbootstrap.com/css/#tables">BootStrap documentation</a></td></tr>
-          </tfoot> -->
         </table>
       </div>
     </div>
+  </div>
+</div>
+</div>
 {% endblock %}
 
 {% block pagescript %}
-<script></script>
 {% endblock %}
