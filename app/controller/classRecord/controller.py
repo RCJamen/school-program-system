@@ -47,6 +47,6 @@ def create_student():
             session['flash_message'] = flash_message
         return redirect(url_for(".index", subject_code=subject_code, description=description, section_code=section_code, credits=credits, sem=sem, school_year=school_year, message=flash_message))
     else:
-        flash_message = {"type": "danger", "message": f"Failed to create Student. Please check the form for errors in the following:<br>* Student ID must be XXXX-XXXX<br>* Only Accepts MSU-IIT Google Email"}
+        flash_message = {"type": "danger", "message": f"Failed to create Student. Please check the form for errors in the following:<br>* Student ID must be XXXX-XXXX<br>* Does not Accept Numericals in First Name and Last Name<br>* Only Accepts MSU-IIT Google Email"}
         session['flash_message'] = flash_message
         return redirect(url_for(".index", subject_code=subject_code, description=description, section_code=section_code, credits=credits, sem=sem, school_year=school_year, message=flash_message))

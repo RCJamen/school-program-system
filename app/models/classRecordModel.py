@@ -14,6 +14,7 @@ class ClassRecord:
                 firstname VARCHAR(255) NOT NULL,
                 lastname VARCHAR(255) NOT NULL,
                 courseID VARCHAR(255) NOT NULL,
+                finalgrade INT DEFAULT 0,
                 email VARCHAR(255) NOT NULL,
                 PRIMARY KEY (classID),
                 UNIQUE KEY (studentID)
