@@ -3,7 +3,7 @@
 {% block pagetitle %}<title>Class Record</title> {% endblock %}
 
 {% block pagestyle %}
-<link rel="stylesheet" href="{{ url_for('static', filename='css/class-record.css') }}"">
+<link rel="stylesheet" href="{{ url_for('static', filename='css/class-record.css') }}">
 {% endblock %}
 
 {% block pages %}
@@ -27,7 +27,7 @@
     <div class="classRecord-header">
         <div class="row">
             <div class="col-2 float-end">
-                <button type="button" class="btn btn-secondary BtnStyle">
+                <button type="button" class="btn btn-secondary BtnStyle AddStudentBtn" data-bs-toggle="modal" data-bs-target="#addStudentModal">
                     Add Student
                     <i class="fa-solid fa-user-plus"></i>
                 </button>
@@ -43,56 +43,36 @@
                         <th>Student ID</th>
                         <th>First Name</th>
                         <th>Last Name</th>
+                        <th>Course Code</th>
                         <th>Total Grade</th>
                         <th>Action</th>
                     </tr>
                 </thead>
                 <tbody>
+                    {% if Students|length == 0 %}
+                    <td colspan="6" class="text-center">No Students Entrolled on This Class.</td>
+                    {% else %} {% for Student in Students %}
                     <tr>
-                        <td>1</td>
-                        <td>2020-2001</td>
-                        <td>Ramel Cary</td>
-                        <td>Jamen</td>
-                        <td>0</td>
+                        <td>{{Student[0]}}</td>
+                        <td>{{Student[1]}}</td>
+                        <td>{{Student[2]}}</td>
+                        <td>{{Student[3]}}</td>
+                        <td>{{Student[4]}}</td>
+                        <td id="totalGrade">0</td>
+                        <!-- <td>{{Student[5]}}</td> -->
                         <td>
-                            <button type="button" class="btn btn-outline-light"><i class="fa-solid fa-plus"
-                                    style="color: #000000;"></i></button>
-                            <button type="button" class="btn btn-outline-light"><i class="fa-solid fa-bell"
-                                    style="color: #000000;"></i></button>
-                            <button type="button" class="btn btn-outline-light"><i class="fa-solid fa-trash"
-                                    style="color: #000000;"></i></button>
+                            <!-- <button type="button" class="btn btn-outline-light">
+                                <i class="fa-solid fa-plus" style="color: #000000;"></i>
+                            </button> -->
+                            <button type="button" class="btn btn-outline-light">
+                                <i class="fa-solid fa-bell" style="color: #000000;"></i>
+                            </button>
+                            <button type="button" class="btn btn-outline-light btn-delete-student">
+                                <i class="fa-solid fa-trash" style="color: #000000;"></i>
+                            </button>
                         </td>
                     </tr>
-                    <tr>
-                        <td>1</td>
-                        <td>2020-2001</td>
-                        <td>Ramel Cary</td>
-                        <td>Jamen</td>
-                        <td>0</td>
-                        <td>
-                            <button type="button" class="btn btn-outline-light"><i class="fa-solid fa-plus"
-                                    style="color: #000000;"></i></button>
-                            <button type="button" class="btn btn-outline-light"><i class="fa-solid fa-bell"
-                                    style="color: #000000;"></i></button>
-                            <button type="button" class="btn btn-outline-light"><i class="fa-solid fa-trash"
-                                    style="color: #000000;"></i></button>
-                        </td>
-                    </tr>
-                    <tr>
-                        <td>1</td>
-                        <td>2020-2001</td>
-                        <td>Ramel Cary</td>
-                        <td>Jamen</td>
-                        <td>0</td>
-                        <td>
-                            <button type="button" class="btn btn-outline-light"><i class="fa-solid fa-plus"
-                                    style="color: #000000;"></i></button>
-                            <button type="button" class="btn btn-outline-light"><i class="fa-solid fa-bell"
-                                    style="color: #000000;"></i></button>
-                            <button type="button" class="btn btn-outline-light"><i class="fa-solid fa-trash"
-                                    style="color: #000000;"></i></button>
-                        </td>
-                    </tr>
+                    {% endfor %} {% endif %}
                 </tbody>
             </table>
         </div>
@@ -247,7 +227,52 @@
         </div>
     </div>
 </div>
+<div class="modal fade" id="addStudentModal" data-bs-backdrop="static" tabindex="-1" role="dialog"
+    aria-labelledby="editFacultyModalLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <!-- <form action="{{ url_for('subject.create_subject') }}" method="POST"> -->
+            <input type="hidden" name="csrf_token" value="{{ csrf_token()}}">
+            <div class="modal-content">
+                <div class="modal-header class-record-modal-header">
+                    <h5 class="modal-title">Add Student Information</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body class-record-modal-body">
+                    <div class="form-group">
+                        <label>Student ID</label>
+                        <input type="text" name="studentID" class="form-control" placeholder="Enter ID">
+                    </div>
+                    <div class="form-group">
+                        <label>First Name</label>
+                        <input type="text" name="firstname" class="form-control" placeholder="Enter First Name">
+                    </div>
+                    <div class="form-group">
+                        <label>Last Name</label>
+                        <input type="text" name="lastname" class="form-control" placeholder="Enter Last Name">
+                    </div>
 
+                    <div class="form-group">
+                        <label>Handler</label>
+                        <select name="handler" class="form-select" id="Handler">
+                            <option value="" disabled selected>Enter Handler</option>
+                            {% for handler in handlerInfo %}
+                            <option value="{{ handler[0] }}">{{ handler[0]}} - {{handler[2]}}, {{handler[1]}}</option>
+                            {% endfor %}
+                            <option value="None">None</option>
+                        </select>
+                    </div>
+                </div>
+                <div class="modal-footer class-record-modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">
+                        <i class="fa-solid fa-xmark" style="color: #ffffff;"></i> Close
+                    </button>
+                    <button type="submit" class="btn btn-success UpdateFaculty" data-bs-dismiss="modal"> <i
+                            class="fa-solid fa-user-pen"></i>Add Subject</button>
+                </div>
+            </div>
+        </form>
+    </div>
+</div>
 </div>
 {% endblock %}
 

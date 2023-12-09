@@ -38,3 +38,29 @@
 .accordion {
     padding: 40px;
 }
+
+.class-record-modal-body .form-group {
+    margin-bottom: 24px;
+
+}
+
+.class-record-modal-body {
+    margin: 16px
+}
+
+.class-record-modal-header {
+    margin-left: 16px;
+    margin-right: 16px
+}
+
+.class-record-modal-footer {
+    margin-left: 16px;
+    margin-right: 16px
+}
+
+.class-record-modal-body .form-group select.form-control.form-select {
+    padding-top: 12px;
+    padding-bottom: 12px;
+    padding-left: 16px;
+    border-radius: 16px;
+}

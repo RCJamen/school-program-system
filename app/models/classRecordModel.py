@@ -1,23 +1,39 @@
 from app import mysql
 
-class ClassRecordModel:
-    def __init__(self, classRecordno, student_id, last_name, first_name, email):
-        self.classRecordno = classRecordno
-        self.student_id = student_id
-        self.last_name = last_name
-        self.first_name = first_name
-        self.email = email
+class ClassRecord:
 
-# def get_all_students():
-#     cursor = mysql.connection.cursor()
+    @staticmethod
+    def createClassRecordTable(subject_code, section_code, school_year, sem):
+        try:
+            cursor = mysql.connection.cursor()
+            table_name = f'CR_{subject_code}_{section_code}_{school_year}_{sem}'.replace('-', '_')
+            sql = '''
+                CREATE TABLE IF NOT EXISTS {} (
+                classID INT AUTO_INCREMENT NOT NULL,
+                studentID VARCHAR(10) NOT NULL,
+                firstname VARCHAR(255) NOT NULL,
+                lastname VARCHAR(255) NOT NULL,
+                courseID VARCHAR(255) NOT NULL,
+                email VARCHAR(255) NOT NULL,
+                PRIMARY KEY (classID),
+                UNIQUE KEY (studentID)
+                );
+            '''.format(table_name)
+            cursor.execute(sql)
+            mysql.connection.commit()
+            return True
+        except Exception as e:
+            return f"Failed to Create Database: {str(e)}"
 
-#     cursor.execute("SELECT * FROM class_records")
-
-#     students_data = cursor.fetchall()
-#     students = [Student(classRecordno=row['classRecordno'], student_id=row['student_id'],
-#                         last_name=row['last_name'], first_name=row['first_name'], email=row['email'])
-#                 for row in students_data]
-
-#     cursor.close()
-
-#     return students
+    @staticmethod
+    def getStudents(subject_code, section_code, school_year, sem):
+        try:
+            cursor = mysql.connection.cursor()
+            table_name = f'CR_{subject_code}_{section_code}_{school_year}_{sem}'.replace('-', '_')
+            sql = f"SELECT * FROM {table_name}"
+            cursor.execute(sql)
+            result = cursor.fetchall()
+            cursor.close()
+            return result
+        except Exception as e:
+            return f"Failed to fetch students: {str(e)}"
