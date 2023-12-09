@@ -2,7 +2,7 @@ DROP DATABASE IF EXISTS `progsys_db`;
 CREATE DATABASE IF NOT EXISTS `progsys_db`;
 use `progsys_db`;
 
-
+-- NOT USED
 DROP TABLE IF EXISTS `colleges`;
 CREATE TABLE IF NOT EXISTS `colleges`(
 collegeID INT AUTO_INCREMENT NOT NULL,
@@ -10,6 +10,7 @@ name VARCHAR(255) NOT NULL,
 PRIMARY KEY(collegeID)
 );
 
+-- NOT USED
 DROP TABLE IF EXISTS `curriculum`;
 CREATE TABLE IF NOT EXISTS `curriculum`(
 currID INT AUTO_INCREMENT NOT NULL,
@@ -18,6 +19,7 @@ description CHAR NOT NULL,
 PRIMARY KEY(currID)
 );
 
+-- NOT USED
 DROP TABLE IF EXISTS `departments`;
 CREATE TABLE IF NOT EXISTS `departments`(
 departmentID INT AUTO_INCREMENT NOT NULL,
@@ -29,6 +31,7 @@ FOREIGN KEY(collegeID) REFERENCES colleges(collegeID),
 FOREIGN KEY(currID) REFERENCES curriculum(currID)
 );
 
+-- NOT USED
 DROP TABLE IF EXISTS `learning_outcomes`;
 CREATE TABLE IF NOT EXISTS `learning_outcomes`(
 learnOutID INT AUTO_INCREMENT NOT NULL,
@@ -39,6 +42,7 @@ PRIMARY KEY(learnOutID),
 FOREIGN KEY(currID) REFERENCES curriculum(currID)
 );
 
+-- NOT USED
 DROP TABLE IF EXISTS `assessments`;
 CREATE TABLE IF NOT EXISTS `assessments`(
 assessID INT AUTO_INCREMENT NOT NULL,
@@ -48,6 +52,7 @@ totalScore INT NOT NULL,
 PRIMARY KEY(assessID)
 );
 
+-- NOT USED
 DROP TABLE IF EXISTS `student_outcomes`;
 CREATE TABLE IF NOT EXISTS `student_outcomes`(
 stuOutID INT AUTO_INCREMENT NOT NULL,
@@ -58,6 +63,7 @@ PRIMARY KEY(stuOutID),
 FOREIGN KEY(assessID) REFERENCES assessments(assessID)
 );
 
+-- NOT USED
 DROP TABLE IF EXISTS `student_learning_objectives`;
 CREATE TABLE IF NOT EXISTS `student_learning_objectives`(
 stuLearnObjID INT AUTO_INCREMENT NOT NULL,
@@ -68,6 +74,16 @@ FOREIGN KEY(learnOutID) REFERENCES learning_outcomes(learnOutID),
 FOREIGN KEY(stuOutID) REFERENCES student_outcomes(stuOutID)
 );
 
+-- NOT USED
+DROP TABLE IF EXISTS `chairperson`;
+CREATE TABLE IF NOT EXISTS `chairperson`(
+chairID INT AUTO_INCREMENT NOT NULL,
+firstname VARCHAR(255) NOT NULL,
+lastname VARCHAR(255) NOT NULL,
+PRIMARY KEY(chairID)
+);
+
+-- NOT USED
 DROP TABLE IF EXISTS `courses`;
 CREATE TABLE IF NOT EXISTS `courses`(
 courseID INT AUTO_INCREMENT NOT NULL,
@@ -78,28 +94,30 @@ PRIMARY KEY(courseID),
 FOREIGN KEY(departmentID) REFERENCES departments(departmentID)
 );
 
-DROP TABLE IF EXISTS `chairperson`;
-CREATE TABLE IF NOT EXISTS `chairperson`(
-chairID INT AUTO_INCREMENT NOT NULL,
-firstname VARCHAR(255) NOT NULL,
-lastname VARCHAR(255) NOT NULL,
-PRIMARY KEY(chairID)
-);
+-- WILL NOT BE USED
+-- DROP TABLE IF EXISTS `students`;
+-- CREATE TABLE IF NOT EXISTS `students`(
+-- studentID VARCHAR(10) NOT NULL,
+-- firstname VARCHAR(255) NOT NULL,
+-- lastname VARCHAR(255) NOT NULL,
+-- courseID INT NOT NULL,
+-- gmail VARCHAR(255) NOT NULL,
+-- PRIMARY KEY(studentID),
+-- FOREIGN KEY(courseID) REFERENCES courses(courseID)
+-- );
 
-DROP TABLE IF EXISTS `students`;
-CREATE TABLE IF NOT EXISTS `students`(
-studentID VARCHAR(10) NOT NULL,
-firstname VARCHAR(255) NOT NULL,
-lastname VARCHAR(255) NOT NULL,
-courseID INT NOT NULL,
-gmail VARCHAR(255) NOT NULL,
-PRIMARY KEY(studentID),
-FOREIGN KEY(courseID) REFERENCES courses(courseID)
-);
--- FOREIGN KEY(studentID) REFERENCES class_records(studentID)
+-- FOR CLASS RECORD -- DO NOT UNCOMMENT
+-- CREATE TABLE IF NOT EXISTS `class_records` (
+-- classRecordno INT AUTO_INCREMENT NOT NULL,
+-- studentID VARCHAR (10) NOT NULL,
+-- lastname VARCHAR(255) NOT NULL,
+-- firstname VARCHAR(255) NOT NULL,
+-- email VARCHAR(255) NOT NULL,
+-- PRIMARY KEY (classRecordno),
+-- UNIQUE KEY (studentID)
+-- );
 
-
-
+-- USED
 DROP TABLE IF EXISTS `faculty`;
 CREATE TABLE IF NOT EXISTS `faculty`(
 facultyID VARCHAR (10) PRIMARY KEY DEFAULT 'None',
@@ -108,11 +126,13 @@ lastname VARCHAR(255) NOT NULL,
 email VARCHAR(255) NOT NULL
 );
 
+-- USED
 DROP TABLE IF EXISTS `section`;
 CREATE TABLE IF NOT EXISTS `section`(
 sectionCode VARCHAR(255) PRIMARY KEY
 );
 
+-- USED
 DROP TABLE IF EXISTS `subject`;
 CREATE TABLE IF NOT EXISTS `subject`(
 subjectID INT AUTO_INCREMENT PRIMARY KEY,
@@ -122,6 +142,7 @@ credits INT,
 UNIQUE KEY unique_subject (subjectCode, description, credits)
 );
 
+-- USED
 DROP TABLE IF EXISTS `subject_section`;
 CREATE TABLE IF NOT EXISTS `subject_section`(
 subsecID INT NOT NULL AUTO_INCREMENT PRIMARY KEY,
@@ -130,6 +151,7 @@ sectionID VARCHAR(255),
 UNIQUE KEY unique_subject_section (subjectID, sectionID)
 );
 
+-- USED
 DROP TABLE IF EXISTS `schedule`;
 CREATE TABLE IF NOT EXISTS `schedule` (
 scheduleID INT PRIMARY KEY AUTO_INCREMENT,
@@ -142,8 +164,7 @@ CONSTRAINT unique_schedule_time UNIQUE (day, time_start, time_end),
 FOREIGN KEY (subjectID, sectionID) REFERENCES subject_section(subjectID, sectionID)
 );
 
--- facultyID, section, semester, school year, subjectID
--- but can handle many subjects (subjectID not unique) of the same section-- Drop the existing assignFaculty table if it exists
+-- USED
 DROP TABLE IF EXISTS `assignFaculty`;
 CREATE TABLE IF NOT EXISTS `assignFaculty`(
 assignFacultyID INT NOT NULL AUTO_INCREMENT PRIMARY KEY,
@@ -156,25 +177,15 @@ UNIQUE KEY unique_assignFaculty (facultyID, subjectID, sectionID, sem, schoolYea
 );
 
 
--- FOR CLASS RECORD -- 
-DROP TABLE IF EXISTS `class_records`;
-CREATE TABLE IF NOT EXISTS `class_records` (
-classRecordno INT AUTO_INCREMENT NOT NULL,
-studentID VARCHAR (10) NOT NULL,
-lastname VARCHAR(255) NOT NULL,
-firstname VARCHAR(255) NOT NULL,
-email VARCHAR(255) NOT NULL,
-PRIMARY KEY (classRecordno),
-UNIQUE KEY (studentID)
-);
-
-
 DROP TABLE IF EXISTS `gradeDistribution`;
 CREATE TABLE IF NOT EXISTS `gradeDistribution`(
 name VARCHAR(255) NOT NULL,
 percentage INT NOT NULL
 );
 
+--
+--  INSERT VALUES SECTION
+--
 
 INSERT INTO `faculty` (facultyID, firstname ,lastname, email)
 VALUES ('None', 'None', 'None', 'None');
@@ -186,7 +197,7 @@ VALUES ('2023-0001', 'Fulgent Kvasir', 'Lavesores', 'fulgentkvasir.lavesores@g.m
 ('2023-0004', 'Ramel Cary', 'Jamen', 'ramelcary.jamen@g.msuiit.edu.ph');
 
 INSERT INTO subject (subjectCode, description, credits)
-VALUES 
+VALUES
 ('CCC100', 'Fundamentals of Computing', 3),
 ('CCC101', 'Computer Programming 1', 3),
 ('CCC102', 'Computer Programming 2', 3),
@@ -217,7 +228,7 @@ VALUES
 
 -- First, insert data into subject_section
 INSERT INTO subject_section (subjectID, sectionID)
-VALUES 
+VALUES
 ('CCC100', 'CS1C'),
 ('CCC101', 'CS2B'),
 ('CCC102', 'CS1A'),
@@ -246,7 +257,7 @@ VALUES
 
 -- Insert data into the schedule table
 -- INSERT INTO `schedule` (subjectID, sectionID, day, time_start, time_end)
--- VALUES 
+-- VALUES
 -- ('CCC100', 'CS1C', 'Monday', '09:00', '10:30'),
 -- ('CCC101', 'CS2B', 'Tuesday', '10:30', '12:00'),
 -- ('CCC102', 'CS1A', 'Wednesday', '13:00', '14:30'),
@@ -266,3 +277,11 @@ VALUES
 -- ('2023-0002', 'CSC181', 'None'),
 -- ('2023-0002', 'CCC181', 'None'),
 -- ('2023-0004', 'CCC102', 'None');
+
+-- INSERT INTO CR_CCC100_CS1C_2023_2024_1 (studentID, firstname, lastname, courseID, email)
+-- VALUES
+-- ('1234-5678', 'John', 'Doe', 'BSCS', 'john.doe@g.msuiit.edu.ph'),
+-- ('2345-6789', 'Jane', 'Smith', 'BSIT', 'jane.smith@g.msuiit.edu.ph'),
+-- ('3456-7890', 'Mark', 'Johnsons', 'BSIS', 'mark.johnson@g.msuiit.edu.ph'),
+-- ('4567-8901', 'Emily', 'Williams', 'BSCS', 'emily.williams@g.msuiit.edu.ph'),
+-- ('5678-9012', 'Michael', 'Brown', 'BSIT', 'michael.brown@g.msuiit.edu.ph');
