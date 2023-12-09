@@ -32,6 +32,16 @@
                     <i class="fa-solid fa-user-plus"></i>
                 </button>
             </div>
+            <div class="col-4" id="flash-messages-container">
+                {% if flash_message %}
+                <div class="alert alert-{{ flash_message.type }} alert-dismissible fade show" role="alert">
+                  <div class="d-flex justify-content-between align-items-center">
+                    <span>{{ flash_message.message | safe }}</span>
+                    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                  </div>
+                </div>
+                {% endif %}
+              </div>
         </div>
     </div>
     <div class="table-container d-flex">
@@ -230,7 +240,7 @@
 <div class="modal fade" id="addStudentModal" data-bs-backdrop="static" tabindex="-1" role="dialog"
     aria-labelledby="editFacultyModalLabel" aria-hidden="true">
     <div class="modal-dialog" role="document">
-        <!-- <form action="{{ url_for('subject.create_subject') }}" method="POST"> -->
+        <form action="{{ url_for('classRecord.create_student') }}" method="POST">
             <input type="hidden" name="csrf_token" value="{{ csrf_token()}}">
             <div class="modal-content">
                 <div class="modal-header class-record-modal-header">
@@ -250,23 +260,20 @@
                         <label>Last Name</label>
                         <input type="text" name="lastname" class="form-control" placeholder="Enter Last Name">
                     </div>
-
                     <div class="form-group">
-                        <label>Handler</label>
-                        <select name="handler" class="form-select" id="Handler">
-                            <option value="" disabled selected>Enter Handler</option>
-                            {% for handler in handlerInfo %}
-                            <option value="{{ handler[0] }}">{{ handler[0]}} - {{handler[2]}}, {{handler[1]}}</option>
-                            {% endfor %}
-                            <option value="None">None</option>
-                        </select>
+                        <label>Course Code</label>
+                        <input type="text" name="coursecode" class="form-control" placeholder="Enter Course Code">
+                    </div>
+                    <div class="form-group">
+                        <label>IIT Email</label>
+                        <input type="text" name="email" class="form-control" placeholder="Enter Email">
                     </div>
                 </div>
                 <div class="modal-footer class-record-modal-footer">
                     <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">
                         <i class="fa-solid fa-xmark" style="color: #ffffff;"></i> Close
                     </button>
-                    <button type="submit" class="btn btn-success UpdateFaculty" data-bs-dismiss="modal"> <i
+                    <button type="submit" class="btn btn-success" data-bs-dismiss="modal"> <i
                             class="fa-solid fa-user-pen"></i>Add Subject</button>
                 </div>
             </div>

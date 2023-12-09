@@ -37,3 +37,16 @@ class ClassRecord:
             return result
         except Exception as e:
             return f"Failed to fetch students: {str(e)}"
+
+    @staticmethod
+    def addStudent(subject_code, section_code, school_year, sem, studentID, firstname, lastname, coursecode, email):
+        try:
+            cursor = mysql.connection.cursor()
+            table_name = f'CR_{subject_code}_{section_code}_{school_year}_{sem}'.replace('-', '_')
+            insert_query = f"INSERT INTO {table_name} (studentID, firstname, lastname, courseID, email) VALUES (%s, %s, %s, %s, %s)"
+            values = (studentID, firstname, lastname, coursecode, email)
+            cursor.execute(insert_query, values)
+            mysql.connection.commit()
+            return "Student created successfully"
+        except Exception as e:
+            return f"Failed to create Student: {str(e)}"
