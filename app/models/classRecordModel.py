@@ -51,3 +51,22 @@ class ClassRecord:
             return "Student created successfully"
         except Exception as e:
             return f"Failed to create Student: {str(e)}"
+
+    @classmethod
+    def deleteStudent(cls, subject_code, section_code, school_year, sem, studentID):
+        try:
+            cursor = mysql.connection.cursor()
+            table_name = f'CR_{subject_code}_{section_code}_{school_year}_{sem}'.replace('-', '_')
+
+            # Delete the row
+            cursor.execute(f"DELETE FROM {table_name} WHERE studentID = %s", (studentID,))
+            mysql.connection.commit()
+
+            # Reorder the classID values to ensure sequential order
+            cursor.execute(f"SET @new_classID := 0;")
+            cursor.execute(f"UPDATE {table_name} SET classID = @new_classID := @new_classID + 1 ORDER BY classID;")
+            mysql.connection.commit()
+
+            return "Student deleted successfully"
+        except Exception as e:
+            return f"Failed to delete student: {str(e)}"

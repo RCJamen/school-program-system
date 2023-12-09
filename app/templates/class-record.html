@@ -7,7 +7,8 @@
 {% endblock %}
 
 {% block pages %}
-<div class= " classRecord-container">
+<meta name="csrf-token" content="{{ csrf_token() }}">
+<div class="classRecord-container">
 <div class="classRecord-title">
     <h1><b>Class Record</b>: {{ClassDetails[0]}} - {{ClassDetails[1]}}</h1>
     <h3><b>Section</b>: {{ClassDetails[2]}} - {{session['name']}}</h3>
@@ -77,7 +78,7 @@
                             <button type="button" class="btn btn-outline-light">
                                 <i class="fa-solid fa-bell" style="color: #000000;"></i>
                             </button>
-                            <button type="button" class="btn btn-outline-light btn-delete-student">
+                            <button type="button" class="btn btn-outline-light delete-student" data-studentid="{{Student[1]}}" data-firstname="{{Student[2]}}" data-lastname="{{Student[3]}}" data-bs-toggle="modal" data-bs-target="#askDelete">
                                 <i class="fa-solid fa-trash" style="color: #000000;"></i>
                             </button>
                         </td>
@@ -280,6 +281,25 @@
         </form>
     </div>
 </div>
+<div class="modal" tabindex="-1" id="askDelete" data-bs-backdrop="static">
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title">Confirmation</h5>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+        <div class="modal-body delete-modal-body">
+          <!-- Faculty details will be dynamically inserted here -->
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">No</button>
+          <button type="button" class="btn btn-primary delete-button">Yes</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+
 </div>
 {% endblock %}
 
