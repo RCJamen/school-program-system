@@ -70,3 +70,49 @@ class ClassRecord:
             return "Student deleted successfully"
         except Exception as e:
             return f"Failed to delete student: {str(e)}"
+
+    @staticmethod
+    def createGradeDistributionTable(subject_code, section_code, school_year, sem):
+        try:
+            cursor = mysql.connection.cursor()
+            table_name = f'GD_{subject_code}_{section_code}_{school_year}_{sem}'.replace('-', '_')
+            sql = '''
+                CREATE TABLE IF NOT EXISTS {} (
+                assessmentID INT AUTO_INCREMENT NOT NULL,
+                name VARCHAR(255) NOT NULL,
+                percentage INT NOT NULL,
+                PRIMARY KEY (assessmentID),
+                UNIQUE KEY (name)
+                );
+            '''.format(table_name)
+            cursor.execute(sql)
+            mysql.connection.commit()
+            return True
+        except Exception as e:
+            return f"Failed to Create Database: {str(e)}"
+
+    @staticmethod
+    def getGradeDistribution(subject_code, section_code, school_year, sem):
+        try:
+            cursor = mysql.connection.cursor()
+            table_name = f'GD_{subject_code}_{section_code}_{school_year}_{sem}'.replace('-', '_')
+            sql = f"SELECT * FROM {table_name}"
+            cursor.execute(sql)
+            result = cursor.fetchall()
+            cursor.close()
+            return result
+        except Exception as e:
+            return f"Failed to fetch students: {str(e)}"
+
+    @staticmethod
+    def addGradeDistribution(subject_code, section_code, school_year, sem, name, percentage):
+        try:
+            cursor = mysql.connection.cursor()
+            table_name = f'GD_{subject_code}_{section_code}_{school_year}_{sem}'.replace('-', '_')
+            insert_query = f"INSERT INTO {table_name} (name, percentage) VALUES (%s, %s)"
+            values = (name, percentage)
+            cursor.execute(insert_query, values)
+            mysql.connection.commit()
+            return "Assessment created successfully"
+        except Exception as e:
+            return f"Failed to create Assessment: {str(e)}"

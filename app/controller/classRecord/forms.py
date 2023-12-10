@@ -19,3 +19,8 @@ class classRecordForm(FlaskForm):
     email = StringField('email', validators=[validators.Email(), validators.Regexp(regex=r'.*@g\.msuiit\.edu\.ph$', message="Only Accepts MSU-IIT Email")])
 
     submit = SubmitField("Submit")
+
+class gradeDistributionForm(FlaskForm):
+    name = StringField("name", [validators.DataRequired()])
+    percentage = StringField("percentage", [validators.DataRequired()])
+    submit = SubmitField("Submit")
