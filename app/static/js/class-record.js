@@ -75,7 +75,7 @@ $(document).ready(function() {
         $('#askDeleteAssessment .delete-button').off('click').on('click', function () {
             $.ajax({
                 type: 'POST',
-                url: `/grade_distribution/delete_assessment/${assessmentid}`,
+                url: `/grade_distribution/delete_assessment/${assessmentid}/${name}`,
                 headers: {
                     'X-CSRFToken': csrfToken
                 },

@@ -77,8 +77,8 @@ def create_grade_distribution():
     if request.method == "POST" and form.validate():
         name = form.name.data
         percentage = form.percentage.data
-
         result = ClassRecord.addGradeDistribution(subject_code, section_code, school_year, sem, name, percentage)
+        ClassRecord.createAssessmentTable(subject_code, section_code, school_year, sem, name)
         if "success" in result:
             credentials_message = f"<br>Name: <strong>{name}</strong><br>Percentage: <strong>{percentage}</strong>"
             flash_message = {"type": "success", "message": f"Assessment Created successfully:{credentials_message}"}
@@ -92,12 +92,14 @@ def create_grade_distribution():
         session['flash_message'] = flash_message
         return redirect(url_for(".index", subject_code=subject_code, description=description, section_code=section_code, credits=credits, sem=sem, school_year=school_year, message=flash_message))
 
-@classRecord.route("/grade_distribution/delete_assessment/<string:assessmentID>", methods=['POST'])
-def delete_grade_distribution(assessmentID):
+@classRecord.route("/grade_distribution/delete_assessment/<string:assessmentid>/<string:name>", methods=['POST'])
+def delete_grade_distribution(assessmentid, name):
+    print(assessmentid, name)
     try:
         ClassDetails = session.get('ClassDetails', None)
         subject_code, description, section_code, credits, sem, school_year = ClassDetails
-        result = ClassRecord.deleteGradeAssessment(subject_code, section_code, school_year, sem, assessmentID)
+        result = ClassRecord.deleteGradeAssessment(subject_code, section_code, school_year, sem, assessmentid)
+        ClassRecord.deleteAssessmentTable(subject_code, section_code, school_year, sem, name)
         flash_message = {"type": "success", "message": f"{result}"}
         session['flash_message'] = flash_message
         return jsonify({'success': True, 'message': 'Assessment Deleted Successfully', 'flash_message': flash_message})
