@@ -7,8 +7,8 @@
 {% block classpages %}
 <div class="classRecord-header">
     <div class="row">
-        <div class="col-2 float-end">
-            <button type="button" class="btn btn-secondary BtnStyle AddStudentBtn" data-bs-toggle="modal" data-bs-target="#addStudentModal">
+        <div class="col-2">
+            <button type="button" class="btn btn-secondary BtnStyle AddStudentBtn ms-3" data-bs-toggle="modal" data-bs-target="#addStudentModal">
                 Add Student
                 <i class="fa-solid fa-user-plus"></i>
             </button>
@@ -25,7 +25,7 @@
             </div>
     </div>
 </div>
-<div class="table-container d-flex">
+<div class="table-container d-flex pb-4">
     <div class="classRecord-body">
         <table class="table table-hover" id="dynamic-table">
             <thead>
@@ -68,7 +68,17 @@
         </table>
     </div>
 </div>
-<hr>
+<hr class="pt-4">
+{% if flash_message %}
+<div class="d-flex justify-content-center align-items-center mt-5">
+    <div class="alert alert-{{ flash_message.type }} alert-dismissible fade show" role="alert">
+        <div class="d-flex justify-content-between align-items-center">
+        <span>{{ flash_message.message | safe }}</span>
+        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+        </div>
+    </div>
+</div>
+{% endif %}
 <div class="row dist-con mx-5">
     <div class="col-6 table-container">
         <div class="grade-distribution mx-5">
@@ -95,7 +105,7 @@
                         <td>{{GradeDistribution[1]}}</td>
                         <td>{{GradeDistribution[2]}}%</td>
                         <td>
-                            <button type="button" class="btn btn-outline-light">
+                            <button type="button" class="btn btn-outline-light delete-assessment" data-assessmentid="{{GradeDistribution[0]}}" data-name="{{GradeDistribution[1]}}" data-bs-toggle="modal" data-bs-target="#askDeleteAssessment">
                                 <i class="fa-solid fa-trash" style="color: #000000;"></i>
                             </button>
                         </td>
@@ -263,6 +273,21 @@
         </form>
     </div>
 </div>
-
-
+<div class="modal" tabindex="-1" id="askDeleteAssessment" data-bs-backdrop="static">
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title">Confirmation</h5>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+        <div class="modal-body delete-modal-body">
+          <!-- Faculty details will be dynamically inserted here -->
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">No</button>
+          <button type="button" class="btn btn-primary delete-button">Yes</button>
+        </div>
+      </div>
+    </div>
+</div>
 {% endblock %}

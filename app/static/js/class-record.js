@@ -20,7 +20,7 @@ $(document).ready(function() {
         $('#askDelete .delete-button').off('click').on('click', function () {
             $.ajax({
                 type: 'POST',
-                url: `/class_record/delete_student//${studentID}`,
+                url: `/class_record/delete_student/${studentID}`,
                 headers: {
                     'X-CSRFToken': csrfToken
                 },
@@ -36,11 +36,66 @@ $(document).ready(function() {
                     }
                 },
                 error: function (error) {
-                    console.error('Error deleting Student ASD:', error);
+                    console.error('Error deleting Student:', error);
                     flashMessage('danger', 'Failed to delete Student');
                 }
             });
             $('#askDelete').modal('hide');
+        });
+    });
+
+    function flashMessage(type, message) {
+        var flashMessageHTML = `
+            <div class="alert alert-${type} alert-dismissible fade show" role="alert">
+                <div class="d-flex justify-content-between align-items-center">
+                    <span>${message}</span>
+                    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                </div>
+            </div>
+        `;
+        $('#flash-messages-container').append(flashMessageHTML);
+    }
+});
+
+
+$(document).ready(function() {
+    $('.delete-assessment').click(function(event) {
+        event.preventDefault();
+        var assessmentid = $(this).data('assessmentid');
+        var name = $(this).data('name');
+        var csrfToken = $('meta[name=csrf-token]').attr('content');
+
+        console.log(assessmentid)
+        console.log(name)
+        $('#askDeleteAssessment .delete-modal-body').html(
+            `<p>Do you want to delete the following Assessment?</p><strong>Assessment Name:</strong> ${name}`);
+
+        $('#askDeleteAssessment').modal('show');
+
+        $('#askDeleteAssessment .delete-button').off('click').on('click', function () {
+            $.ajax({
+                type: 'POST',
+                url: `/grade_distribution/delete_assessment/${assessmentid}`,
+                headers: {
+                    'X-CSRFToken': csrfToken
+                },
+                success: function (response) {
+                    if (response.success) {
+                        $(event.target).closest('tr').remove();
+                        console.log('Assessment deleted successfully:', response);
+                        flashMessage(response.flash_message.type, response.flash_message.message);
+                        location.reload();
+                    } else {
+                        console.error('Error deleting Assessment:', response.error || 'Unknown error');
+                        flashMessage('danger', response.error || 'Failed to delete Assessment');
+                    }
+                },
+                error: function (error) {
+                    console.error('Error deleting Assessment:', error);
+                    flashMessage('danger', 'Failed to delete Assessment');
+                }
+            });
+            $('#askDeleteAssessment').modal('hide');
         });
     });
 

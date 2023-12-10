@@ -116,3 +116,22 @@ class ClassRecord:
             return "Assessment created successfully"
         except Exception as e:
             return f"Failed to create Assessment: {str(e)}"
+
+    @classmethod
+    def deleteGradeAssessment(cls, subject_code, section_code, school_year, sem, assessmentID):
+        try:
+            cursor = mysql.connection.cursor()
+            table_name = f'GD_{subject_code}_{section_code}_{school_year}_{sem}'.replace('-', '_')
+
+            # Delete the row
+            cursor.execute(f"DELETE FROM {table_name} WHERE assessmentID = %s", (assessmentID,))
+            mysql.connection.commit()
+
+            # Reorder the assessmentID values to ensure sequential order
+            cursor.execute(f"SET @new_assessmentID := 0;")
+            cursor.execute(f"UPDATE {table_name} SET assessmentID = @new_assessmentID := @new_assessmentID + 1 ORDER BY assessmentID;")
+            mysql.connection.commit()
+
+            return "Assessment deleted successfully"
+        except Exception as e:
+            return f"Failed to delete assessment: {str(e)}"

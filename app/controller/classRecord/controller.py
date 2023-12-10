@@ -91,3 +91,15 @@ def create_grade_distribution():
         flash_message = {"type": "danger", "message": f"Failed to Add Assessment.<br>*  Make Sure Percentage will equate to 100%"}
         session['flash_message'] = flash_message
         return redirect(url_for(".index", subject_code=subject_code, description=description, section_code=section_code, credits=credits, sem=sem, school_year=school_year, message=flash_message))
+
+@classRecord.route("/grade_distribution/delete_assessment/<string:assessmentID>", methods=['POST'])
+def delete_grade_distribution(assessmentID):
+    try:
+        ClassDetails = session.get('ClassDetails', None)
+        subject_code, description, section_code, credits, sem, school_year = ClassDetails
+        result = ClassRecord.deleteGradeAssessment(subject_code, section_code, school_year, sem, assessmentID)
+        flash_message = {"type": "success", "message": f"{result}"}
+        session['flash_message'] = flash_message
+        return jsonify({'success': True, 'message': 'Assessment Deleted Successfully', 'flash_message': flash_message})
+    except Exception as e:
+        return jsonify({'success': False, 'error': str(e)})
