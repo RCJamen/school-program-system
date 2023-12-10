@@ -15,7 +15,18 @@
 <meta name="csrf-token" content="{{ csrf_token() }}">
 <div class="classRecord-container">
 <div class="classRecord-title">
-    <h1><b>Class Record</b>: {{ClassDetails[0]}} - {{ClassDetails[1]}}</h1>
+    <div class="row">
+        <div class="col-11">
+            <h1><b>Class Record</b>: {{ClassDetails[0]}} - {{ClassDetails[1]}}</h1>
+        </div>
+        <div class="col-1">
+            <a href="/subjects-handled" alt="Back to Subject Handled">
+                <button type="button" class="btn btn btn-outline-secondary">
+                    <i class="fa-solid fa-arrow-left-long fa-3x" style="color: #000000;"></i>
+                </button>
+            </a>
+        </div>
+    </div>
     <h3><b>Section</b>: {{ClassDetails[2]}} - {{session['name']}}</h3>
     <p>
         <b>School Year</b>: {{ClassDetails[5]}},
