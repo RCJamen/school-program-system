@@ -117,5 +117,6 @@ def assessment_record (assessment):
     Name = assessment.replace('_', ' ')
     Assessments = ClassRecord.getAssessmentList(subject_code, section_code, school_year, sem)
     Students = ClassRecord.getStudentsInAssessment(subject_code, section_code, school_year, sem, assessment)
-
+    test = ClassRecord.test(subject_code, section_code, school_year, sem)
+    print(test)
     return render_template("assessment-table.html", Name=Name, ClassDetails=ClassDetails, Assessments=Assessments, Students=Students)
