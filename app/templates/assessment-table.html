@@ -1,0 +1,78 @@
+{% extends "class_record_layout.html" %}
+
+{% block classtitle %}
+<title>Assessment</title>
+{% endblock %}
+
+{% block classpages %}
+<div class="classRecord-header">
+    <div id="flash-messages-container">
+        {% if flash_message %}
+        <div class="alert alert-{{ flash_message.type }} alert-dismissible fade show" role="alert">
+            <div class="d-flex justify-content-between align-items-center">
+            <span>{{ flash_message.message | safe }}</span>
+            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+            </div>
+        </div>
+        {% endif %}
+    </div>
+</div>
+<div class="table-container d-flex pb-4">
+    <div class="classRecord-body">
+        <table class="table table-hover" id="dynamic-table">
+            <thead>
+                <tr>
+                    <th></th>
+                    <th></th>
+                    <th></th>
+                    <th class="justify-content-center">Higest Score:</th>
+                    <th>10</th>
+                    <th></th>
+                    <th></th>
+                    <th></th>
+                </tr>
+
+                <tr>
+                    <th>#</th>
+                    <th>Student ID</th>
+                    <th>First Name</th>
+                    <th>Last Name</th>
+                    <th>S</th>
+                    <th>
+                        <button type="button" class="btn btn-secondary">
+                            <i class="fa-solid fa-plus"></i>
+                        </button>
+                    </th>
+                    <th>Total Score</th>
+                    <th>Action</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% if Students|length == 0 %}
+                <td colspan="8" class="text-center">No Students Entrolled on This Class.</td>
+                {% else %} {% for Student in Students %}
+                <tr>
+                    <td>{{Student[0]}}</td>
+                    <td>{{Student[1]}}</td>
+                    <td>{{Student[2]}}</td>
+                    <td>{{Student[3]}}</td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td>
+                        <!-- <button type="button" class="btn btn-outline-light">
+                            <i class="fa-solid fa-plus" style="color: #000000;"></i>
+                        </button> -->
+                        <button type="button" class="btn 1">
+                            <i class="fa-solid fa-bell" style="color: #000000;"></i>
+                        </button>
+                    </td>
+                </tr>
+                {% endfor %} {% endif %}
+            </tbody>
+        </table>
+    </div>
+</div>
+
+<hr class="pt-4">
+{% endblock %}

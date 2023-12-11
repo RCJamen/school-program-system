@@ -78,7 +78,9 @@ def create_grade_distribution():
         name = form.name.data
         percentage = form.percentage.data
         result = ClassRecord.addGradeDistribution(subject_code, section_code, school_year, sem, name, percentage)
-        ClassRecord.createAssessmentTable(subject_code, section_code, school_year, sem, name)
+        rows = ClassRecord.getRowsClassRecord(subject_code, section_code, school_year, sem)
+        ClassRecord.createAssessmentTable(subject_code, section_code, school_year, sem, name, rows)
+
         if "success" in result:
             credentials_message = f"<br>Name: <strong>{name}</strong><br>Percentage: <strong>{percentage}</strong>"
             flash_message = {"type": "success", "message": f"Assessment Created successfully:{credentials_message}"}
@@ -105,3 +107,12 @@ def delete_grade_distribution(assessmentid, name):
         return jsonify({'success': True, 'message': 'Assessment Deleted Successfully', 'flash_message': flash_message})
     except Exception as e:
         return jsonify({'success': False, 'error': str(e)})
+
+
+@classRecord.route("/class_record/assessment")
+def hello ():
+    ClassDetails = session.get('ClassDetails', None)
+    subject_code, description, section_code, credits, sem, school_year = ClassDetails
+    Students = ClassRecord.getStudents(subject_code, section_code, school_year, sem)
+
+    return render_template("assessment-table.html", ClassDetails=ClassDetails, Students=Students)

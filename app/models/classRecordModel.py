@@ -1,4 +1,5 @@
 from app import mysql
+from decimal import Decimal
 
 class ClassRecord:
 
@@ -109,13 +110,21 @@ class ClassRecord:
         try:
             cursor = mysql.connection.cursor()
             table_name = f'GD_{subject_code}_{section_code}_{school_year}_{sem}'.replace('-', '_')
+            check_query = f"SELECT COALESCE(SUM(percentage), 0) FROM {table_name}"
+            cursor.execute(check_query)
+            total_percentage = Decimal(cursor.fetchone()[0])
+            percentage = Decimal(str(percentage))
+            if total_percentage + percentage > 100:
+                return "Sum of percentage values cannot exceed 100"
             insert_query = f"INSERT INTO {table_name} (name, percentage) VALUES (%s, %s)"
             values = (name, percentage)
             cursor.execute(insert_query, values)
             mysql.connection.commit()
             return "Assessment created successfully"
         except Exception as e:
-            return f"Failed to create Assessment: {str(e)}"
+            return f"{str(e)}"
+
+
 
     @classmethod
     def deleteGradeAssessment(cls, subject_code, section_code, school_year, sem, assessmentid):
@@ -137,23 +146,45 @@ class ClassRecord:
             return f"Failed to delete assessment: {str(e)}"
 
     @staticmethod
-    def createAssessmentTable(subject_code, section_code, school_year, sem, name):
+    def getRowsClassRecord(subject_code, section_code, school_year, sem):
+        try:
+            cursor = mysql.connection.cursor()
+            table_name = f'CR_{subject_code}_{section_code}_{school_year}_{sem}'.replace('-', '_')
+            sql = f"SELECT studentID FROM {table_name}"
+            cursor.execute(sql)
+            result = cursor.fetchall()
+            cursor.close()
+            return result
+        except Exception as e:
+            return f"Failed to fetch students: {str(e)}"
+
+    @staticmethod
+    def createAssessmentTable(subject_code, section_code, school_year, sem, name, rows):
         try:
             cursor = mysql.connection.cursor()
             table_name = f'AS_{subject_code}_{section_code}_{school_year}_{sem}_{name}'.replace('-', '_')
-            sql = '''
+
+            create_table_sql = '''
                 CREATE TABLE IF NOT EXISTS {} (
                 classID INT AUTO_INCREMENT NOT NULL,
+                studentID VARCHAR(20) NOT NULL,
                 finalscore DECIMAL(6,2) NOT NULL DEFAULT 0.00,
                 Activity_1 INT,
-                PRIMARY KEY (classID),
+                PRIMARY KEY (classID)
                 );
             '''.format(table_name)
-            cursor.execute(sql)
+            cursor.execute(create_table_sql)
+
+            for row in rows:
+                student_id = row[0]
+                insert_row_sql = f"INSERT INTO {table_name} (studentID) VALUES ('{student_id}')"
+                cursor.execute(insert_row_sql)
+
             mysql.connection.commit()
             return True
         except Exception as e:
-            return f"Failed to Create Database: {str(e)}"
+            return f"Failed to Create Assessment Table: {str(e)}"
+
 
     @staticmethod
     def deleteAssessmentTable(subject_code, section_code, school_year, sem, name):
