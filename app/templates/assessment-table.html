@@ -5,6 +5,21 @@
 {% endblock %}
 
 {% block classpages %}
+<div class="px-5 pt-3 d-flex align-items-center">
+    <h1>{{Name}}</h1>
+    <div class="dropdown ps-3">
+        <button class="btn btn-outline-dark dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false">
+        </button>
+        <ul class="dropdown-menu">
+            <li><a class="dropdown-item" href="{{ url_for('classRecord.index', subject_code=ClassDetails[0], description=ClassDetails[1], section_code=ClassDetails[2], credits=ClassDetails[3], sem=ClassDetails[4], school_year=ClassDetails[5]) }}">Class List</a>
+            </li>
+            {% for Assessment in Assessments %}
+            {% set assessment_link = Assessment[0]|replace(' ', '_') %}
+            <li><a class="dropdown-item" href="{{ url_for('classRecord.assessment_record', assessment=assessment_link) }}">{{Assessment[0]}}</a></li>
+            {% endfor %}
+        </ul>
+    </div>
+</div>
 <div class="classRecord-header">
     <div id="flash-messages-container">
         {% if flash_message %}
@@ -31,7 +46,6 @@
                     <th></th>
                     <th></th>
                 </tr>
-
                 <tr>
                     <th>#</th>
                     <th>Student ID</th>
@@ -56,13 +70,13 @@
                     <td>{{Student[1]}}</td>
                     <td>{{Student[2]}}</td>
                     <td>{{Student[3]}}</td>
+                    <td>{{Student[6]}}</td>
                     <td></td>
-                    <td></td>
-                    <td></td>
+                    <td>{{Student[5]}}</td>
                     <td>
-                        <!-- <button type="button" class="btn btn-outline-light">
+                        <button type="button" class="btn btn-outline-light">
                             <i class="fa-solid fa-plus" style="color: #000000;"></i>
-                        </button> -->
+                        </button>
                         <button type="button" class="btn 1">
                             <i class="fa-solid fa-bell" style="color: #000000;"></i>
                         </button>

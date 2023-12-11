@@ -121,8 +121,6 @@ class ClassRecord:
         except Exception as e:
             return f"{str(e)}"
 
-
-
     @classmethod
     def deleteGradeAssessment(cls, subject_code, section_code, school_year, sem, assessmentid):
         try:
@@ -147,7 +145,7 @@ class ClassRecord:
         try:
             cursor = mysql.connection.cursor()
             table_name = f'CR_{subject_code}_{section_code}_{school_year}_{sem}'.replace('-', '_')
-            sql = f"SELECT studentID FROM {table_name}"
+            sql = f"SELECT classID, studentID, firstname, lastname, email FROM {table_name}"
             cursor.execute(sql)
             result = cursor.fetchall()
             cursor.close()
@@ -163,18 +161,25 @@ class ClassRecord:
 
             create_table_sql = '''
                 CREATE TABLE IF NOT EXISTS {} (
-                classID INT AUTO_INCREMENT NOT NULL,
-                studentID VARCHAR(20) NOT NULL,
-                finalscore DECIMAL(6,2) NOT NULL DEFAULT 0.00,
-                Activity_1 INT,
+                classID INT AUTO_INCREMENT,
+                studentID VARCHAR(20),
+                firstname VARCHAR(255),
+                lastname VARCHAR(255),
+                email VARCHAR(255),
+                finalscore DECIMAL(6,2) DEFAULT 0.00,
+                Activity_1 INT DEFAULT 0,
                 PRIMARY KEY (classID)
                 );
             '''.format(table_name)
             cursor.execute(create_table_sql)
 
             for row in rows:
-                student_id = row[0]
-                insert_row_sql = f"INSERT INTO {table_name} (studentID) VALUES ('{student_id}')"
+                classID = row[0]
+                studentID = row[1]
+                firstname = row[2]
+                lastname = row[3]
+                email = row[4]
+                insert_row_sql = f"INSERT INTO {table_name} (classID, studentID, firstname, lastname, email) VALUES ({classID},'{studentID}', '{firstname}', '{lastname}', '{email}')"
                 cursor.execute(insert_row_sql)
 
             mysql.connection.commit()
@@ -187,7 +192,7 @@ class ClassRecord:
     def deleteAssessmentTable(subject_code, section_code, school_year, sem, name):
         try:
             cursor = mysql.connection.cursor()
-            table_name = f'AS_{subject_code}_{section_code}_{school_year}_{sem}_{name}'.replace('-', '_')
+            table_name = f'AS_{subject_code}_{section_code}_{school_year}_{sem}_{name.replace(" ", "_")}'.replace('-', '_')
             sql = '''
                 DROP TABLE {};
                 '''.format(table_name)
@@ -196,3 +201,31 @@ class ClassRecord:
             return True
         except Exception as e:
             return f"Failed to Delete Database Table: {str(e)}"
+
+
+    @staticmethod
+    def getAssessmentList(subject_code, section_code, school_year, sem):
+        try:
+            cursor = mysql.connection.cursor()
+            table_name = f'GD_{subject_code}_{section_code}_{school_year}_{sem}'.replace('-', '_')
+            sql = f"SELECT name FROM {table_name} ORDER BY assessmentID"
+            cursor.execute(sql)
+            result = cursor.fetchall()
+            cursor.close()
+            return result
+        except Exception as e:
+            return f"Failed to fetch Assessments: {str(e)}"
+
+
+    @staticmethod
+    def getStudentsInAssessment(subject_code, section_code, school_year, sem, assessment):
+        try:
+            cursor = mysql.connection.cursor()
+            table_name = f'AS_{subject_code}_{section_code}_{school_year}_{sem}_{assessment}'.replace('-', '_')
+            sql = f"SELECT * FROM {table_name}"
+            cursor.execute(sql)
+            result = cursor.fetchall()
+            cursor.close()
+            return result
+        except Exception as e:
+            return f"Failed to fetch Students in Assessments: {str(e)}"

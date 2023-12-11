@@ -24,9 +24,10 @@ def index(subject_code, section_code, description, credits ,sem, school_year):
     ClassRecord.createGradeDistributionTable(subject_code, section_code, school_year, sem)
     Students = ClassRecord.getStudents(subject_code, section_code, school_year, sem)
     GradeDistributions = ClassRecord.getGradeDistribution(subject_code, section_code, school_year, sem)
+    Assessments = ClassRecord.getAssessmentList(subject_code, section_code, school_year, sem)
     session['ClassDetails'] = ClassDetails
     flash_message = session.pop('flash_message', None)
-    return render_template("class-record.html", ClassDetails=ClassDetails, Students=Students, GradeDistributions= GradeDistributions, flash_message=flash_message)
+    return render_template("class-record.html", ClassDetails=ClassDetails, Students=Students, GradeDistributions= GradeDistributions, Assessments=Assessments, flash_message=flash_message)
 
 @classRecord.route("/class_record/create_student", methods=['POST','GET'])
 def create_student():
@@ -80,6 +81,7 @@ def create_grade_distribution():
         result = ClassRecord.addGradeDistribution(subject_code, section_code, school_year, sem, name, percentage)
         rows = ClassRecord.getRowsClassRecord(subject_code, section_code, school_year, sem)
         ClassRecord.createAssessmentTable(subject_code, section_code, school_year, sem, name, rows)
+        print(rows)
 
         if "success" in result:
             credentials_message = f"<br>Name: <strong>{name}</strong><br>Percentage: <strong>{percentage}</strong>"
@@ -96,7 +98,6 @@ def create_grade_distribution():
 
 @classRecord.route("/grade_distribution/delete_assessment/<string:assessmentid>/<string:name>", methods=['POST'])
 def delete_grade_distribution(assessmentid, name):
-    print(assessmentid, name)
     try:
         ClassDetails = session.get('ClassDetails', None)
         subject_code, description, section_code, credits, sem, school_year = ClassDetails
@@ -109,10 +110,12 @@ def delete_grade_distribution(assessmentid, name):
         return jsonify({'success': False, 'error': str(e)})
 
 
-@classRecord.route("/class_record/assessment")
-def hello ():
+@classRecord.route("/class_record/<string:assessment>")
+def assessment_record (assessment):
     ClassDetails = session.get('ClassDetails', None)
     subject_code, description, section_code, credits, sem, school_year = ClassDetails
-    Students = ClassRecord.getStudents(subject_code, section_code, school_year, sem)
+    Name = assessment.replace('_', ' ')
+    Assessments = ClassRecord.getAssessmentList(subject_code, section_code, school_year, sem)
+    Students = ClassRecord.getStudentsInAssessment(subject_code, section_code, school_year, sem, assessment)
 
-    return render_template("assessment-table.html", ClassDetails=ClassDetails, Students=Students)
+    return render_template("assessment-table.html", Name=Name, ClassDetails=ClassDetails, Assessments=Assessments, Students=Students)
