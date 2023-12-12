@@ -64,10 +64,11 @@ class ClassRecord:
             return f"Failed to create Student: {str(e)}"
 
     @classmethod
-    def deleteStudent(cls, subject_code, section_code, school_year, sem, studentID):
+    def deleteStudent(cls,subject_code, section_code, school_year, sem, studentID):
         try:
             cursor = mysql.connection.cursor()
             cr_table_name = f'CR_{subject_code}_{section_code}_{school_year}_{sem}'.replace('-', '_')
+
             cursor.execute(f"DELETE FROM {cr_table_name} WHERE studentID = %s", (studentID,))
             mysql.connection.commit()
 
@@ -76,8 +77,8 @@ class ClassRecord:
             mysql.connection.commit()
 
             cursor.execute(f"SELECT MAX(classID) AS max_classID FROM {cr_table_name};")
-            max_classID = cursor.fetchone()[0]
-            max_classID += 1
+            max_classID_result = cursor.fetchone()
+            max_classID = max_classID_result[0] + 1 if max_classID_result[0] is not None else 1
 
             cursor.execute(f"ALTER TABLE {cr_table_name} AUTO_INCREMENT = {max_classID};")
             mysql.connection.commit()
@@ -96,11 +97,11 @@ class ClassRecord:
                 mysql.connection.commit()
 
                 cursor.execute(f"SELECT MAX(classID) AS max_classID FROM {as_table_name};")
-                max_classID = cursor.fetchone()[0]
-                max_classID += 1
+                max_classID_result = cursor.fetchone()
+                max_classID = max_classID_result[0] + 1 if max_classID_result[0] is not None else 1
+
                 cursor.execute(f"ALTER TABLE {as_table_name} AUTO_INCREMENT = {max_classID};")
                 mysql.connection.commit()
-
             return "Student deleted successfully"
         except Exception as e:
             return f"Failed to delete student: {str(e)}"
