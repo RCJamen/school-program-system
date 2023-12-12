@@ -49,6 +49,16 @@ class ClassRecord:
             values = (studentID, firstname, lastname, coursecode, email)
             cursor.execute(insert_query, values)
             mysql.connection.commit()
+
+            as_table_name = f'AS_{subject_code}_{section_code}_{school_year}_{sem}%'.replace('-', '_')
+            cursor.execute("SELECT table_name FROM information_schema.tables WHERE table_name LIKE %s AND table_schema = 'progsys_db'", (as_table_name,))
+            as_tables = cursor.fetchall()
+
+            for table in as_tables:
+                as_table_name = table[0]
+                cursor.execute(f"INSERT INTO {as_table_name} (studentID, firstname, lastname, email) VALUES (%s, %s, %s, %s)", (studentID, firstname, lastname, email))
+                mysql.connection.commit()
+
             return "Student created successfully"
         except Exception as e:
             return f"Failed to create Student: {str(e)}"
