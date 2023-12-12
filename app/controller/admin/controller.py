@@ -41,7 +41,11 @@ def login_is_required(function):
 
 @admin.route("/")
 def index():
-    return render_template("/login.html")
+    if "google_id" in session:
+        return render_template("home.html")
+    else:
+        return render_template("login.html")
+
 
 
 @admin.route("/login")
