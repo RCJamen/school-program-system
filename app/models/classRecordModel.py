@@ -57,7 +57,6 @@ class ClassRecord:
     def deleteStudent(cls, subject_code, section_code, school_year, sem, studentID):
         try:
             cursor = mysql.connection.cursor()
-
             cr_table_name = f'CR_{subject_code}_{section_code}_{school_year}_{sem}'.replace('-', '_')
             cursor.execute(f"DELETE FROM {cr_table_name} WHERE studentID = %s", (studentID,))
             mysql.connection.commit()
@@ -66,11 +65,16 @@ class ClassRecord:
             cursor.execute(f"UPDATE {cr_table_name} SET classID = @new_classID := @new_classID + 1 ORDER BY classID;")
             mysql.connection.commit()
 
+            cursor.execute(f"SELECT MAX(classID) AS max_classID FROM {cr_table_name};")
+            max_classID = cursor.fetchone()[0]
+            max_classID += 1
+
+            cursor.execute(f"ALTER TABLE {cr_table_name} AUTO_INCREMENT = {max_classID};")
+            mysql.connection.commit()
+
             as_table_name = f'AS_{subject_code}_{section_code}_{school_year}_{sem}%'.replace('-', '_')
             cursor.execute("SELECT table_name FROM information_schema.tables WHERE table_name LIKE %s AND table_schema = 'progsys_db'", (as_table_name,))
             as_tables = cursor.fetchall()
-
-            print("AS Tables:", as_tables)  # Debugging line
 
             for table in as_tables:
                 as_table_name = table[0]
@@ -79,6 +83,12 @@ class ClassRecord:
 
                 cursor.execute(f"SET @new_classID := 0;")
                 cursor.execute(f"UPDATE {as_table_name} SET classID = @new_classID := @new_classID + 1 ORDER BY classID;")
+                mysql.connection.commit()
+
+                cursor.execute(f"SELECT MAX(classID) AS max_classID FROM {as_table_name};")
+                max_classID = cursor.fetchone()[0]
+                max_classID += 1
+                cursor.execute(f"ALTER TABLE {as_table_name} AUTO_INCREMENT = {max_classID};")
                 mysql.connection.commit()
 
             return "Student deleted successfully"
@@ -245,17 +255,3 @@ class ClassRecord:
             return result
         except Exception as e:
             return f"Failed to fetch Students in Assessments: {str(e)}"
-
-
-    @staticmethod
-    def test(subject_code, section_code, school_year, sem):
-        try:
-            cursor = mysql.connection.cursor()
-            table_name = f'AS_{subject_code}_{section_code}_{school_year}_{sem}_%'.replace('-', '_')
-            sql = f"SELECT table_name FROM information_schema.tables WHERE table_name LIKE %s AND table_schema = 'progsys_db'"
-            cursor.execute(sql,(table_name,))
-            result = cursor.fetchall()
-            cursor.close()
-            return result
-        except Exception as e:
-            return f"Failed to fetch tables in Database: {str(e)}"
