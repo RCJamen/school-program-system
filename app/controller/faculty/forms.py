@@ -1,5 +1,5 @@
 from flask_wtf import FlaskForm
-from wtforms import StringField, SubmitField, validators
+from wtforms import StringField, SubmitField, SelectField, validators
 
 class FacultyForm(FlaskForm):
     facultyIDInput = StringField('ID', validators=[validators.DataRequired(),
@@ -13,6 +13,7 @@ class FacultyForm(FlaskForm):
         validators.Regexp(regex=r'^[A-Za-z\s\-]+$', message="Lastname should only contain letters, spaces, or hyphens")
     ])
     facultyEmail = StringField('MSU-IIT Email', validators=[validators.Email(), validators.Regexp(regex=r'.*@g\.msuiit\.edu\.ph$', message="Only Accepts MSU-IIT Email")])
+    facultyRole = SelectField('Select Role', choices=[('Admin', 'Admin'), ('Chairperson', 'Chairperson'), ('Faculty', 'Faculty')])
     submit_add = SubmitField('Add Faculty')
 
 class UpdateFacultyForm(FlaskForm):
@@ -27,4 +28,5 @@ class UpdateFacultyForm(FlaskForm):
         validators.Regexp(regex=r'^[A-Za-z\s\-]+$', message="Last Name should only contain letters, spaces, or hyphens")
     ])
     editFacultyEmail = StringField('MSU-IIT Email', validators=[validators.Email(), validators.Regexp(regex=r'.*@g\.msuiit\.edu\.ph$', message="Only Accepts MSU-IIT Email")])
+    editFacultyRole = SelectField('Select Role', choices=[('Admin', 'Admin'), ('Chairperson', 'Chairperson'), ('Faculty', 'Faculty')])
     submit_update = SubmitField('Update Faculty')

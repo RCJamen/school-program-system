@@ -1,6 +1,6 @@
 
-$(document).ready(function() {
-    $('.delete-faculty').click(function(event) {
+$(document).ready(function () {
+    $('.delete-faculty').click(function (event) {
         event.preventDefault();
         var facultyID = $(this).data('faculty-id');
         var facultyName = $(this).data('faculty-name');
@@ -13,7 +13,7 @@ $(document).ready(function() {
         $('#askDelete').modal('show');
 
         // Handle "Yes" button click in the modal
-        $('#askDelete .delete-button').off('click').on('click', function() {
+        $('#askDelete .delete-button').off('click').on('click', function () {
             // Send an AJAX request to delete faculty
             $.ajax({
                 type: 'DELETE',
@@ -21,7 +21,7 @@ $(document).ready(function() {
                 headers: {
                     'X-CSRFToken': csrfToken
                 },
-                success: function(response) {
+                success: function (response) {
                     if (response.success) {
                         // Handle success, e.g., refresh the page or update UI
                         $(event.target).closest('tr').remove();
@@ -35,7 +35,7 @@ $(document).ready(function() {
                         flashMessage('danger', 'Failed to delete faculty');
                     }
                 },
-                error: function(error) {
+                error: function (error) {
                     // Handle error, e.g., display an error message
                     console.error('Error deleting faculty:', error);
                     // Add a flash message for failed deletion
@@ -63,37 +63,40 @@ $(document).ready(function() {
         $('#flash-messages-container').append(flashMessageHTML);
     }
 
-    
+
 });
 
 
 
 var csrfToken = $('meta[name=csrf-token]').attr('content');  // Move it outside the click event handler
 
-$(".edit-faculty").click(function() {
+$(".edit-faculty").click(function () {
     console.log("Update Faculty button clicked");
     var facultyID = $(this).data("faculty-edit-id");
     var facultyfirstName = $(this).data("faculty-edit-firstname");
     var facultylastName = $(this).data("faculty-edit-lastname");
     var facultyEmail = $(this).data("faculty-edit-email");
+    var facultyRole = $(this).data("faculty-edit-role");
 
-    console.log('Clicked Edit Faculty. ID:', facultyID, 'FirstName:', facultyfirstName, 'LastName:', facultylastName, 'Email:', facultyEmail);
-    
+    console.log('Clicked Edit Faculty. ID:', facultyID, 'FirstName:', facultyfirstName, 'LastName:', facultylastName, 'Email:', facultyEmail, 'Role:', facultyRole);
+
     $("#editFacultyIDInput").val(facultyID);
     $("#editFacultyfirstName").val(facultyfirstName);
     $("#editFacultylastName").val(facultylastName);
     $("#editFacultyEmail").val(facultyEmail);
+    $("#editFacultyRole").val(facultyRole);
 });
 
 
 
-$("#editFacultyForm").submit(function(e) {
+$("#editFacultyForm").submit(function (e) {
     e.preventDefault();
 
     var facultyID = $("#editFacultyIDInput").val();  // Retrieve the ID from the form
     var facultyfirstName = $("#editFacultyfirstName").val();
     var facultylastName = $("#editFacultylastName").val();
     var facultyEmail = $("#editFacultyEmail").val();
+    var facultyRole = $("#editFacultyRole").val();
 
     $.ajax({
         type: 'POST',
@@ -103,11 +106,12 @@ $("#editFacultyForm").submit(function(e) {
             editFacultyfirstName: facultyfirstName,
             editFacultylastName: facultylastName,
             editFacultyEmail: facultyEmail,
+            editFacultyRole: facultyRole,
         },
         headers: {
             'X-CSRFToken': csrfToken
         },
-        success: function(response) {
+        success: function (response) {
             console.log('Faculty Updated successfully:', response);
             editFlashMessage('success', `Faculty updated successfully - ID: <strong>${facultyID}</strong>`);
             const row = document.querySelector(`#faculty-row-${facultyID}`)
@@ -115,8 +119,9 @@ $("#editFacultyForm").submit(function(e) {
             row.querySelector("#faculty-firstname").textContent = facultyfirstName
             row.querySelector("#faculty-lastname").textContent = facultylastName
             row.querySelector("#faculty-email").textContent = facultyEmail
+            row.querySelector("#faculty-role").textContent = facultyRole
         },
-        error: function(error) {
+        error: function (error) {
             // Handle error, e.g., display an error message
             console.error('Error Updating faculty:', error);
         },
@@ -151,11 +156,12 @@ function editRedirect() {
 
 const editFacultyBtn = document.querySelectorAll('.edit-faculty');
 editFacultyBtn.forEach(button => {
-    button.addEventListener("click", ()=>{
+    button.addEventListener("click", () => {
         const edit_faculty_id = button.getAttribute('data-faculty-edit-id');
         const edit_faculty_firstname = button.getAttribute("data-faculty-edit-firstname");
         const edit_faculty_lastname = button.getAttribute("data-faculty-edit-lastname");
         const edit_faculty_email = button.getAttribute("data-faculty-edit-email");
+        const edit_faculty_role = button.getAttribute("data-faculty-edit-role");
 
         const id_input = document.getElementById("editFacultyIDInput");
         id_input.value = edit_faculty_id;
@@ -168,6 +174,9 @@ editFacultyBtn.forEach(button => {
 
         const email_input = document.getElementById("editFacultyEmail");
         email_input.value = edit_faculty_email;
+
+        const role_input = document.getElementById("editFacultyRole");
+        role_input.value = edit_faculty_role;
     });
 });
 
@@ -327,10 +336,10 @@ function editAcademicLoad(button) {
                         </td>
                     </tr>
                 `;
-            
+
                 tbody.append(row);
             }
-            
+
 
             $('#academic-load').modal('show');
         },
@@ -375,7 +384,7 @@ $(document).on('click', '#classSchedule-tab', function () {
                     var days = ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday', 'Sunday'];
                     days.forEach(function (day) {
                         var eventsGroup = $(`.events-group.${day}`);
-                        
+
                         // Clear existing content inside the ul element
                         eventsGroup.find(`#schedule-${day.toLowerCase()}`).empty();
 
@@ -437,7 +446,7 @@ function openSecondModal(button) {
     $("#section-id").val(sectionID);
     // Show the second modal
     secondModal.show();
-    
+
 }
 
 function openDeleteModal() {
@@ -505,7 +514,7 @@ $('#academic-table-body').on('click', '.delete-schedule', function (event) {
     var scheduleId = $(this).data('schedule-id');
     var schedule = $(this).data('schedule');
     var classhandled = $(this).data('schedule-subject');
-    
+
     // Perform your delete logic here or trigger another function
     console.log('Delete Schedule ID:', scheduleId);
     console.log('Schedule:', schedule);
@@ -516,17 +525,17 @@ $('#academic-table-body').on('click', '.delete-schedule', function (event) {
     // // Show the modal
     $('#deleteSchedule').modal('show');
 
-    $('#deleteSchedule .delete-schedule-button').off('click').on('click', function() {
-         // Send an AJAX request to delete faculty
-         $.ajax({
+    $('#deleteSchedule .delete-schedule-button').off('click').on('click', function () {
+        // Send an AJAX request to delete faculty
+        $.ajax({
             type: 'DELETE',
             url: `/faculty/delete-schedule/${scheduleId}`,
             headers: {
                 'X-CSRFToken': csrfToken
             },
-            success: function(response) {
+            success: function (response) {
                 console.log('Response:', response);
-        
+
                 if (response.success) {
                     editAcademicLoad({ getAttribute: function () { return currentFacultyID; } });
                     console.log('Schedule deleted successfully:', response);
@@ -537,11 +546,11 @@ $('#academic-table-body').on('click', '.delete-schedule', function (event) {
                     deleteScheduleFM("success", `Schedule Added Successfully: <strong>Class Handled:</strong> <em>${classhandled}</em><br><strong>Schedule:</strong> <em>${schedule}</em>`);
                 }
             },
-            error: function(jqXHR, textStatus, errorThrown) {
+            error: function (jqXHR, textStatus, errorThrown) {
                 console.error('AJAX Error:', textStatus, errorThrown);
             }
         });
-        
+
 
         // Hide the modal after the "Yes" button is clicked
         $('#deleteSchedule').modal('hide');

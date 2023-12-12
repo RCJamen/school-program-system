@@ -67,6 +67,7 @@
                               <th>First Name</th>
                               <th>Last Name</th>
                               <th>Email</th>
+                              <th>Role</th>
                               <th>Action</th>
                             </tr>
                           </thead>
@@ -77,10 +78,11 @@
                               <td id="faculty-firstname">{{faculty.firstname}}</td>
                               <td id="faculty-lastname">{{faculty.lastname}}</td>
                               <td id="faculty-email">{{faculty.email}}</td>
+                              <td id="faculty-role">{{faculty.role}}</td>
                               <td>
                                 <button type="button" class="btn btn-outline-light edit-faculty" data-faculty-edit-firstname="{{faculty.firstname}}"
                                 data-bs-target="#editFacultyModal" data-faculty-edit-lastname="{{faculty.lastname}}" data-faculty-edit-id="{{faculty.facultyID}}"
-                                data-faculty-edit-email="{{faculty.email}}" data-bs-toggle="modal"><i class="fa-solid fa-pen" 
+                                data-faculty-edit-email="{{faculty.email}}" data-faculty-edit-role="{{faculty.role}}" data-bs-toggle="modal"><i class="fa-solid fa-pen" 
                                 style="color: #000000;"></i></button>
 
                                 <button type="button" class="btn btn-outline-light delete-faculty" data-faculty-name=" {{faculty.lastname}}, {{faculty.firstname}}" 
@@ -144,6 +146,10 @@
           <div class="form-group">
             <label for="facultyEmail">MSU-IIT Email</label>
             {{ add_form.facultyEmail(class="form-control", placeholder="Email", required=True, id="facultyEmail") }}
+          </div>
+          <div class="form-group">
+            <label for="facultyRole">Faculty Role</label>
+            {{ add_form.facultyRole(class="form-control", placeholder="Faculty Role", required=True, id="facultyRole") }}
           </div>
         </div>
         
@@ -225,6 +231,10 @@
           <div class="form-group">
             <label for="editFacultyEmail">MSU-IIT Email</label>
             {{ update_form.editFacultyEmail(class="form-control", placeholder="Email", required=True, id="editFacultyEmail") }}
+          </div>
+          <div class="form-group">
+            <label for="editFacultyRole">Faculty Role</label>
+            {{ update_form.editFacultyRole(class="form-control", placeholder="Role", required=True, id="editFacultyRole") }}
           </div>
         </div>
         

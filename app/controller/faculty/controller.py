@@ -24,11 +24,12 @@ def add_faculty():
             firstname = add_form.facultyfirstName.data
             lastname = add_form.facultylastName.data
             email = add_form.facultyEmail.data
+            role = add_form.facultyRole.data
 
-            result = faculty_model.create_faculty(facultyID, firstname, lastname, email)
+            result = faculty_model.create_faculty(facultyID, firstname, lastname, email, role)
 
             if "success" in result:
-                credentials_message = f"ID: <strong>{facultyID}</strong>, Name: <strong>{firstname} {lastname}</strong>, Email: <strong>{email}</strong>"
+                credentials_message = f"ID: <strong>{facultyID}</strong>, Name: <strong>{firstname} {lastname}</strong>, Email: <strong>{email}</strong>, Role: <strong>{role}</strong>"
                 flash_message = {"type": "success", "message": f"Faculty created successfully - {credentials_message}"}
             else:
                 flash_message = {"type": "danger", "message": f"Failed to create faculty: {result}"}
@@ -66,7 +67,8 @@ def edit_faculty(facultyID):
             new_firstname = form.editFacultyfirstName.data
             new_lastname = form.editFacultylastName.data
             new_email = form.editFacultyEmail.data
-            result = faculty_model.update_faculty(facultyID, new_firstname, new_lastname, new_email)
+            new_role = form.editFacultyRole.data
+            result = faculty_model.update_faculty(facultyID, new_firstname, new_lastname, new_email, new_role)
             return jsonify({"success": result == "Faculty Information Updated Successfully"})
         else:
             # Handle the case where form validation fails
