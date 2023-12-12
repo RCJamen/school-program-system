@@ -1,5 +1,5 @@
 from flask_wtf import FlaskForm
-from wtforms import StringField, validators, SubmitField
+from wtforms import StringField, validators, SubmitField, DecimalField
 
 class classRecordForm(FlaskForm):
     studentID = StringField('studentID', validators=[validators.DataRequired(), validators.Regexp(regex=r'^\d{4}-\d{4}$', message="ID Should be in (XXXX-XXXX) Format")])
@@ -22,5 +22,8 @@ class classRecordForm(FlaskForm):
 
 class gradeDistributionForm(FlaskForm):
     name = StringField("name", [validators.DataRequired()])
-    percentage = StringField("percentage", [validators.DataRequired()])
+    percentage = DecimalField("Percentage", [
+        validators.DataRequired(),
+        validators.NumberRange(min=0, max=100, message="Please enter a valid percentage (0-100).")
+    ])
     submit = SubmitField("Submit")

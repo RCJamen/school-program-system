@@ -80,10 +80,9 @@ def create_grade_distribution():
         percentage = form.percentage.data
         result = ClassRecord.addGradeDistribution(subject_code, section_code, school_year, sem, name, percentage)
         rows = ClassRecord.getRowsClassRecord(subject_code, section_code, school_year, sem)
-        ClassRecord.createAssessmentTable(subject_code, section_code, school_year, sem, name, rows)
-        print(rows)
 
         if "success" in result:
+            ClassRecord.createAssessmentTable(subject_code, section_code, school_year, sem, name, rows)
             credentials_message = f"<br>Name: <strong>{name}</strong><br>Percentage: <strong>{percentage}</strong>"
             flash_message = {"type": "success", "message": f"Assessment Created successfully:{credentials_message}"}
             session['flash_message'] = flash_message
@@ -92,7 +91,7 @@ def create_grade_distribution():
             session['flash_message'] = flash_message
         return redirect(url_for(".index", subject_code=subject_code, description=description, section_code=section_code, credits=credits, sem=sem, school_year=school_year, message=flash_message))
     else:
-        flash_message = {"type": "danger", "message": f"Failed to Add Assessment.<br>*  Make Sure Percentage will equate to 100%"}
+        flash_message = {"type": "danger", "message": f"Failed to Add Assessment.<br>*  Make Sure Percentage will equate to 100%<br>*  Make Sure Percentage is not Negative"}
         session['flash_message'] = flash_message
         return redirect(url_for(".index", subject_code=subject_code, description=description, section_code=section_code, credits=credits, sem=sem, school_year=school_year, message=flash_message))
 
