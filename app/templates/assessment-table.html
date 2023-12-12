@@ -37,22 +37,15 @@
         <table class="table table-hover" id="dynamic-table">
             <thead>
                 <tr>
-                    <th></th>
-                    <th></th>
-                    <th></th>
-                    <th></th>
-                    <th></th>
-                    <th></th>
-                    <th></th>
-                    <th></th>
+                    {% set col = Tables|length %}
+                    <td colspan="{{col + 2}}"> </td>
                 </tr>
                 <tr>
                     <th></th>
                     <th></th>
                     <th></th>
                     <th class="justify-content-center">Higest Score:</th>
-                    <th>10</th>
-                    <th></th>
+                    <th id="test"></th>
                     <th></th>
                     <th></th>
                 </tr>
@@ -61,9 +54,12 @@
                     <th>Student ID</th>
                     <th>First Name</th>
                     <th>Last Name</th>
+                    {% set head = Tables|length - 6 %}
+                    {% for _ in range(head)  %}
                     <th>S</th>
+                    {% endfor %}
                     <th>
-                        <button type="button" class="btn btn-secondary">
+                        <button type="button" class="btn btn-secondary addActivity" style="font-size:smaller" data-bs-toggle="modal" data-bs-target="#addActivity">Add Activity
                             <i class="fa-solid fa-plus"></i>
                         </button>
                     </th>
@@ -80,7 +76,9 @@
                     <td>{{Student[1]}}</td>
                     <td>{{Student[2]}}</td>
                     <td>{{Student[3]}}</td>
-                    <td>{{Student[6]}}</td>
+                    {% for column in range(head)  %}
+                    <td>{{Student[6+column]}}</td>
+                    {% endfor %}
                     <td></td>
                     <td>{{Student[5]}}</td>
                     <td>
@@ -99,4 +97,37 @@
 </div>
 
 <hr class="pt-4">
+
+<div class="modal fade" id="addActivity" data-bs-backdrop="static" tabindex="-1" role="dialog"
+    aria-labelledby="editFacultyModalLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <form action="{{ url_for('classRecord.create_activity') }}" method="POST">
+            <input type="hidden" name="csrf_token" value="{{ csrf_token()}}">
+            <div class="modal-content">
+                <div class="modal-header class-record-modal-header">
+                    <h5 class="modal-title">Add Assessment Activity</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body class-record-modal-body">
+                    <div class="form-group">
+                        <label>Activity Name</label>
+                        <input type="text" name="activityname" id="name" class="form-control" placeholder="Enter Activity">
+                    </div>
+                    <div class="form-group">
+                        <label>Score Limit</label>
+                        <input type="text" name="scorelimit" id="score" class="form-control" placeholder="Enter Score Limit">
+                    </div>
+                </div>
+                <div class="modal-footer class-record-modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">
+                        <i class="fa-solid fa-xmark" style="color: #ffffff;"></i> Close
+                    </button>
+                    <button type="submit" id="submit" class="btn btn-success" data-bs-dismiss="modal"> <i
+                            class="fa-solid fa-user-pen"></i>Add Activity
+                    </button>
+                </div>
+            </div>
+        </form>
+    </div>
+</div>
 {% endblock %}

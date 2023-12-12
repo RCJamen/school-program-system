@@ -27,3 +27,11 @@ class gradeDistributionForm(FlaskForm):
         validators.NumberRange(min=0, max=100, message="Please enter a valid percentage (0-100).")
     ])
     submit = SubmitField("Submit")
+
+class activityForm(FlaskForm):
+    activityname = StringField("activityname", [validators.DataRequired()])
+    scorelimit = DecimalField("scorelimit", [
+        validators.DataRequired(),
+        validators.NumberRange(min=0)
+    ])
+    submit = SubmitField("Submit")
