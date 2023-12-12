@@ -40,6 +40,7 @@
             </div>
     </div>
 </div>
+
 <div class="table-container d-flex pb-4">
     <div class="classRecord-body">
         <table class="table table-hover" id="dynamic-table">
@@ -67,9 +68,6 @@
                     <td>{{Student[5]}}</td>
                     <!-- <td>{{Student[6]}}</td> -->
                     <td>
-                        <!-- <button type="button" class="btn btn-outline-light">
-                            <i class="fa-solid fa-plus" style="color: #000000;"></i>
-                        </button> -->
                         <button type="button" class="btn 1">
                             <i class="fa-solid fa-bell" style="color: #000000;"></i>
                         </button>
@@ -83,17 +81,9 @@
         </table>
     </div>
 </div>
+
 <hr class="pt-4">
-{% if flash_message %}
-<div class="d-flex justify-content-center align-items-center mt-5">
-    <div class="alert alert-{{ flash_message.type }} alert-dismissible fade show" role="alert">
-        <div class="d-flex justify-content-between align-items-center">
-        <span>{{ flash_message.message | safe }}</span>
-        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
-        </div>
-    </div>
-</div>
-{% endif %}
+
 <div class="row dist-con mx-5">
     <div class="col-6 table-container">
         <div class="grade-distribution mx-5">
@@ -129,6 +119,16 @@
                 </tbody>
             </table>
         </div>
+        {% if flash_message %}
+        <div class="d-flex justify-content-center mx-5 mt-5">
+            <div class="alert alert-{{ flash_message.type }} alert-dismissible fade show w-100" role="alert">
+                <div class="d-flex justify-content-between align-items-center">
+                    <span>{{ flash_message.message | safe }}</span>
+                    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                </div>
+            </div>
+        </div>
+        {% endif %}
     </div>
     <div class="col-6 table-container">
         <div class="grade-conversion mx-5">
@@ -196,6 +196,61 @@
     </div>
 </div>
 
+<hr class="pt-4">
+
+<div class="accordion" id="accordionPanelsStayOpenExample">
+    <div class="accordion-item">
+        <h1 class="accordion-header">
+            <button class="accordion-button" type="button" data-bs-toggle="collapse"
+                data-bs-target="#panelsStayOpen-collapseOne" aria-expanded="true"
+                aria-controls="panelsStayOpen-collapseOne">
+                <b>Learning Outcome 1</b>
+            </button>
+        </h1>
+        <div id="panelsStayOpen-collapseOne" class="accordion-collapse collapse show">
+            <div class="accordion-body">
+                <strong>This is the first item's accordion body.</strong> This is the first item's accordion body.
+                It is hidden by default, until the collapse plugin adds the apprasdasdopriate classes that we use to
+                style each element. These classes control the overall appearance, as well as the showing and hiding
+                via CSS transitions.
+            </div>
+        </div>
+    </div>
+    <div class="accordion-item">
+        <h2 class="accordion-header">
+            <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse"
+                data-bs-target="#panelsStayOpen-collapseTwo" aria-expanded="false"
+                aria-controls="panelsStayOpen-collapseTwo">
+                <b>Learning Outcome 2</b>
+            </button>
+        </h2>
+        <div id="panelsStayOpen-collapseTwo" class="accordion-collapse collapse">
+            <div class="accordion-body">
+                <strong>This is the second item's accordion body.</strong>This is the first item's accordion body.
+                It is hidden by default, until the collapse plugin adds the apprasdasdopriate classes that we use to
+                style each element. These classes control the overall appearance, as well as the showing and hiding
+                via CSS transitions.
+            </div>
+        </div>
+    </div>
+    <div class="accordion-item">
+        <h2 class="accordion-header">
+            <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse"
+                data-bs-target="#panelsStayOpen-collapseThree" aria-expanded="false"
+                aria-controls="panelsStayOpen-collapseThree">
+                <b>Learning Outcome 3</b>
+            </button>
+        </h2>
+        <div id="panelsStayOpen-collapseThree" class="accordion-collapse collapse">
+            <div class="accordion-body">
+                <strong>This is the third item's accordion body.</strong> This is the first item's accordion body.
+                It is hidden by default, until the collapse plugin adds the apprasdasdopriate classes that we use to
+                style each element. These classes control the overall appearance, as well as the showing and hiding
+                via CSS transitions.
+            </div>
+        </div>
+    </div>
+</div>
 
 <div class="modal fade" id="addStudentModal" data-bs-backdrop="static" tabindex="-1" role="dialog"
     aria-labelledby="editFacultyModalLabel" aria-hidden="true">
