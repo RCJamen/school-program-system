@@ -242,7 +242,7 @@ class ClassRecord:
         try:
             cursor = mysql.connection.cursor()
             table_name = f'GD_{subject_code}_{section_code}_{school_year}_{sem}'.replace('-', '_')
-            sql = f"SELECT name FROM {table_name} ORDER BY assessmentID"
+            sql = f"SELECT name, percentage FROM {table_name} ORDER BY assessmentID"
             cursor.execute(sql)
             result = cursor.fetchall()
             cursor.close()
@@ -281,9 +281,10 @@ class ClassRecord:
         try:
             cursor = mysql.connection.cursor()
             table_name = f'AS_{subject_code}_{section_code}_{school_year}_{sem}_{assessment}'.replace('-', '_')
+            column_name = f'{name}_{scorelimit}'
             sql = '''
                 ALTER TABLE {} ADD {} INT DEFAULT 0 CHECK ({} >= 0 AND {} <= {});
-                '''.format(table_name, name, name, name, scorelimit)
+                '''.format(table_name, column_name, column_name, column_name, scorelimit)
             cursor.execute(sql)
             mysql.connection.commit()
             return "Activity created successfully"

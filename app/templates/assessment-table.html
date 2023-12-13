@@ -1,4 +1,5 @@
 {% extends "class_record_layout.html" %}
+{% set head = Tables|length - 6 %}
 
 {% block classtitle %}
 <title>Assessment</title>
@@ -6,7 +7,12 @@
 
 {% block classpages %}
 <div class="px-5 pt-3 d-flex align-items-center">
-    <h1>Assessment: {{Name}}</h1>
+    {% for Assessment in Assessments %}
+    {% if Name == Assessment[0] %}
+    <h1>Assessment: {{Name}} - {{Assessment[1]}}%</h1>
+    {% set Percentage = Assessment[1] %}
+    {% endif %}
+    {% endfor %}
     <div class="dropdown ps-3">
         <button class="btn btn-outline-dark dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false">
         </button>
@@ -15,7 +21,7 @@
             </li>
             {% for Assessment in Assessments %}
             {% set assessment_link = Assessment[0]|replace(' ', '_') %}
-            <li><a class="dropdown-item" href="{{ url_for('classRecord.assessment_record', assessment=assessment_link) }}">{{Assessment[0]}}</a></li>
+            <li><a class="dropdown-item" href="{{ url_for('classRecord.assessment_record', assessment=assessment_link) }}">{{Assessment[0]}} - {{Assessment[1]}}% </a></li>
             {% endfor %}
         </ul>
     </div>
@@ -41,25 +47,21 @@
                     <td colspan="{{col + 2}}"> </td>
                 </tr>
                 <tr>
-                    <th></th>
-                    <th></th>
-                    <th></th>
-                    <th class="justify-content-center">Higest Score:</th>
-                    <th id="test"></th>
-                    <th></th>
-                    <th></th>
-                </tr>
-                <tr>
                     <th>#</th>
                     <th>Student ID</th>
                     <th>First Name</th>
-                    <th>Last Name</th>
-                    {% set head = Tables|length - 6 %}
-                    {% for _ in range(head)  %}
-                    <th>S</th>
+                    <th id="last">Last Name</th>
+                    {% if Tables|length > 6 %}
+                    {% for column in range(head) %}
+                        {% set value = Tables[column+6][0] %}
+                        {% set value_with_spaces = value|replace("_", " ") %}
+                        {% set last_space_index = value_with_spaces.rfind(' ') %}
+                        {% set title = value_with_spaces[:last_space_index] ~ ' - ' ~ value_with_spaces[last_space_index+1:] %}
+                        <th data-bs-toggle="tooltip" data-bs-title="{{ title }}">S</th>
                     {% endfor %}
+                   {% endif %}
                     <th>
-                        <button type="button" class="btn btn-secondary addActivity" style="font-size:smaller" data-bs-toggle="modal" data-bs-target="#addActivity">Add Activity
+                        <button type="button" class="btn btn-secondary addActivity BtnStyle" style="font-size:smaller" data-bs-toggle="modal" data-bs-target="#addActivity">Add Activity
                             <i class="fa-solid fa-plus"></i>
                         </button>
                     </th>
@@ -99,7 +101,7 @@
 <hr class="pt-4">
 
 <div class="modal fade" id="addActivity" data-bs-backdrop="static" tabindex="-1" role="dialog"
-    aria-labelledby="editFacultyModalLabel" aria-hidden="true">
+    aria-labelledby="addActivityModal" aria-hidden="true">
     <div class="modal-dialog" role="document">
         <form action="{{ url_for('classRecord.create_activity') }}" method="POST">
             <input type="hidden" name="csrf_token" value="{{ csrf_token()}}">
