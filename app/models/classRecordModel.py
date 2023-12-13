@@ -164,11 +164,9 @@ class ClassRecord:
             cursor = mysql.connection.cursor()
             table_name = f'GD_{subject_code}_{section_code}_{school_year}_{sem}'.replace('-', '_')
 
-            # Delete the row
             cursor.execute(f"DELETE FROM {table_name} WHERE assessmentID = %s", (assessmentid,))
             mysql.connection.commit()
 
-            # Reorder the assessmentID values to ensure sequential order
             cursor.execute(f"SET @new_assessmentID := 0;")
             cursor.execute(f"UPDATE {table_name} SET assessmentID = @new_assessmentID := @new_assessmentID + 1 ORDER BY assessmentid;")
             mysql.connection.commit()
@@ -204,7 +202,6 @@ class ClassRecord:
                 lastname VARCHAR(255),
                 email VARCHAR(255),
                 finalscore DECIMAL(6,2) DEFAULT 0.00,
-                Activity_1 INT DEFAULT 0,
                 PRIMARY KEY (classID)
                 );
             '''.format(table_name)
@@ -245,14 +242,13 @@ class ClassRecord:
         try:
             cursor = mysql.connection.cursor()
             table_name = f'GD_{subject_code}_{section_code}_{school_year}_{sem}'.replace('-', '_')
-            sql = f"SELECT name FROM {table_name} ORDER BY assessmentID"
+            sql = f"SELECT name, percentage FROM {table_name} ORDER BY assessmentID"
             cursor.execute(sql)
             result = cursor.fetchall()
             cursor.close()
             return result
         except Exception as e:
             return f"Failed to fetch Assessments: {str(e)}"
-
 
     @staticmethod
     def getStudentsInAssessment(subject_code, section_code, school_year, sem, assessment):
@@ -266,3 +262,31 @@ class ClassRecord:
             return result
         except Exception as e:
             return f"Failed to fetch Students in Assessments: {str(e)}"
+
+    @staticmethod
+    def getAssessmentColumns(subject_code, section_code, school_year, sem, assessment):
+        try:
+            cursor = mysql.connection.cursor()
+            table_name = f'AS_{subject_code}_{section_code}_{school_year}_{sem}_{assessment}'.replace('-', '_')
+            sql = f"SELECT COLUMN_NAME FROM information_schema.columns WHERE table_name = '{table_name}' ORDER BY ordinal_position";
+            cursor.execute(sql)
+            result = cursor.fetchall()
+            cursor.close()
+            return result
+        except Exception as e:
+            return f"Failed to fetch Tables in Assessment: {str(e)}"
+
+    @staticmethod
+    def addAssessmentActivity(subject_code, section_code, school_year, sem, assessment, name, scorelimit):
+        try:
+            cursor = mysql.connection.cursor()
+            table_name = f'AS_{subject_code}_{section_code}_{school_year}_{sem}_{assessment}'.replace('-', '_')
+            column_name = f'{name}_{scorelimit}'
+            sql = '''
+                ALTER TABLE {} ADD {} INT DEFAULT 0 CHECK ({} >= 0 AND {} <= {});
+                '''.format(table_name, column_name, column_name, column_name, scorelimit)
+            cursor.execute(sql)
+            mysql.connection.commit()
+            return "Activity created successfully"
+        except Exception as e:
+            return f"{str(e)}"

@@ -4,5 +4,8 @@ body {
     background: white;
 
 }
-
 /* Page and Table CSS */
+
+th, td {
+    vertical-align: middle;
+  }

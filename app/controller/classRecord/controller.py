@@ -3,8 +3,7 @@ from flask import render_template, redirect, request, jsonify, flash, session
 from flask.helpers import url_for
 from app.controller.admin.controller import login_is_required
 from app.models.classRecordModel import ClassRecord
-from app.controller.classRecord.forms import classRecordForm
-from app.controller.classRecord.forms import gradeDistributionForm
+from app.controller.classRecord.forms import classRecordForm, gradeDistributionForm, activityForm
 
 from . import classRecord
 
@@ -17,6 +16,7 @@ def classRecord_route(rule, **options):
         return wrapper
     return decorator
 
+
 @classRecord.route('/class_record/<string:subject_code>/<string:description>/<string:section_code>/<string:credits>/<string:sem>/<string:school_year>', methods =['GET', 'POST'])
 def index(subject_code, section_code, description, credits ,sem, school_year):
     ClassDetails = [subject_code, description, section_code, credits, sem, school_year]
@@ -28,6 +28,7 @@ def index(subject_code, section_code, description, credits ,sem, school_year):
     session['ClassDetails'] = ClassDetails
     flash_message = session.pop('flash_message', None)
     return render_template("class-record.html", ClassDetails=ClassDetails, Students=Students, GradeDistributions= GradeDistributions, Assessments=Assessments, flash_message=flash_message)
+
 
 @classRecord.route("/class_record/create_student", methods=['POST','GET'])
 def create_student():
@@ -69,6 +70,7 @@ def delete_student(studentID):
     except Exception as e:
         return jsonify({'success': False, 'error': str(e)})
 
+
 @classRecord.route("/grade_distribution/create_grade_distribution", methods=['POST','GET'])
 def create_grade_distribution():
     form = gradeDistributionForm(request.form)
@@ -95,6 +97,7 @@ def create_grade_distribution():
         session['flash_message'] = flash_message
         return redirect(url_for(".index", subject_code=subject_code, description=description, section_code=section_code, credits=credits, sem=sem, school_year=school_year, message=flash_message))
 
+
 @classRecord.route("/grade_distribution/delete_assessment/<string:assessmentid>/<string:name>", methods=['POST'])
 def delete_grade_distribution(assessmentid, name):
     try:
@@ -113,8 +116,36 @@ def delete_grade_distribution(assessmentid, name):
 def assessment_record (assessment):
     ClassDetails = session.get('ClassDetails', None)
     subject_code, description, section_code, credits, sem, school_year = ClassDetails
+    session['Assessment'] = assessment
     Name = assessment.replace('_', ' ')
     Assessments = ClassRecord.getAssessmentList(subject_code, section_code, school_year, sem)
     Students = ClassRecord.getStudentsInAssessment(subject_code, section_code, school_year, sem, assessment)
+    Tables = ClassRecord.getAssessmentColumns(subject_code, section_code, school_year, sem, assessment)
+    flash_message = session.pop('flash_message', None)
+    return render_template("assessment-table.html", Name=Name, ClassDetails=ClassDetails, Assessments=Assessments, Students=Students, Tables=Tables, flash_message=flash_message)
 
-    return render_template("assessment-table.html", Name=Name, ClassDetails=ClassDetails, Assessments=Assessments, Students=Students)
+
+@classRecord.route("/class_record/assessment/create_activity", methods=['POST','GET'])
+def create_activity ():
+    form = activityForm(request.form)
+    ClassDetails = session.get('ClassDetails', None)
+    subject_code, description, section_code, credits, sem, school_year = ClassDetails
+    assessment = session.pop('Assessment', None)
+    if request.method == "POST" and form.validate():
+        activityname = form.activityname.data
+        scorelimit = form.scorelimit.data
+        name = activityname.replace(' ', '_')
+        print(name)
+        result = ClassRecord.addAssessmentActivity(subject_code, section_code, school_year, sem, assessment, name, scorelimit)
+        if "success" in result:
+            credentials_message = f"<br>Activity Name: <strong>{activityname}</strong><br>Score Limit: <strong>{scorelimit}</strong>"
+            flash_message = {"type": "success", "message": f"Activity Created successfully:{credentials_message}"}
+            session['flash_message'] = flash_message
+        else:
+            flash_message = {"type": "danger", "message": f"Failed to create Assessment: {result}"}
+            session['flash_message'] = flash_message
+        return redirect(url_for(".assessment_record", assessment=assessment, message=flash_message))
+    else:
+        flash_message = {"type": "danger", "message": f"Failed to Add Activity. Please check the form for errors."}
+        session['flash_message'] = flash_message
+        return redirect(url_for(".assessment_record", assessment=assessment, message=flash_message))
