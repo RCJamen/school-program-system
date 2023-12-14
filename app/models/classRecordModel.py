@@ -1,4 +1,5 @@
 from app import mysql
+import csv
 from decimal import Decimal
 
 class ClassRecord:
@@ -49,7 +50,7 @@ class ClassRecord:
             values = (studentID, firstname, lastname, coursecode, email)
             cursor.execute(insert_query, values)
             mysql.connection.commit()
-
+            
             as_table_name = f'AS_{subject_code}_{section_code}_{school_year}_{sem}%'.replace('-', '_')
             cursor.execute("SELECT table_name FROM information_schema.tables WHERE table_name LIKE %s AND table_schema = 'progsys_db'", (as_table_name,))
             as_tables = cursor.fetchall()
@@ -105,7 +106,7 @@ class ClassRecord:
             return "Student deleted successfully"
         except Exception as e:
             return f"Failed to delete student: {str(e)}"
-
+            return f"Failed to delete student: {str(e)}"
     @staticmethod
     def createGradeDistributionTable(subject_code, section_code, school_year, sem):
         try:
@@ -290,3 +291,48 @@ class ClassRecord:
             return "Activity created successfully"
         except Exception as e:
             return f"{str(e)}"
+
+    @classmethod
+    def upload_csv(cls, file, subject_code, section_code, school_year, sem):
+        try:
+            # Check if the file is provided and has a CSV extension
+            if file and file.filename.endswith('.csv'):
+                # Read the CSV file
+                file_content = file.read().decode('utf-8').splitlines()
+                csv_data = csv.reader(file_content)
+                csv_data_2 = csv.reader(file_content)
+                # Establish a connection to the database
+                next(csv_data)
+                next(csv_data_2)
+                cursor = mysql.connection.cursor()
+                
+                as_table_name = f'AS_{subject_code}_{section_code}_{school_year}_{sem}%'.replace('-', '_')
+                cursor.execute("SELECT table_name FROM information_schema.tables WHERE table_name LIKE %s AND table_schema = 'progsys_db'", (as_table_name,))
+                as_tables = cursor.fetchall()
+
+                for row in csv_data:
+                    tablename = f'CR_{subject_code}_{section_code}_{school_year}_{sem}'.replace('-', '_')
+                    insert_query = f"INSERT INTO {tablename} (studentID, firstname, lastname, courseID, email) VALUES (%s, %s, %s, %s, %s)"
+                    values = (row[0], row[1], row[2], row[3], row[4])
+                    cursor.execute(insert_query, values)
+
+
+                for table in as_tables:
+                    as_table_name = table[0]
+                    for row in csv_data_2:
+                        print("CSV Row:", row)
+                        cursor.execute(f"INSERT INTO {as_table_name} (studentID, firstname, lastname, email) VALUES (%s, %s, %s, %s)", (row[0], row[1], row[2], row[3]))
+                        
+                        # cursor.execute(query, (row[0], row[1], row[2], row[3], row[4]))                
+                    
+               
+                # Commit the changes to the database
+                mysql.connection.commit()
+
+                return 'File uploaded and data inserted successfully.'
+
+            else:
+                return 'Invalid file format. Please upload a CSV file.'
+
+        except Exception as e:
+            return f'Error: {str(e)}'
