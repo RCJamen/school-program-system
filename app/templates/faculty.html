@@ -149,7 +149,8 @@
           </div>
           <div class="form-group">
             <label for="facultyRole">Faculty Role</label>
-            {{ add_form.facultyRole(class="form-control", placeholder="Faculty Role", required=True, id="facultyRole") }}
+            {% set is_admin = session["email"] != "admin@gmail.com" and (session["role"] == "Chairperson" or session["role"] == "Faculty") %}
+            {{ add_form.facultyRole(class="form-control", placeholder="Faculty Role", required=True, id="facultyRole", disabled=is_admin)}}
           </div>
         </div>
         
@@ -234,7 +235,8 @@
           </div>
           <div class="form-group">
             <label for="editFacultyRole">Faculty Role</label>
-            {{ update_form.editFacultyRole(class="form-control", placeholder="Role", required=True, id="editFacultyRole") }}
+            {% set is_admin = session["email"] != "admin@gmail.com" and (session["role"] == "Chairperson" or session["role"] == "Faculty") %}
+            {{ update_form.editFacultyRole(class="form-control", placeholder="Role", required=True, id="editFacultyRole", disabled=is_admin) }}
           </div>
         </div>
         

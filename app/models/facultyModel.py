@@ -25,6 +25,16 @@ class facultyModel:
         except Exception as e:
             return f"Failed to retrieve faculty data: {str(e)}"
         
+    @classmethod
+    def get_facultyRole(cls, email):
+        try:
+            cur = mysql.new_cursor(dictionary=True)
+            cur.execute("SELECT role FROM faculty WHERE email = %s", (email,))
+            facultyRole = cur.fetchall()
+            return facultyRole
+        except Exception as e:
+            return f"Failed to retrieve faculty data: {str(e)}"
+        
     # @classmethod
     # def get_single_faculty(cls, facultyID):
     #     try:

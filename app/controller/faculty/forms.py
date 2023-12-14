@@ -13,7 +13,7 @@ class FacultyForm(FlaskForm):
         validators.Regexp(regex=r'^[A-Za-z\s\-]+$', message="Lastname should only contain letters, spaces, or hyphens")
     ])
     facultyEmail = StringField('MSU-IIT Email', validators=[validators.Email(), validators.Regexp(regex=r'.*@g\.msuiit\.edu\.ph$', message="Only Accepts MSU-IIT Email")])
-    facultyRole = SelectField('Select Role', choices=[('Admin', 'Admin'), ('Chairperson', 'Chairperson'), ('Faculty', 'Faculty')])
+    facultyRole = SelectField('Select Role', choices=[('Chairperson', 'Chairperson'), ('Faculty', 'Faculty')], default="Faculty")
     submit_add = SubmitField('Add Faculty')
 
 class UpdateFacultyForm(FlaskForm):
@@ -28,5 +28,5 @@ class UpdateFacultyForm(FlaskForm):
         validators.Regexp(regex=r'^[A-Za-z\s\-]+$', message="Last Name should only contain letters, spaces, or hyphens")
     ])
     editFacultyEmail = StringField('MSU-IIT Email', validators=[validators.Email(), validators.Regexp(regex=r'.*@g\.msuiit\.edu\.ph$', message="Only Accepts MSU-IIT Email")])
-    editFacultyRole = SelectField('Select Role', choices=[('Admin', 'Admin'), ('Chairperson', 'Chairperson'), ('Faculty', 'Faculty')])
+    editFacultyRole = SelectField('Select Role', choices=[('Chairperson', 'Chairperson'), ('Faculty', 'Faculty')])
     submit_update = SubmitField('Update Faculty')

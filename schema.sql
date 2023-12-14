@@ -130,7 +130,7 @@ facultyID VARCHAR (10) PRIMARY KEY DEFAULT 'None',
 firstname VARCHAR(255) NOT NULL,
 lastname VARCHAR(255) NOT NULL,
 email VARCHAR(255) NOT NULL,
-role ENUM('Admin', 'Chairperson', 'Faculty')
+role ENUM('Chairperson', 'Faculty')
 );
 
 -- USED
