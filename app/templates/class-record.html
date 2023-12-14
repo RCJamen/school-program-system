@@ -28,7 +28,7 @@
                 <i class="fa-solid fa-user-plus"></i>
             </button>
         </div>
-        <div class="col-4" id="flash-messages-container">
+        <!-- <div class="col-4" id="flash-messages-container">
             {% if flash_message %}
             <div class="alert alert-{{ flash_message.type }} alert-dismissible fade show" role="alert">
                 <div class="d-flex justify-content-between align-items-center">
@@ -37,7 +37,12 @@
                 </div>
             </div>
             {% endif %}
-        </div>
+        </div> -->
+        <div class = "col-6 float-end">
+            <button type="button" class="btn btn-secondary import-csv-modal float-end" data-bs-toggle="modal" data-bs-target="#importCSVModal">
+                Import CSV
+            </button>
+          </div>
     </div>
 </div>
 
@@ -119,7 +124,7 @@
                 </tbody>
             </table>
         </div>
-        {% if flash_message %}
+        <!-- {% if flash_message %}
         <div class="d-flex justify-content-center mx-5 mt-5">
             <div class="alert alert-{{ flash_message.type }} alert-dismissible fade show w-100" role="alert">
                 <div class="d-flex justify-content-between align-items-center">
@@ -128,7 +133,7 @@
                 </div>
             </div>
         </div>
-        {% endif %}
+        {% endif %} -->
     </div>
     <div class="col-6 table-container">
         <div class="grade-conversion mx-5">
@@ -359,5 +364,29 @@
         </div>
       </div>
     </div>
+  </div>
+
+  <div class="modal" id = "importCSVModal" tabindex="-1">
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title">Import CSV</h5>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+        <div class="modal-body">
+            <form id="csvForm" action="/upload" method="POST" enctype="multipart/form-data">
+                <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
+                <div class="form-group">
+                    <label for="file">File</label>
+                    <input type="file" class="form-control" id="file" name="file">
+                </div>
+                <br>
+                <button type="submit" class="btn btn-secondary float-end">Upload</button>
+            </form>
+            
+        </div>
+      </div>
+    </div>
+  </div>
 </div>
 {% endblock %}
