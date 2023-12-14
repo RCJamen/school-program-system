@@ -11,6 +11,7 @@
 {% endblock %}
 
 {% block content %}
+<!-- User Role: {{ session.get("role") }} -->
 <div class=" main-container d-flex">
 <div class="sidebar" id="side_nav">
   <div class="header-box px-2 pt-3 pb-4 mt-2 d-flex justify-content-between">
@@ -22,16 +23,21 @@
     <button class="btn d-md-none d-block close-btn px-1 py-0 text-white pe-2"><i
         class="fa-solid fa-bars-staggered"></i></button>
   </div>
+  
   <ul class="list-unstyled px-2">
     <li class=""><a href="/home" class="text-decoration-none px-3 py-2 d-block">
         <i class="fas fa-home"></i>
         &nbsp;<span class="ms-2">Home</span></a></li>
     <li class=""><a href="/subjects-handled" class="text-decoration-none px-3 py-2 d-block"><i class="fas fa-book"></i>
         <span class="ms-3">Subjects Handled</span></a></li>
-    <li class=""><a href="/faculty" class="text-decoration-none px-3 py-2 d-block"><i class="fas fa-users"></i>
-        &nbsp;<span class="ms-2">Faculty List</span></a></li>
-    <li class=""><a href="/subjects" class="text-decoration-none px-3 py-2 d-block"><i class="fas fa-list-alt"></i>
-        <span class="ms-3">Subject List</span></a></li>
+
+    {% if session.get("role") == "Chairperson" %}
+      <li class=""><a href="/faculty" class="text-decoration-none px-3 py-2 d-block"><i class="fas fa-users"></i>
+          &nbsp;<span class="ms-2">Faculty List</span></a></li>
+      <li class=""><a href="/subjects" class="text-decoration-none px-3 py-2 d-block"><i class="fas fa-list-alt"></i>
+          <span class="ms-3">Subject List</span></a></li>
+    {% endif %}
+    
     <li class=""><a href="/curriculum" class="text-decoration-none px-3 py-2 d-block"><i class="fas fa-file"></i>
         &nbsp;<span class="ms-3">College Curriculum</span></a></li>
   </ul>

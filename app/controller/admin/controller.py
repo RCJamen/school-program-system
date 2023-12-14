@@ -11,6 +11,9 @@ import google.auth.transport.requests
 
 from . import admin
 
+from app.models.facultyModel import facultyModel
+facultyModel = facultyModel()
+
 os.environ["OAUTHLIB_INSECURE_TRANSPORT"] = "1"
 
 GOOGLE_CLIENT_ID = (
@@ -73,6 +76,8 @@ def callback():
     session["google_id"] = id_info.get("sub")
     session["name"] = id_info.get("name")
     session["email"] = id_info.get("email")
+    facultyRole = facultyModel.get_facultyRole(session.get("email"))
+    session["role"] = facultyRole[0]["role"]
 
     user_info_endpoint = "https://www.googleapis.com/oauth2/v1/userinfo"
     user_info_response = requests.get(

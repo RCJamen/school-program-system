@@ -129,7 +129,8 @@ CREATE TABLE IF NOT EXISTS `faculty`(
 facultyID VARCHAR (10) PRIMARY KEY DEFAULT 'None',
 firstname VARCHAR(255) NOT NULL,
 lastname VARCHAR(255) NOT NULL,
-email VARCHAR(255) NOT NULL
+email VARCHAR(255) NOT NULL,
+role ENUM('Chairperson', 'Faculty')
 );
 
 -- USED
@@ -187,14 +188,14 @@ UNIQUE KEY unique_assignFaculty (facultyID, subjectID, sectionID, sem, schoolYea
 --  INSERT VALUES SECTION
 --
 
-INSERT INTO `faculty` (facultyID, firstname ,lastname, email)
-VALUES ('None', 'None', 'None', 'None');
+INSERT INTO `faculty` (facultyID, firstname ,lastname, email, role)
+VALUES ('None', 'None', 'None', 'None', 'Faculty');
 
-INSERT INTO `faculty` (facultyID, firstname, lastname, email)
-VALUES ('2023-0001', 'Fulgent Kvasir', 'Lavesores', 'fulgentkvasir.lavesores@g.msuiit.edu.ph'),
-('2023-0002', 'Alrick', 'Gicole', 'alrick.gicole@g.msuiit.edu.ph'),
-('2023-0003', 'Janella', 'Balantac', 'janellasuzanne.balantac@g.msuiit.edu.ph'),
-('2023-0004', 'Ramel Cary', 'Jamen', 'ramelcary.jamen@g.msuiit.edu.ph');
+INSERT INTO `faculty` (facultyID, firstname, lastname, email, role)
+VALUES ('2023-0001', 'Fulgent Kvasir', 'Lavesores', 'fulgentkvasir.lavesores@g.msuiit.edu.ph', 'Faculty'),
+('2023-0002', 'Alrick Ivan', 'Gicole', 'alrickivan.gicole@g.msuiit.edu.ph', 'Faculty'),
+('2023-0003', 'Janella', 'Balantac', 'janellasuzanne.balantac@g.msuiit.edu.ph', 'Faculty'),
+('2023-0004', 'Ramel Cary', 'Jamen', 'ramelcary.jamen@g.msuiit.edu.ph', 'Faculty');
 
 INSERT INTO subject (subjectCode, description, credits)
 VALUES
