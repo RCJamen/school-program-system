@@ -1,0 +1,135 @@
+{% extends "class_record_layout.html" %}
+{% set head = Tables|length - 6 %}
+
+{% block classtitle %}
+<title>Assessment</title>
+{% endblock %}
+
+{% block classpages %}
+<div class="px-5 pt-3 d-flex align-items-center">
+    {% for Assessment in Assessments %}
+    {% if Name == Assessment[0] %}
+    <h1>Assessment: {{Name}} - {{Assessment[1]}}%</h1>
+    {% set Percentage = Assessment[1] %}
+    {% endif %}
+    {% endfor %}
+    <div class="dropdown ps-3">
+        <button class="btn btn-outline-dark dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false">
+        </button>
+        <ul class="dropdown-menu">
+            <li><a class="dropdown-item" href="{{ url_for('classRecord.index', subject_code=ClassDetails[0], description=ClassDetails[1], section_code=ClassDetails[2], credits=ClassDetails[3], sem=ClassDetails[4], school_year=ClassDetails[5]) }}">Class List</a>
+            </li>
+            {% for Assessment in Assessments %}
+            {% set assessment_link = Assessment[0]|replace(' ', '_') %}
+            <li><a class="dropdown-item" href="{{ url_for('classRecord.assessment_record', assessment=assessment_link) }}">{{Assessment[0]}} - {{Assessment[1]}}% </a></li>
+            {% endfor %}
+        </ul>
+    </div>
+</div>
+<div class="classRecord-header">
+    <div id="flash-messages-container">
+        {% if flash_message %}
+        <div class="alert alert-{{ flash_message.type }} alert-dismissible fade show" role="alert">
+            <div class="d-flex justify-content-between align-items-center">
+            <span>{{ flash_message.message | safe }}</span>
+            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+            </div>
+        </div>
+        {% endif %}
+    </div>
+</div>
+<div class="table-container d-flex pb-4">
+    <div class="classRecord-body">
+        <table class="table table-hover" id="dynamic-table">
+            <thead>
+                <tr>
+                    {% set col = Tables|length %}
+                    <td colspan="{{col + 2}}"> </td>
+                </tr>
+                <tr>
+                    <th>#</th>
+                    <th>Student ID</th>
+                    <th>First Name</th>
+                    <th id="last">Last Name</th>
+                    {% if Tables|length > 6 %}
+                    {% for column in range(head) %}
+                        {% set value = Tables[column+6][0] %}
+                        {% set value_with_spaces = value|replace("_", " ") %}
+                        {% set last_space_index = value_with_spaces.rfind(' ') %}
+                        {% set title = value_with_spaces[:last_space_index] ~ ' - ' ~ value_with_spaces[last_space_index+1:] %}
+                        <th data-bs-toggle="tooltip" data-bs-title="{{ title }}">S</th>
+                    {% endfor %}
+                   {% endif %}
+                    <th>
+                        <button type="button" class="btn btn-secondary addActivity BtnStyle" style="font-size:smaller" data-bs-toggle="modal" data-bs-target="#addActivity">Add Activity
+                            <i class="fa-solid fa-plus"></i>
+                        </button>
+                    </th>
+                    <th>Total Score</th>
+                    <th>Action</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% if Students|length == 0 %}
+                <td colspan="8" class="text-center">No Students Entrolled on This Class.</td>
+                {% else %} {% for Student in Students %}
+                <tr>
+                    <td>{{Student[0]}}</td>
+                    <td>{{Student[1]}}</td>
+                    <td>{{Student[2]}}</td>
+                    <td>{{Student[3]}}</td>
+                    {% for column in range(head)  %}
+                    <td>{{Student[6+column]}}</td>
+                    {% endfor %}
+                    <td></td>
+                    <td>{{Student[5]}}</td>
+                    <td>
+                        <button type="button" class="btn btn-outline-light">
+                            <i class="fa-solid fa-plus" style="color: #000000;"></i>
+                        </button>
+                        <button type="button" class="btn 1">
+                            <i class="fa-solid fa-bell" style="color: #000000;"></i>
+                        </button>
+                    </td>
+                </tr>
+                {% endfor %} {% endif %}
+            </tbody>
+        </table>
+    </div>
+</div>
+
+<hr class="pt-4">
+
+<div class="modal fade" id="addActivity" data-bs-backdrop="static" tabindex="-1" role="dialog"
+    aria-labelledby="addActivityModal" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <form action="{{ url_for('classRecord.create_activity') }}" method="POST">
+            <input type="hidden" name="csrf_token" value="{{ csrf_token()}}">
+            <div class="modal-content">
+                <div class="modal-header class-record-modal-header">
+                    <h5 class="modal-title">Add Assessment Activity</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body class-record-modal-body">
+                    <div class="form-group">
+                        <label>Activity Name</label>
+                        <input type="text" name="activityname" id="name" class="form-control" placeholder="Enter Activity">
+                    </div>
+                    <div class="form-group">
+                        <label>Score Limit</label>
+                        <input type="text" name="scorelimit" id="score" class="form-control" placeholder="Enter Score Limit">
+                    </div>
+                </div>
+                <div class="modal-footer class-record-modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">
+                        <i class="fa-solid fa-xmark" style="color: #ffffff;"></i> Close
+                    </button>
+                    <button type="submit" id="submit" class="btn btn-success" data-bs-dismiss="modal"> <i
+                            class="fa-solid fa-user-pen"></i>Add Activity
+                    </button>
+                </div>
+            </div>
+        </form>
+    </div>
+</div>
+{% endblock %}

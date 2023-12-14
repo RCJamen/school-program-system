@@ -117,6 +117,12 @@ FOREIGN KEY(departmentID) REFERENCES departments(departmentID)
 -- UNIQUE KEY (studentID)
 -- );
 
+-- DROP TABLE IF EXISTS `gradeDistribution`; -- DO NOT UNCOMMENT
+-- CREATE TABLE IF NOT EXISTS `gradeDistribution`(
+-- name VARCHAR(255) NOT NULL,
+-- percentage INT NOT NULL
+-- );
+
 -- USED
 DROP TABLE IF EXISTS `faculty`;
 CREATE TABLE IF NOT EXISTS `faculty`(
@@ -177,12 +183,6 @@ schoolYear VARCHAR(10),     -- independent assignment
 UNIQUE KEY unique_assignFaculty (facultyID, subjectID, sectionID, sem, schoolYear)
 );
 
-
-DROP TABLE IF EXISTS `gradeDistribution`;
-CREATE TABLE IF NOT EXISTS `gradeDistribution`(
-name VARCHAR(255) NOT NULL,
-percentage INT NOT NULL
-);
 
 --
 --  INSERT VALUES SECTION
