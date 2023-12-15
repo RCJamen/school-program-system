@@ -136,6 +136,7 @@ def create_activity ():
         scorelimit = form.scorelimit.data
         name = activityname.replace(' ', '_')
         print(name)
+        
         result = ClassRecord.addAssessmentActivity(subject_code, section_code, school_year, sem, assessment, name, scorelimit)
         if "success" in result:
             credentials_message = f"<br>Activity Name: <strong>{activityname}</strong><br>Score Limit: <strong>{scorelimit}</strong>"
@@ -149,3 +150,33 @@ def create_activity ():
         flash_message = {"type": "danger", "message": f"Failed to Add Activity. Please check the form for errors."}
         session['flash_message'] = flash_message
         return redirect(url_for(".assessment_record", assessment=assessment, message=flash_message))
+
+
+@classRecord.route('/upload', methods=['POST'])
+def upload_file():
+    
+    ClassDetails = session.get('ClassDetails', None)
+    subject_code, description, section_code, credits, sem, school_year = ClassDetails
+
+    try:
+        file = request.files['file']
+        if file and file.filename.endswith('.csv'):
+            ClassRecord.truncate_assessment(subject_code, section_code, school_year, sem)
+            ClassRecord.truncate_classrecord(subject_code, section_code, school_year, sem)
+            result = ClassRecord.upload_csv(file, subject_code, section_code, school_year, sem)
+        
+            if 'success' in result["type"]:
+                flash_message = {"type": "success", "message": f"{file.filename} uploaded successfully."}
+            else:
+                flash_message = {"type": "danger", "message": f"Error: {result['message']}"}
+
+            session['flash_message'] = flash_message
+
+            return redirect(url_for(".index", subject_code=subject_code, description=description, section_code=section_code, credits=credits, sem=sem, school_year=school_year, message=flash_message))
+        else:
+            raise Exception("Invalid file format. Please upload a CSV file.")
+        
+    except Exception as e:
+        flash_message = {"type": "danger", "message": f"Error: {str(e)}"}
+        session['flash_message'] = flash_message
+        return redirect(url_for(".index", subject_code=subject_code, description=description, section_code=section_code, credits=credits, sem=sem, school_year=school_year, message=flash_message))

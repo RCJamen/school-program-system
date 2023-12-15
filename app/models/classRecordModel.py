@@ -1,4 +1,5 @@
 from app import mysql
+import csv
 from decimal import Decimal
 
 class ClassRecord:
@@ -49,7 +50,7 @@ class ClassRecord:
             values = (studentID, firstname, lastname, coursecode, email)
             cursor.execute(insert_query, values)
             mysql.connection.commit()
-
+            
             as_table_name = f'AS_{subject_code}_{section_code}_{school_year}_{sem}%'.replace('-', '_')
             cursor.execute("SELECT table_name FROM information_schema.tables WHERE table_name LIKE %s AND table_schema = 'progsys_db'", (as_table_name,))
             as_tables = cursor.fetchall()
@@ -105,7 +106,7 @@ class ClassRecord:
             return "Student deleted successfully"
         except Exception as e:
             return f"Failed to delete student: {str(e)}"
-
+            return f"Failed to delete student: {str(e)}"
     @staticmethod
     def createGradeDistributionTable(subject_code, section_code, school_year, sem):
         try:
@@ -290,3 +291,89 @@ class ClassRecord:
             return "Activity created successfully"
         except Exception as e:
             return f"{str(e)}"
+
+    csv_data = None
+
+    @classmethod
+    def upload_csv(cls, file, subject_code, section_code, school_year, sem):
+        try:
+            # Check if the file is provided and has a CSV extension
+            if file and file.filename.endswith('.csv'):
+                # Load CSV data
+                if cls.csv_data is None:  # Check if CSV data is not yet loaded
+                    cls.load_csv_data(file)  # Load CSV data
+
+                # Continue with the rest of the code
+                cursor = mysql.connection.cursor()
+
+                as_table_name = f'AS_{subject_code}_{section_code}_{school_year}_{sem}%'.replace('-', '_')
+                cursor.execute("SELECT table_name FROM information_schema.tables WHERE table_name LIKE %s AND table_schema = 'progsys_db'", (as_table_name,))
+                as_tables = cursor.fetchall()
+
+                for row in cls.csv_data:
+                    tablename = f'CR_{subject_code}_{section_code}_{school_year}_{sem}'.replace('-', '_')
+                    insert_query = f"INSERT INTO {tablename} (studentID, firstname, lastname, courseID, email) VALUES (%s, %s, %s, %s, %s)"
+                    values = (row[0], row[1], row[2], row[3], row[4])
+                    cursor.execute(insert_query, values)
+
+                for table in as_tables:
+                    as_table_name = table[0]
+                    for row in cls.csv_data:
+                        cursor.execute(f"INSERT INTO {as_table_name} (studentID, firstname, lastname, email) VALUES (%s, %s, %s, %s)", (row[0], row[1], row[2], row[3]))
+
+                # Commit the changes to the database
+                mysql.connection.commit()
+
+                return {"type": "success", "message": 'File uploaded and data inserted successfully.'}
+
+            else:
+                return {"type": "danger", "message": 'Invalid file format. Please upload a CSV file.'}
+
+        except Exception as e:
+            error_message = f'Error: {str(e)}'
+            return {"type": "danger", "message": error_message}
+
+
+        
+    @classmethod
+    def truncate_assessment(cls, subject_code, section_code, school_year, sem):
+        try:
+            cursor = mysql.connection.cursor()
+
+            as_table_name = f'AS_{subject_code}_{section_code}_{school_year}_{sem}%'.replace('-', '_')
+            cursor.execute("SELECT table_name FROM information_schema.tables WHERE table_name LIKE %s AND table_schema = 'progsys_db'", (as_table_name,))
+            as_tables = cursor.fetchall()
+            print("count", as_tables)
+
+            for table in as_tables:
+                as_table_name = table[0]
+                cursor.execute(f"TRUNCATE TABLE {as_table_name}")
+                mysql.connection.commit()
+                
+
+            mysql.connection.commit()
+
+            return "Assessments truncated successfully"
+        
+        except Exception as e:
+            return f"Error: {str(e)}"
+    
+    @classmethod
+    def truncate_classrecord (cls, subject_code, section_code, school_year, sem):
+        try: 
+            cursor = mysql.connection.cursor()
+            tablename = f'CR_{subject_code}_{section_code}_{school_year}_{sem}'.replace('-', '_') 
+
+            cursor.execute(f"TRUNCATE TABLE {tablename}")
+
+            mysql.connection.commit()
+
+            return "Classrecord truncated successfully"
+        
+        except Exception as e:
+            return f"Error: {str(e)}"
+        
+    @classmethod
+    def load_csv_data(cls, file):
+        file_content = file.read().decode('utf-8').splitlines()
+        cls.csv_data = list(csv.reader(file_content)) 
