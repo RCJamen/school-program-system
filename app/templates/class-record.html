@@ -22,11 +22,18 @@
 </div>
 <div class="classRecord-header">
     <div class="row">
-        <div class="col-2">
+        <div class="col-3 d-flex gap-3">
+            
             <button type="button" class="btn btn-secondary BtnStyle AddStudentBtn ms-3" data-bs-toggle="modal" data-bs-target="#addStudentModal">
-                Add Student
-                <i class="fa-solid fa-user-plus"></i>
+                <i class="fa-solid fa-user-plus"></i> Add Student
+                
+            </button>   
+            <button type="button" class="btn btn-secondary import-csv-modal float-end" data-bs-toggle="modal" data-bs-target="#importCSVModal">
+                <i class="fa-solid fa-file-csv" style="color: #ffffff;"></i> CSV
             </button>
+        </div>
+        <div class = "col-2">
+            
         </div>
         <!-- <div class="col-4" id="flash-messages-container">
             {% if flash_message %}
@@ -38,11 +45,7 @@
             </div>
             {% endif %}
         </div> -->
-        <div class = "col-6 float-end">
-            <button type="button" class="btn btn-secondary import-csv-modal float-end" data-bs-toggle="modal" data-bs-target="#importCSVModal">
-                Import CSV
-            </button>
-          </div>
+        
     </div>
 </div>
 

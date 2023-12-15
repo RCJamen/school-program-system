@@ -160,7 +160,23 @@ def upload_file():
 
     try:
         file = request.files['file']
-        result = ClassRecord.upload_csv(file, subject_code, section_code,school_year, sem)
-        return redirect(url_for(".index", subject_code=subject_code, description=description, section_code=section_code, credits=credits, sem=sem, school_year=school_year))
+        if file and file.filename.endswith('.csv'):
+            ClassRecord.truncate_assessment(subject_code, section_code, school_year, sem)
+            ClassRecord.truncate_classrecord(subject_code, section_code, school_year, sem)
+            result = ClassRecord.upload_csv(file, subject_code, section_code, school_year, sem)
+        
+            if 'success' in result["type"]:
+                flash_message = {"type": "success", "message": f"{file.filename} uploaded successfully."}
+            else:
+                flash_message = {"type": "danger", "message": f"Error: {result['message']}"}
+
+            session['flash_message'] = flash_message
+
+            return redirect(url_for(".index", subject_code=subject_code, description=description, section_code=section_code, credits=credits, sem=sem, school_year=school_year, message=flash_message))
+        else:
+            raise Exception("Invalid file format. Please upload a CSV file.")
+        
     except Exception as e:
-        return f'Error: {str(e)}'
+        flash_message = {"type": "danger", "message": f"Error: {str(e)}"}
+        session['flash_message'] = flash_message
+        return redirect(url_for(".index", subject_code=subject_code, description=description, section_code=section_code, credits=credits, sem=sem, school_year=school_year, message=flash_message))
