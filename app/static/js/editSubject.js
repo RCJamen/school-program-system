@@ -16,3 +16,24 @@ $(document).ready(function () {
 
     });
 });
+
+document.getElementById('downloadTemplateSubject').addEventListener('click', function () {
+    // Replace '/download/subject' with the route that serves the file in your Flask app
+    var downloadRoute = '/download/subject';
+
+    // Create an anchor element
+    var anchor = document.createElement('a');
+    anchor.href = downloadRoute;
+
+    // Set the download attribute with the desired file name
+    anchor.download = 'subject.csv';
+
+    // Append the anchor to the body
+    document.body.appendChild(anchor);
+
+    // Trigger a click event on the anchor
+    anchor.click();
+
+    // Remove the anchor from the body
+    document.body.removeChild(anchor);
+});

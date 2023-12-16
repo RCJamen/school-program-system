@@ -1,5 +1,5 @@
 from os import name
-from flask import render_template, redirect, request, jsonify, flash, session
+from flask import render_template, redirect, request, jsonify, flash, session, current_app, send_file
 from flask.helpers import url_for
 from app.controller.admin.controller import login_is_required
 from app.models.classRecordModel import ClassRecord
@@ -180,3 +180,9 @@ def upload_file():
         flash_message = {"type": "danger", "message": f"Error: {str(e)}"}
         session['flash_message'] = flash_message
         return redirect(url_for(".index", subject_code=subject_code, description=description, section_code=section_code, credits=credits, sem=sem, school_year=school_year, message=flash_message))
+
+@classRecord.route('/download/classrecord')
+def download_classrecord_file():
+    # Replace 'path/to/your/file.csv' with the actual path to your file
+    file_path = current_app.root_path + '/static/csv-files/class-record.csv'
+    return send_file(file_path, as_attachment=True, download_name='class-record.csv')

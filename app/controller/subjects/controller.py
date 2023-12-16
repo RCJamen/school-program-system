@@ -1,5 +1,5 @@
 from os import name
-from flask import render_template, redirect, request, jsonify, flash, session
+from flask import render_template, redirect, request, jsonify, flash, session, send_file, current_app
 from flask.helpers import url_for
 from app.controller.admin.controller import login_is_required
 from app.controller.subjects.forms import subjectForm
@@ -124,3 +124,9 @@ def update_subject():
             session['flash_message'] = flash_message
         return redirect(url_for(".index", message=flash_message))
     return redirect(url_for(".index"))
+
+@subject.route('/download/subject')
+def download_subject_file():
+    # Replace 'path/to/your/file.csv' with the actual path to your file
+    file_path = current_app.root_path + '/static/csv-files/subject.csv'
+    return send_file(file_path, as_attachment=True, download_name='subject.csv')
