@@ -27,7 +27,7 @@
             <option value="3">Three</option>
           </select>
         </div>
-        <div class="col-4" id="flash-messages-container">
+        <div class="col-4" id="flash-messages-container-subject">
           <!-- {% if flash_message %}
           <div class="alert alert-{{ flash_message.type }} alert-dismissible fade show" role="alert">
             <div class="d-flex justify-content-between align-items-center">
@@ -38,8 +38,13 @@
           {% endif %} -->
 
         </div>
-        <div class="col-5"> <button type="button" class="btn btn-primary float-end AddSubjectBtn" data-bs-toggle="modal"
-            data-bs-target="#addFacultyModal"><i class="fa-solid fa-user-plus"></i> Add Subject </button> </div>
+        <div class="col-5 d-flex flex-row-reverse gap-3"> 
+          <button type="button" class="btn btn-primary AddSubjectBtn" data-bs-toggle="modal"
+            data-bs-target="#addFacultyModal"><i class="fa-solid fa-user-plus"></i> Add Subject </button>
+            <button type="button" class="btn btn-secondary import-csv-modal" data-bs-toggle="modal" data-bs-target="#importSubjectCSVModal">
+              <i class="fa-solid fa-file-csv" style="color: #ffffff;"></i> CSV
+          </button>
+         </div>
       </div>
     </div>
     <div class="subject-list-body">
@@ -195,11 +200,10 @@
             <label for="editHandlerInput">Handler</label>
             <input type="hidden" name="editHandlerInput" id="editHandlerInput">
             <select name="handler" class="form-select" id="editHandlerInput">
-              <option value="" disabled selected>Select Handler</option>
+              <option value="None">None</option>
               {% for handler in handlerInfo %}
               <option value="{{ handler[0] }}">{{ handler[0]}} - {{handler[2]}}, {{handler[1]}}</option>
               {% endfor %}
-              <option value="None">None</option>
             </select>
           </div>
         </div>
@@ -212,6 +216,29 @@
         </div>
       </div>
     </form>
+  </div>
+</div>
+
+<div class="modal" id = "importSubjectCSVModal" tabindex="-1">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title">Import CSV</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body">
+          <form id="csvForm" action="/upload_subject" method="POST" enctype="multipart/form-data">
+              <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
+              <div class="form-group">
+                  <label for="file">File</label>
+                  <input type="file" class="form-control" id="file" name="file">
+              </div>
+              <br>
+              <button type="submit" class="btn btn-secondary float-end">Upload</button>
+          </form>
+          
+      </div>
+    </div>
   </div>
 </div>
 {% endblock %}

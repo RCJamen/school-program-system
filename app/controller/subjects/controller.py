@@ -53,6 +53,37 @@ def create_subject():
             return redirect(url_for(".index", message=flash_message))
     return redirect(url_for(".index"))
 
+@subject.route('/upload_subject', methods=['POST'])
+def upload_subject_file():
+    try:
+        file = request.files['file']
+        if file and file.filename.endswith('.csv'):
+            
+            subjectModel.Subjects.truncate_subject()
+            result = subjectModel.Subjects.upload_subject(file)
+
+            if result["type"] == "success":
+                flash_message = {"type": "success", "message": f"{file.filename} uploaded successfully."}
+            else:
+                flash_message = {"type": "danger", "message": f"Error: {result['message']}"}
+
+            session['flash_message'] = flash_message
+
+            return redirect(url_for(".index", message=flash_message))
+        else:
+            raise Exception("Invalid file format. Please upload a CSV file.")
+
+    except FileNotFoundError:
+        flash_message = {"type": "danger", "message": "File not found."}
+        session['flash_message'] = flash_message
+        return redirect(url_for(".index", message=flash_message))
+
+    except Exception as e:
+        flash_message = {"type": "danger", "message": f"Error: {str(e)}"}
+        session['flash_message'] = flash_message
+        return redirect(url_for(".index", message=flash_message))
+
+
 @subject.route("/subjects/delete/<string:subjectCode>/<string:section>/<string:handler>", methods=["POST"])
 def delete_subject(subjectCode, section, handler):
     try:
@@ -75,10 +106,12 @@ def update_subject():
         subjectCode = request.form["subjectCode"]
         old_subjectCode = request.form["editCodeInputHidden"]
         section = request.form["section"]
+        print(section)
         old_sectionCode = request.form["editSectionInputHidden"]
         description = request.form["description"]
         credits = request.form["credits"]
         handler = request.form["handler"]
+        print("HANDLER",handler)
         old_handlerCode = request.form["editHandlerInput"]
 
         result = subjectModel.Subjects.update(subjectCode, old_subjectCode, section, old_sectionCode, description, credits, handler, old_handlerCode)
