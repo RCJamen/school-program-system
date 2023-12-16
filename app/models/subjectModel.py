@@ -44,6 +44,10 @@ class Subjects(object):
 
     @classmethod
     def load_csv_data(cls, file):
+        # Set cls.csv_data to None only if it is not already loaded
+        if cls.csv_data is None:
+            cls.csv_data = None
+
         file_content = file.read().decode('utf-8').splitlines()
         cls.csv_data = list(csv.reader(file_content))
 
@@ -54,9 +58,7 @@ class Subjects(object):
             # Check if the file is provided and has a CSV extension
             if file and file.filename.endswith('.csv'):
                 # Load CSV data
-                if cls.csv_data is None:  # Check if CSV data is not yet loaded
-                    cls.load_csv_data(file)  # Load CSV data
-                    
+                cls.load_csv_data(file)
                 # Continue with the rest of the code
                 cursor = mysql.connection.cursor()
 
