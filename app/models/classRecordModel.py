@@ -310,7 +310,10 @@ class ClassRecord:
                 cursor.execute("SELECT table_name FROM information_schema.tables WHERE table_name LIKE %s AND table_schema = 'progsys_db'", (as_table_name,))
                 as_tables = cursor.fetchall()
 
-                for row in cls.csv_data:
+                for index, row in enumerate(cls.csv_data):
+                    if index == 0:  # Skip the header (first row)
+                        continue
+
                     tablename = f'CR_{subject_code}_{section_code}_{school_year}_{sem}'.replace('-', '_')
                     insert_query = f"INSERT INTO {tablename} (studentID, firstname, lastname, courseID, email) VALUES (%s, %s, %s, %s, %s)"
                     values = (row[0], row[1], row[2], row[3], row[4])
@@ -318,7 +321,10 @@ class ClassRecord:
 
                 for table in as_tables:
                     as_table_name = table[0]
-                    for row in cls.csv_data:
+                    for index, row in enumerate(cls.csv_data):
+                        if index == 0:  # Skip the header (first row)
+                            continue
+
                         cursor.execute(f"INSERT INTO {as_table_name} (studentID, firstname, lastname, email) VALUES (%s, %s, %s, %s)", (row[0], row[1], row[2], row[3]))
 
                 # Commit the changes to the database
@@ -332,6 +338,7 @@ class ClassRecord:
         except Exception as e:
             error_message = f'Error: {str(e)}'
             return {"type": "danger", "message": error_message}
+
 
 
         
