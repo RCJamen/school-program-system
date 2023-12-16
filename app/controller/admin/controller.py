@@ -2,7 +2,7 @@ import os
 import pathlib
 import requests
 
-from flask import request, render_template, redirect, session, abort
+from flask import request, render_template, redirect, url_for, session, abort
 from flask.helpers import url_for
 from google.oauth2 import id_token
 from google_auth_oauthlib.flow import Flow
@@ -12,6 +12,11 @@ import google.auth.transport.requests
 from . import admin
 
 from app.models.facultyModel import facultyModel
+from app.controller.admin.forms import AdminLoginForm
+
+# from flask_login import UserMixin, login_user, LoginManager, login_required, logout_user, current_user
+# from flask_bcrypt import Bcrypt
+
 facultyModel = facultyModel()
 
 os.environ["OAUTHLIB_INSECURE_TRANSPORT"] = "1"
@@ -56,6 +61,14 @@ def login():
     authorization_url, state = flow.authorization_url()
     session["state"] = state
     return redirect(authorization_url)
+
+@admin.route("/adminLogin", methods=['GET', 'POST'])
+def adminLogin():
+    form = AdminLoginForm()
+    if form.validate_on_submit():
+        return redirect(url_for('login'))
+
+    return render_template("admin_login.html", form=form)
 
 
 @admin.route("/callback")

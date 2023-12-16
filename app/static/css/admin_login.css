@@ -1,0 +1,136 @@
+@import "base.css";
+
+/* -------------------------------------------- LOGIN -------------------------------------------- */
+body {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    background-color: #DFF1FF;
+    font-family: 'Open Sans', sans-serif;
+
+}
+
+.admin-login-form {
+    width: 450px;
+    height: 450px;
+    flex-shrink: 0;
+    border-radius: 30px;
+    text-align: center;
+    background: #ffffff;
+    box-shadow: 0px 5px 20px 0px;
+    margin: 5% 25% 5% 25%;
+
+}
+
+.login-button {
+    width: 100px;
+    height: 38px;
+    flex-shrink: 0;
+    border-radius: 5px;
+    text-align: center;
+    background-color: #A41D21;
+    border: none;
+    color: #fff;
+    font-size: 16px;
+    cursor: pointer;
+}
+
+.login-button:hover {
+    background: #711316;
+}
+
+.back-button {
+    width: 100px;
+    height: 38px;
+    flex-shrink: 0;
+    border-radius: 5px;
+    text-align: center;
+    background-color: transparent;
+    border: none;
+    color: #141414;
+    font-size: 16px;
+    cursor: pointer;
+}
+
+.back-button:hover {
+    text-decoration: underline;
+}
+
+.back-button:active {
+    color: #A41D21;
+}
+
+.container {
+    text-align: center;
+    justify-content: center;
+}
+
+.container-2 {
+    text-align: center;
+    margin-top: 20px;
+}
+
+.margin-tb {
+    display: inline-block;
+    margin-top: 40px;
+    margin-bottom: 40px;
+}
+
+.margin-t {
+    display: inline-block;
+    margin-top: 10px;
+}
+
+.title {
+    color: #141414;
+    font-size: 32px;
+    font-style: normal;
+    font-weight: 700;
+    line-height: normal;
+}
+
+.fieldTitle {
+    color: #141414;
+    font-family: 'Open Sans', sans-serif;
+    font-size: 15px;
+    font-style: normal;
+    font-weight: bolder;
+    line-height: normal;
+    display: block;
+    margin-bottom: 8px;
+    text-align: left;
+    margin-left: 55px;
+}
+
+.form-input {
+    width: 338px;
+    height: 45px;
+    flex-shrink: 0;
+    border-radius: 11px;
+    background-color: white;
+    border: 2px solid #141414;
+    background: #FFF;
+    padding: 8px;
+    box-sizing: border-box;
+}
+
+.form-input:active,
+.form-input:focus {
+    outline: none;
+}
+
+.form-group {
+    margin-bottom: 20px;
+    display: block;
+}
+
+.flash-messages {
+    text-align: center;
+    margin-bottom: 10px;
+    color: red;
+    font-family: Inter;
+    font-size: 12px;
+    font-style: normal;
+    line-height: normal;
+}
