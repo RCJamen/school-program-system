@@ -1,5 +1,5 @@
 from app import mysql
-
+import csv
 class Subjects(object):
     def __init__(self, code, section, description, credits, handler) -> None:
         self.code = code
@@ -39,6 +39,99 @@ class Subjects(object):
         except Exception as e:
             return f"Failed to create Faculty: {str(e)}"    
 
+    
+    csv_data = None
+
+    @classmethod
+    def load_csv_data(cls, file):
+        # Set cls.csv_data to None only if it is not already loaded
+        if cls.csv_data is None:
+            cls.csv_data = None
+
+        file_content = file.read().decode('utf-8').splitlines()
+        cls.csv_data = list(csv.reader(file_content))
+
+    @classmethod
+    def upload_subject(cls, file):
+        cursor = None  # Initialize cursor outside the try block
+        try:
+            # Check if the file is provided and has a CSV extension
+            if file and file.filename.endswith('.csv'):
+                # Load CSV data
+                cls.load_csv_data(file)
+                # Continue with the rest of the code
+                cursor = mysql.connection.cursor()
+
+                # Iterate over CSV data, starting from the second row to skip the header
+                for row in cls.csv_data[1:]:
+                    code = row[0]
+                    description = row[2]  # Assuming Description is in the third column
+                    credits = row[3]  # Assuming Credits is in the fourth column
+                    section = row[1]  # Assuming Section is in the second column
+                    handler = row[4]
+                    sem = row[5]
+                    schoolyear = row[6]
+
+                    # Print the entire row for debugging
+                    print(f"Current Row: {row}")
+
+                    # Print individual fields for debugging
+                    print(f"Code: {code}, Section: {section}, Description: {description}, Credits: {credits}, Handler: {handler}")
+                    sql_subject = "INSERT INTO subject(subjectCode, description, credits) VALUES (%s, %s, %s)"
+                    sql_section = "INSERT INTO subject_section(subjectID, sectionID) VALUES (%s, %s)"
+                    sql_assignFaculty = "INSERT INTO assignFaculty(facultyID, subjectID, sectionID, sem, schoolYear) VALUES (%s, %s, %s, %s, %s)"
+                    params_subject = (code, description, credits)
+                    params_section = (code, section)
+                    params_assignFaculty = (handler, code, section, sem, schoolyear)
+
+                    cursor.execute(sql_subject, params_subject)
+                    cursor.execute(sql_section, params_section)
+                    cursor.execute(sql_assignFaculty, params_assignFaculty)
+
+                # Commit the changes to the database
+                mysql.connection.commit()
+
+                return {"type": "success", "message": 'File uploaded and data inserted successfully.'}
+
+            else:
+                return {"type": "danger", "message": 'Invalid file format. Please upload a CSV file.'}
+
+        except Exception as e:
+            error_message = f'Error: {str(e)}'
+            return {"type": "danger", "message": error_message}
+
+        finally:
+            if cursor:
+                cursor.close()  # Close the cursor to release resources
+
+    @classmethod
+    def truncate_subject(cls):
+        try:
+            cursor = mysql.connection.cursor()
+
+            # Disable foreign key checks
+            cursor.execute("SET FOREIGN_KEY_CHECKS = 0")
+
+            # Truncate tables
+            cursor.execute("TRUNCATE TABLE subject")
+            cursor.execute("TRUNCATE TABLE subject_section")
+            cursor.execute("TRUNCATE TABLE assignFaculty")
+
+            # Enable foreign key checks
+            cursor.execute("SET FOREIGN_KEY_CHECKS = 1")
+
+            mysql.connection.commit()
+
+            return "Subject truncated successfully"
+        
+        except mysql.connector.Error as err:
+            return f"MySQL Error: {err}"
+        
+        except Exception as e:
+            return f"Error: {str(e)}"
+
+
+    
     @classmethod
     def delete(cls, subjectCode, section, handler):
         try:

@@ -49,36 +49,39 @@
   </ul>
 </div>
 <div class="content">
-  <nav class="navbar navbar-expand-md" style="background-color: #A41D21">
-    <div class="container-fluid">
-      <div class="d-flex justify-content-between d-md-none d-block">
-        <button class="btn px-1 py-0 open-btn me-2 text-white"><i class="fa-solid fa-bars-staggered"></i></button>
-        <a class="navbar-brand fs-4" href="/home">
-          <span class="bg-dark rounded px-2 py-0 text-white">My.IIT</span>
-        </a>
-      </div>
-      <button class="navbar-toggler p-0 border-0 text-white" type="button" data-bs-toggle="collapse"
-        data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false"
-        aria-label="Toggle navigation">
-        <i class="fa fa-bars"></i>
-      </button>
-      <div class="collapse navbar-collapse justify-content-end" id="navbarSupportedContent">
-        <ul class="navbar-nav mb-2 mb-lg-0">
-          <li class="nav-item">
-            <a class=" nav-link" aria-current="page" href="#">
-              {% if session.get("profile_picture") %}
-              <img src="{{ session['profile_picture'] }}" alt="Profile Picture" class="rounded-circle"
-                style="width: 30px; height: 30px;">
-              {% else %}
-              <i class="fas fa-user fa-fw" style="color: #FFF"></i>
-              {% endif %}
-              <span class="ps-2" style="color: #FFF">{{session['name']}}</span>
-            </a>
-          </li>
-        </ul>
-      </div>
-    </div>
-  </nav>
+  <div class="header-header">
+    <nav class="navbar navbar-expand-md" style="background-color: #A41D21">
+        <div class="container-fluid">
+            <div class="d-flex justify-content-between d-md-none d-block">
+                <button class="btn px-1 py-0 open-btn me-2 text-white"><i class="fa-solid fa-bars-staggered"></i></button>
+                <a class="navbar-brand fs-4" href="/home">
+                    <span class="bg-dark rounded px-2 py-0 text-white">My.IIT</span>
+                </a>
+            </div>
+            <button class="navbar-toggler p-0 border-0 text-white" type="button" data-bs-toggle="collapse"
+                data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false"
+                aria-label="Toggle navigation">
+                <i class="fa fa-bars"></i>
+            </button>
+            <div class="collapse navbar-collapse justify-content-end" id="navbarSupportedContent">
+                <ul class="navbar-nav mb-2 mb-lg-0">
+                    <li class="nav-item">
+                        <a class="nav-link" aria-current="page" href="#">
+                            {% if session.get("profile_picture") %}
+                            <img src="{{ session['profile_picture'] }}" alt="Profile Picture" class="rounded-circle"
+                                style="width: 30px; height: 30px;">
+                            {% else %}
+                            <i class="fas fa-user fa-fw" style="color: #FFF"></i>
+                            {% endif %}
+                            <span class="ps-2" style="color: #FFF">{{session['name']}}</span>
+                        </a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+</div>
+
   <div class="dashboard-content px-3 pt-4">
     {% block pages%}
     {% endblock %}

@@ -7,11 +7,14 @@ body {
     min-width: 250px;
     max-width: 250px;
     transition: all 0.3s;
+    position: fixed;
+    height: 100%;
 }
 
 .content {
     min-height: 100vh;
     width: 100%;
+    margin-left: 250px;
 }
 
 hr.h-color {
@@ -32,16 +35,57 @@ hr.h-color {
     color: #fff;
 }
 
-@media(max-width: 767px) {
+@media (max-width: 767px) {
     #side_nav {
         margin-left: -250px;
         position: absolute;
         min-height: 100vh;
         z-index: 1;
-
     }
 
     #side_nav.active {
         margin-left: 0;
     }
+
+    .content {
+        margin-left: 0;
+    }
+}
+
+/* Make the navbar sticky */
+.header-header {
+    position: sticky;
+    top: 0;
+    z-index: 1000;
+}
+
+.header-header .navbar {
+    background-color: #A41D21;
+    color: #FFF;
+}
+
+.header-header .navbar-toggler-icon {
+    background-color: #FFF;
+}
+
+.header-header .navbar-nav .nav-link {
+    color: #FFF;
+}
+
+.header-header .navbar-nav .nav-link:hover {
+    color: #000;
+}
+
+.header-header .nav-item img {
+    border: 1px solid #FFF;
+    border-radius: 50%;
+}
+
+.header-header .nav-item i {
+    font-size: 1.5rem;
+}
+
+.header-header .navbar-toggler {
+    border: none;
+    outline: none;
 }

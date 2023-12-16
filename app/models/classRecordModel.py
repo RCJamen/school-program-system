@@ -300,8 +300,7 @@ class ClassRecord:
             # Check if the file is provided and has a CSV extension
             if file and file.filename.endswith('.csv'):
                 # Load CSV data
-                if cls.csv_data is None:  # Check if CSV data is not yet loaded
-                    cls.load_csv_data(file)  # Load CSV data
+                cls.load_csv_data(file)  # Load CSV data
 
                 # Continue with the rest of the code
                 cursor = mysql.connection.cursor()
@@ -310,7 +309,10 @@ class ClassRecord:
                 cursor.execute("SELECT table_name FROM information_schema.tables WHERE table_name LIKE %s AND table_schema = 'progsys_db'", (as_table_name,))
                 as_tables = cursor.fetchall()
 
-                for row in cls.csv_data:
+                for index, row in enumerate(cls.csv_data):
+                    if index == 0:  # Skip the header (first row)
+                        continue
+
                     tablename = f'CR_{subject_code}_{section_code}_{school_year}_{sem}'.replace('-', '_')
                     insert_query = f"INSERT INTO {tablename} (studentID, firstname, lastname, courseID, email) VALUES (%s, %s, %s, %s, %s)"
                     values = (row[0], row[1], row[2], row[3], row[4])
@@ -318,7 +320,10 @@ class ClassRecord:
 
                 for table in as_tables:
                     as_table_name = table[0]
-                    for row in cls.csv_data:
+                    for index, row in enumerate(cls.csv_data):
+                        if index == 0:  # Skip the header (first row)
+                            continue
+
                         cursor.execute(f"INSERT INTO {as_table_name} (studentID, firstname, lastname, email) VALUES (%s, %s, %s, %s)", (row[0], row[1], row[2], row[3]))
 
                 # Commit the changes to the database
@@ -332,6 +337,7 @@ class ClassRecord:
         except Exception as e:
             error_message = f'Error: {str(e)}'
             return {"type": "danger", "message": error_message}
+
 
 
         
@@ -373,7 +379,12 @@ class ClassRecord:
         except Exception as e:
             return f"Error: {str(e)}"
         
+    
     @classmethod
     def load_csv_data(cls, file):
+        # Set cls.csv_data to None only if it is not already loaded
+        if cls.csv_data is None:
+            cls.csv_data = None
+
         file_content = file.read().decode('utf-8').splitlines()
-        cls.csv_data = list(csv.reader(file_content)) 
+        cls.csv_data = list(csv.reader(file_content))
