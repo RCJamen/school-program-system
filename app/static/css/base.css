@@ -11,3 +11,19 @@ th,
 td {
     vertical-align: middle;
 }
+
+#message {
+    position: fixed;
+    top: 20px;
+    /* Adjust the top position as needed */
+    left: 50%;
+    transform: translateX(-50%);
+    width: 25vw;
+    /* Adjust the width as needed */
+    z-index: 2000;
+}
+
+#inner-message {
+    margin: 0 auto;
+    text-align: center;
+}
