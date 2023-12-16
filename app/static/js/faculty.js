@@ -27,7 +27,7 @@ $(document).ready(function () {
                         $(event.target).closest('tr').remove();
                         console.log('Faculty deleted successfully:', response);
                         // Add a flash message for successful deletion
-                        flashMessage('success', `Faculty deleted successfully - ID: <strong>${facultyID}</strong>, Name: <strong>${facultyName}</strong>`);
+                        flashMessage('success', `Faculty deleted successfully`);
                     } else {
                         // Handle failure, e.g., display an error message
                         console.error('Error deleting faculty:', response.error);
@@ -60,7 +60,7 @@ $(document).ready(function () {
         `;
 
         // Append flash message HTML to a container (adjust the selector accordingly)
-        $('#flash-messages-container').append(flashMessageHTML);
+        $('#message').append(flashMessageHTML);
     }
 
 
@@ -139,7 +139,7 @@ $("#editFacultyForm").submit(function (e) {
         `;
 
         // Append flash message HTML to a container (adjust the selector accordingly)
-        $('#flash-messages-container').append(flashMessageHTML);
+        $('#message').append(flashMessageHTML);
     }
 
 });
@@ -504,7 +504,7 @@ $("#addScheduleForm").submit(function (e) {
         `;
 
         // Append flash message HTML to a container (adjust the selector accordingly)
-        $('#academic-flash-container').append(flashMessageAcademic);
+        $('message').append(flashMessageAcademic);
     }
 });
 
@@ -568,7 +568,7 @@ $('#academic-table-body').on('click', '.delete-schedule', function (event) {
         `;
 
         // Append flash message HTML to a container (adjust the selector accordingly)
-        $('#academic-flash-container').append(deleteScheduleFM);
+        $('message').append(deleteScheduleFM);
     }
 });
 
