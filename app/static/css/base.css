@@ -4,18 +4,22 @@ body {
     background: white;
 
 }
+
 /* Page and Table CSS */
 
-th, td {
+th,
+td {
     vertical-align: middle;
-  }
+}
 
-  #message {
+#message {
     position: fixed;
-    top: 20px; /* Adjust the top position as needed */
+    top: 20px;
+    /* Adjust the top position as needed */
     left: 50%;
     transform: translateX(-50%);
-    width: 25vw; /* Adjust the width as needed */
+    width: 25vw;
+    /* Adjust the width as needed */
     z-index: 2000;
 }
 

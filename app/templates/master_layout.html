@@ -28,10 +28,12 @@
     <li class=""><a href="/home" class="text-decoration-none px-3 py-2 d-block">
         <i class="fas fa-home"></i>
         &nbsp;<span class="ms-2">Home</span></a></li>
+    {% if session.get("role") != "Admin" %}
     <li class=""><a href="/subjects-handled" class="text-decoration-none px-3 py-2 d-block"><i class="fas fa-book"></i>
         <span class="ms-3">Subjects Handled</span></a></li>
+    {% endif %}
 
-    {% if session.get("role") == "Chairperson" %}
+    {% if session.get("role") == "Chairperson" or session.get("role") == "Admin" %}
       <li class=""><a href="/faculty" class="text-decoration-none px-3 py-2 d-block"><i class="fas fa-users"></i>
           &nbsp;<span class="ms-2">Faculty List</span></a></li>
       <li class=""><a href="/subjects" class="text-decoration-none px-3 py-2 d-block"><i class="fas fa-list-alt"></i>

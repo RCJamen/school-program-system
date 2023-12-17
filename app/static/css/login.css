@@ -45,7 +45,8 @@
 
 }
 
-#login .newToIIT {
+#login .newToIIT,
+.admin_login {
     font-size: 16px;
     text-align: center;
     display: block;
