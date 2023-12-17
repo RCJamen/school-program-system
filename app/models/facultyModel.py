@@ -69,7 +69,7 @@ class facultyModel:
         except Exception as e:
             return f"Failed to update faculty: {str(e)}"
     
-    
+    @classmethod
     def get_assigned_subjects(self, faculty_id):
         try:
             cur = mysql.new_cursor(dictionary=True)
@@ -78,20 +78,9 @@ class facultyModel:
                 "   af.subjectID AS 'Subject Code', "
                 "   subject.description AS 'Description', "
                 "   subject.credits AS 'Credits', "
-                "   af.sectionID AS 'Section ID', "
-                "   s.scheduleID AS 'Schedule ID', "
-                "   CASE "
-                "       WHEN CONCAT(IFNULL(s.day, 'None'), ' ', "
-                "                   IFNULL(TIME_FORMAT(s.time_start, '%h:%i %p'), 'None'), ' - ', "
-                "                   IFNULL(TIME_FORMAT(s.time_end, '%h:%i %p'), 'None')) = 'None None - None' "
-                "       THEN 'None' "
-                "       ELSE CONCAT(IFNULL(s.day, 'None'), ' ', "
-                "                   IFNULL(TIME_FORMAT(s.time_start, '%h:%i %p'), 'None'), ' - ', "
-                "                   IFNULL(TIME_FORMAT(s.time_end, '%h:%i %p'), 'None')) "
-                "   END AS 'Schedule' "
+                "   af.sectionID AS 'Section ID' "
                 "FROM assignFaculty af "
                 "JOIN subject ON subject.subjectCode = af.subjectID "
-                "LEFT JOIN schedule s ON af.subjectID = s.subjectID AND af.sectionID = s.sectionID "
                 "WHERE af.facultyID = %s"
             )
             cur.execute(query, (faculty_id,))
@@ -101,60 +90,6 @@ class facultyModel:
         except Exception as e:
             return f"Failed to retrieve assigned subject to faculty data: {str(e)}"
 
-    @classmethod
-    def create_schedule(cls, subjectID, sectionID, day, time_start, time_end):
-        try:
-            cur = mysql.new_cursor(dictionary=True)
-            cur.execute(
-                "INSERT INTO schedule (subjectID, sectionID, day, time_start, time_end) VALUES (%s, %s, %s, %s, %s)",
-                (subjectID, sectionID, day, time_start, time_end),
-            )
-            mysql.connection.commit()
-            return "Schedule created successfully"
-        except Exception as e:
-            return f"Failed to create schedule: {str(e)}"
-        
-    @classmethod
-    def get_schedule_by_day(self, faculty_id, day):
-        try:
-            cur = mysql.new_cursor(dictionary=True)
-
-            # Print the SQL query and parameters for debugging
-            query = f"""
-                SELECT
-                    schedule.scheduleID,
-                    schedule.subjectID,
-                    schedule.sectionID,
-                    schedule.day,
-                    TIME_FORMAT(schedule.time_start, '%H:%i:%s') as time_start,
-                    TIME_FORMAT(schedule.time_end, '%H:%i:%s') as time_end
-                FROM
-                    schedule
-                JOIN
-                    assignFaculty ON schedule.subjectID = assignFaculty.subjectID AND schedule.sectionID = assignFaculty.sectionID
-                JOIN
-                    faculty ON assignFaculty.facultyID = faculty.facultyID
-                WHERE
-                    schedule.day = '{day}'
-                    AND faculty.facultyID = '{faculty_id}';
-            """
-
-            # print("SQL Query:", query)
-
-            cur.execute(query)
-            schedules = cur.fetchall()
-            cur.close()
-            return schedules
-        except Exception as e:
-            return f"Failed to retrieve {day} schedule data: {str(e)}"
 
 
-    @classmethod
-    def delete_schedule(cls, scheduleID):
-        try:
-            cur = mysql.new_cursor(dictionary=True)
-            cur.execute("DELETE FROM schedule WHERE scheduleID = %s", (scheduleID,))
-            mysql.connection.commit()
-            return "Schedule deleted successfully"
-        except Exception as e:
-            return f"Failed to delete Schedule: {str(e)}"
+   
