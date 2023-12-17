@@ -8,32 +8,33 @@
 
 {% block content %}
 <meta name="csrf-token" content="{{ csrf_token() }}">
-<div class="admin-login-container">
+<div class="admin-login-container" style="padding-right: 205px;
+padding-top: 100px;">
     <form class="admin-login-form" id="admin-login-form" method="POST" action=" {{ url_for('admin.adminLogin') }}">
         {{ form.csrf_token }}
         {{ form.hidden_tag() }}
         <div class="container margin-tb">
             <span class="title">Logging In as Admin</span>
         </div>
-    
+
         <div class="container padding">
             <div class="form-group">
                 <label class="fieldTitle" for="adminEmail">MSU-IIT Email</label>
                 {{ form.adminEmail(class="form-input", placeholder="username@g.msuiit.edu.ph", autocomplete="off", required=True) }}
             </div>
-    
+
             <div class="form-group">
                 <label class="fieldTitle" for="adminPassword">Password</label>
                 {{ form.adminPassword(class="form-input", placeholder="Password", autocomplete="off", required=True) }}
             </div>
         </div>
-        
+
         <div class="container margin-t">
             <button type="submit" class="login-button" name="login-button" id="login-button">LOG IN</button>
         </div>
         <div class="container margin-t">
             <button type="button" class="back-button" name="back-button" id="back-button">Back</button>
-        </div>  
+        </div>
     </form>
 </div>
 {% endblock %}
@@ -44,5 +45,5 @@
         window.location.href = "/";
     });
 </script>
-    
+
 {% endblock %}
