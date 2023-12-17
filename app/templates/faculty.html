@@ -268,26 +268,19 @@
             <!-- Use an arrow-left icon from FontAwesome -->
             <i class="fa-solid fa-arrow-left" style="color: #000000;"></i> back</button></div>
         <div class = "row body-header">
-          <div class="col-3">
-            <div class = col-3-content>
-            <div class="profile-picture">
-              <img src="../static/pictures/orv.jpg" alt="Profile Picture">
-            </div>
-            <div class = "profile-content">
-              <h6  class id = "academic-faculty-name"></h6>
-              <p id = academic-faculty-id></p>
+            <div class = "col-12" >
+            <div class = "profile-content d-flex flex-column">
+              <h1  class id = "academic-faculty-name"></h6>
+              <h4 id = academic-faculty-id></h5>
             </div>
           </div>
-        </div>
-          
-          <div class = "col-9"><button type="button" class="btn btn-danger float-end academicEditBtn" id = "academicEditBtn" >Edit</button></div>
-
+        
         </div>
         <div class = "row body-sort" >
           <div class = "col-2 school-year">
-            <h6>School Year</h6>
+            <h6>Semester</h6>
             <select class="form-select custom-select-size" aria-label="Default select example">
-              <option selected>Feature Available Soon</option>
+              <option selected>1st Semester</option>
               <option value="1">One</option>
               <option value="2">Two</option>
               <option value="3">Three</option>
@@ -296,7 +289,7 @@
           <div class = "col-2 semester">
             <h6>School Year</h6>
             <select class="form-select custom-select-size" aria-label="Default select example">
-              <option selected>Feature Available Soon</option>
+              <option selected>2023-2024</option>
               <option value="1">One</option>
               <option value="2">Two</option>
               <option value="3">Three</option>
@@ -311,9 +304,6 @@
               <li class="nav-item">
                   <a class="nav-link active" id="academicLoad-tab" data-bs-toggle="tab" href="#academicLoad">Academic Load</a>
               </li>
-              <li class="nav-item">
-                  <a class="nav-link" id="classSchedule-tab" data-bs-toggle="tab" href="#classSchedule">Class Schedule</a>
-              </li>
           </ul>
           <div class="tab-content mt-3">
               <div class="tab-pane fade show active" id="academicLoad">
@@ -325,9 +315,7 @@
                                   <th>Subject Code</th>
                                   <th>Section</th>
                                   <th>Description</th>
-                                  <th>Schedule</th>
                                   <th>Credits</th>
-                                  <th>Action</th>
                               </tr>
                               </thead>
                               <tbody class="table-group-divider" id="academic-table-body">
@@ -337,9 +325,7 @@
                       </div>
                   </div>
               </div>
-              <div class="tab-pane fade" id="classSchedule">
-                {% include "schedule.html" %}
-              </div>
+             
           </div>
       </div>
         </div>
@@ -347,73 +333,8 @@
   </div>
 </div>
 
-<div class="modal fade" id="secondModal" tabindex="-1" aria-labelledby="secondModalLabel" aria-hidden="true">
-  <div class="modal-dialog">
-      <div class="modal-content">
-          <div class="modal-header">
-              <h5 class="modal-title" id="secondModalLabel">Add Schedule For</h5>
-              <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-          </div>
-          <div class="modal-body">
-            <div class="add-schedule-container">
-              <form id="addScheduleForm">
-                <!-- Existing form fields -->
-            
-                <div class="form-group">
-                    <label for="subject-id">Subject</label>
-                    <input type="text" id="subject-id" name="subject-id" required readonly>
-                </div>
-                <div class="form-group">
-                    <label for="section-id">Section</label>
-                    <input type="text" id="section-id" name="section-id" required readonly>
-                </div>
-                <div class="form-group">
-                    <label for="day">Day</label>
-                    <select id="day" name="day" required>
-                      <option value="Monday">Monday</option>
-                      <option value="Tuesday">Tuesday</option>
-                      <option value="Wednesday">Wednesday</option>
-                      <option value="Thursday">Thursday</option>
-                      <option value="Friday">Friday</option>
-                      <option value="Saturday">Saturday</option>
-                      <option value="Sunday">Sunday</option>
-                  </select>
-                </div>
-                <div class="form-group">
-                    <label for="time-start">Time start</label>
-                    <input type="time" id="time-start" name="time-start" required>
-                </div>
-                <div class="form-group">
-                    <label for="time-end">Time End</label>
-                    <input type="time" id="time-end" name="time-end" required>
-                </div>
-                <div class="form-group">
-                    <input type="submit" value="Add Schedule" id = "addScheduleBtn" data-bs-dismiss="modal" aria-label="Close"> 
-                </div>
-            </form>
-            
-            </div>
-          </div>
-      </div>
-  </div>
-</div>
-<div class="modal fade" tabindex="-1" id="deleteSchedule" data-bs-backdrop="static" tabindex="-1" aria-labelledby="deleteScheduleLabel" aria-hidden="true">
-  <div class="modal-dialog">
-    <div class="modal-content">
-      <div class="modal-header">
-        <h5 class="modal-title">Confirmation</h5>
-        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-      </div>
-      <div class="modal-body delete-schedule-modal-body">
-        <!-- Faculty details will be dynamically inserted here -->
-      </div>
-      <div class="modal-footer">
-        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">No</button>
-        <button type="button" class="btn btn-primary delete-schedule-button">Yes</button>
-      </div>
-    </div>
-  </div>
-</div>
+
+
 {% endblock %}
 
 {% block pagescript %}
