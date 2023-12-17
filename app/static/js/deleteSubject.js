@@ -62,6 +62,6 @@ $(document).ready(function () {
         `;
 
         // Append flash message HTML to a container (adjust the selector accordingly)
-        $('#flash-messages-container').append(flashMessageHTML);
+        $('#message').append(flashMessageHTML);
     }
 });

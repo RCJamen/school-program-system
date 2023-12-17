@@ -136,7 +136,7 @@ role ENUM('Chairperson', 'Faculty')
 -- USED
 DROP TABLE IF EXISTS `section`;
 CREATE TABLE IF NOT EXISTS `section`(
-sectionCode VARCHAR(255) PRIMARY KEY
+sectionCode VARCHAR(255) PRIMARY KEY DEFAULT 'None'
 );
 
 -- USED
@@ -154,24 +154,12 @@ DROP TABLE IF EXISTS `subject_section`;
 CREATE TABLE IF NOT EXISTS `subject_section`(
 subsecID INT NOT NULL AUTO_INCREMENT PRIMARY KEY,
 subjectID VARCHAR(10),
-sectionID VARCHAR(255),
+sectionID VARCHAR(255) DEFAULT 'None',
 UNIQUE KEY unique_subject_section (subjectID, sectionID)
 );
 
 -- USED
-DROP TABLE IF EXISTS `schedule`;
-CREATE TABLE IF NOT EXISTS `schedule` (
-scheduleID INT PRIMARY KEY AUTO_INCREMENT,
-subjectID VARCHAR(10),
-sectionID VARCHAR(255),
-day VARCHAR(255),
-time_start TIME,
-time_end TIME,
-CONSTRAINT unique_schedule_time UNIQUE (day, time_start, time_end),
-FOREIGN KEY (subjectID, sectionID) REFERENCES subject_section(subjectID, sectionID)
-);
 
--- USED
 DROP TABLE IF EXISTS `assignFaculty`;
 CREATE TABLE IF NOT EXISTS `assignFaculty`(
 assignFacultyID INT NOT NULL AUTO_INCREMENT PRIMARY KEY,
@@ -183,7 +171,17 @@ schoolYear VARCHAR(10),     -- independent assignment
 UNIQUE KEY unique_assignFaculty (facultyID, subjectID, sectionID, sem, schoolYear)
 );
 
-
+-- DROP TABLE IF EXISTS `schedule`;
+-- CREATE TABLE IF NOT EXISTS `schedule` (
+-- scheduleID INT PRIMARY KEY AUTO_INCREMENT,
+-- subjectID VARCHAR(10),
+-- sectionID VARCHAR(255),
+-- day VARCHAR(255),
+-- time_start TIME,
+-- time_end TIME,
+-- CONSTRAINT unique_schedule_time UNIQUE (day, time_start, time_end),
+-- FOREIGN KEY (subjectID, sectionID) REFERENCES subject_section(subjectID, sectionID)
+-- );
 --
 --  INSERT VALUES SECTION
 --
@@ -197,19 +195,19 @@ VALUES ('2023-0001', 'Fulgent Kvasir', 'Lavesores', 'fulgentkvasir.lavesores@g.m
 ('2023-0003', 'Janella', 'Balantac', 'janellasuzanne.balantac@g.msuiit.edu.ph', 'Chairperson'),
 ('2023-0004', 'Ramel Cary', 'Jamen', 'ramelcary.jamen@g.msuiit.edu.ph', 'Faculty');
 
-INSERT INTO subject (subjectCode, description, credits)
-VALUES
-('CCC100', 'Fundamentals of Computing', 3),
-('CCC101', 'Computer Programming 1', 3),
-('CCC102', 'Computer Programming 2', 3),
-('CCC121', 'Data Structures and Algorithm', 3),
-('CCC151', 'Information Management', 3),
-('CSC112', 'Computer Organization and Architecture', 3),
-('CSC124', 'Design and Analysis of Algorithms', 3),
-('CSC186', 'Human-Computer Interaction', 3),
-('CCC181', 'Applications Development and
-Emerging Technologies', 3),
-('CSC145', 'Programming Languages', 3);
+-- INSERT INTO subject (subjectCode, description, credits)
+-- VALUES
+-- ('CCC100', 'Fundamentals of Computing', 3),
+-- ('CCC101', 'Computer Programming 1', 3),
+-- ('CCC102', 'Computer Programming 2', 3),
+-- ('CCC121', 'Data Structures and Algorithm', 3),
+-- ('CCC151', 'Information Management', 3),
+-- ('CSC112', 'Computer Organization and Architecture', 3),
+-- ('CSC124', 'Design and Analysis of Algorithms', 3),
+-- ('CSC186', 'Human-Computer Interaction', 3),
+-- ('CCC181', 'Applications Development and
+-- Emerging Technologies', 3),
+-- ('CSC145', 'Programming Languages', 3);
 
 INSERT INTO section (sectionCode)
 VALUES
@@ -228,31 +226,31 @@ VALUES
 ('CS4C');
 
 -- First, insert data into subject_section
-INSERT INTO subject_section (subjectID, sectionID)
-VALUES
-('CCC100', 'CS1C'),
-('CCC101', 'CS2B'),
-('CCC102', 'CS1A'),
-('CCC121', 'CS1A'),
-('CCC151', 'CS4B'),
-('CSC112', 'CS4B'),
-('CSC124', 'CS4C'),
-('CSC186', 'CS4C'),
-('CCC181', 'CS2B'),
-('CSC145', 'CS4C');
+-- INSERT INTO subject_section (subjectID, sectionID)
+-- VALUES
+-- ('CCC100', 'CS1C'),
+-- ('CCC101', 'CS2B'),
+-- ('CCC102', 'CS1A'),
+-- ('CCC121', 'CS1A'),
+-- ('CCC151', 'CS4B'),
+-- ('CSC112', 'CS4B'),
+-- ('CSC124', 'CS4C'),
+-- ('CSC186', 'CS4C'),
+-- ('CCC181', 'CS2B'),
+-- ('CSC145', 'CS4C');
 
-INSERT INTO assignFaculty (facultyID, subjectID, sectionID, sem, schoolYear)
-VALUES
-('None', 'CCC100', 'CS1C', '1', '2023-2024'),
-('None', 'CCC101', 'CS2B', '1', '2023-2024'),
-('None', 'CCC102', 'CS1A', '1', '2023-2024'),
-('None', 'CCC121', 'CS1A', '1', '2023-2024'),
-('None', 'CCC151', 'CS4B', '1', '2023-2024'),
-('None', 'CSC112', 'CS4B', '1', '2023-2024'),
-('None', 'CSC124', 'CS4C', '1', '2023-2024'),
-('None', 'CSC186', 'CS4C', '1', '2023-2024'),
-('None', 'CCC181', 'CS2B', '1', '2023-2024'),
-('None', 'CSC145', 'CS4C', '1', '2023-2024');
+-- INSERT INTO assignFaculty (facultyID, subjectID, sectionID, sem, schoolYear)
+-- VALUES
+-- ('None', 'CCC100', 'CS1C', '1', '2023-2024'),
+-- ('None', 'CCC101', 'CS2B', '1', '2023-2024'),
+-- ('None', 'CCC102', 'CS1A', '1', '2023-2024'),
+-- ('None', 'CCC121', 'CS1A', '1', '2023-2024'),
+-- ('None', 'CCC151', 'CS4B', '1', '2023-2024'),
+-- ('None', 'CSC112', 'CS4B', '1', '2023-2024'),
+-- ('None', 'CSC124', 'CS4C', '1', '2023-2024'),
+-- ('None', 'CSC186', 'CS4C', '1', '2023-2024'),
+-- ('None', 'CCC181', 'CS2B', '1', '2023-2024'),
+-- ('None', 'CSC145', 'CS4C', '1', '2023-2024');
 
 
 

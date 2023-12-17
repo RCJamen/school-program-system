@@ -30,7 +30,7 @@ def add_faculty():
 
             if "success" in result:
                 credentials_message = f"ID: <strong>{facultyID}</strong>, Name: <strong>{firstname} {lastname}</strong>, Email: <strong>{email}</strong>, Role: <strong>{role}</strong>"
-                flash_message = {"type": "success", "message": f"Faculty created successfully - {credentials_message}"}
+                flash_message = {"type": "success", "message": f"Faculty created successfully"}
             else:
                 flash_message = {"type": "danger", "message": f"Failed to create faculty: {result}"}
 
