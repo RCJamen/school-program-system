@@ -9,7 +9,7 @@
 {% block content %}
 <meta name="csrf-token" content="{{ csrf_token() }}">
 <div class="admin-login-container">
-    <form class="admin-login-form" id="admin-login-form" method="POST" action="/admin_login">
+    <form class="admin-login-form" id="admin-login-form" method="POST" action=" {{ url_for('admin.adminLogin') }}">
         {{ form.csrf_token }}
         {{ form.hidden_tag() }}
         <div class="container margin-tb">

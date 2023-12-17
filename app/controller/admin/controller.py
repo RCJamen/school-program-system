@@ -2,7 +2,7 @@ import os
 import pathlib
 import requests
 
-from flask import request, render_template, redirect, url_for, session, abort
+from flask import request, render_template, redirect, url_for, session, abort, flash
 from flask.helpers import url_for
 from google.oauth2 import id_token
 from google_auth_oauthlib.flow import Flow
@@ -12,10 +12,12 @@ import google.auth.transport.requests
 from . import admin
 
 from app.models.facultyModel import facultyModel
+from app.models.adminModel import AdminUser
 from app.controller.admin.forms import AdminLoginForm
 
-# from flask_login import UserMixin, login_user, LoginManager, login_required, logout_user, current_user
-# from flask_bcrypt import Bcrypt
+from flask import flash
+from flask_login import login_user, current_user, login_required, logout_user
+from flask_login import LoginManager, UserMixin
 
 facultyModel = facultyModel()
 
@@ -65,11 +67,29 @@ def login():
 @admin.route("/adminLogin", methods=['GET', 'POST'])
 def adminLogin():
     form = AdminLoginForm()
-    if form.validate_on_submit():
-        return redirect(url_for('login'))
+
+    if request.method == 'POST' and form.validate_on_submit():
+        user_email = form.adminEmail.data
+        user_password = form.adminPassword.data
+
+        if user_email == "admin@g.msuiit.edu.ph" and user_password == "admin":
+            # Log in the user using Flask-Login
+            admin_user = AdminUser(user_id="admin", email=user_email, role="Admin")
+            login_user(admin_user)
+
+            session['google_id'] = "admin"
+            session['name'] = "Admin"
+            session['email'] = user_email
+            session['role'] = "Admin"
+
+            flash("Login successful", "success")
+            # return redirect(url_for('admin.login'))
+            return redirect(url_for('admin.wrapper'))
+            # return render_template('adminTest.html')
+        else:
+            flash("Invalid email or password", "danger")
 
     return render_template("admin_login.html", form=form)
-
 
 @admin.route("/callback")
 def callback():
@@ -99,12 +119,23 @@ def callback():
     user_info = user_info_response.json()
 
     session["profile_picture"] = user_info.get("picture")
+
+    if session["email"] == "admin@g.msuiit.edu.ph":
+        user = AdminUser()
+        user.id = session["google_id"]
+        user.name = session["name"]
+        user.email = session["email"]
+        user.role = session["role"]
+
+        login_user(user)
+
     return redirect("/home")
 
 
 @admin.route("/logout")
 def logout():
     session.clear()
+    logout_user()
     return redirect("/")
 
 
