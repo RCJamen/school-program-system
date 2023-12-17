@@ -69,8 +69,7 @@ def edit_faculty(facultyID):
             new_email = form.editFacultyEmail.data
             new_role = form.editFacultyRole.data
             result = faculty_model.update_faculty(facultyID, new_firstname, new_lastname, new_email, new_role)
-            if result == "Faculty Information Updated Successfully":
-                session["role"] = new_role
+
             return jsonify({"success": result == "Faculty Information Updated Successfully"})
         else:
             # Handle the case where form validation fails
