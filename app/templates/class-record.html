@@ -1,269 +1,270 @@
-{% extends "class_record_layout.html" %}
+{% extends "master_layout.html" %}
 
-{% block classtitle %}
+{% block pagetitle %}
 <title>Class Record</title>
 {% endblock %}
 
-{% block classpages %}
-<div class="px-5 pt-3 d-flex align-items-center">
-    <h1>Class List</h1>
-    <div class="dropdown ps-3">
-        <button class="btn btn-outline-dark dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false">
-        </button>
-        <ul class="dropdown-menu">
-            <li><a class="dropdown-item" href="{{ url_for('classRecord.index', subject_code=ClassDetails[0], description=ClassDetails[1], section_code=ClassDetails[2], credits=ClassDetails[3], sem=ClassDetails[4], school_year=ClassDetails[5]) }}">Class List</a>
+{% block pagestyle %}
+<link rel="stylesheet" href="{{ url_for('static', filename='css/class-record.css') }}">
+{% endblock %}
+
+{% block pages %}
+<!-- <meta name="csrf-token" content="{{ csrf_token() }}"> -->
+<div class="classRecord-container">
+    <div class="classRecord-title">
+        <div class="row">
+            <div class="col-11">
+                <h1><b>Class Record</b></h1>
+            </div>
+            <div class="col-1">
+                <a href="/subjects-handled" alt="Back to Subject Handled">
+                    <button type="button" class="btn btn btn-outline-secondary">
+                        <i class="fa-solid fa-arrow-left-long fa-3x" style="color: #000000;"></i>
+                    </button>
+                </a>
+            </div>
+        </div>
+        <h3><b>Section</b></h3>
+    </div>
+    <hr class="pt-3">
+    <div class="classRecord-content">
+        <ul class="nav nav-tabs px-3" id="myTab" role="tablist">
+            <li class="nav-item" role="presentation">
+              <button class="nav-link active" id="classrecord-tab" data-bs-toggle="tab" data-bs-target="#classrecord" type="button" role="tab" aria-controls="classrecord" aria-selected="true">Class Record</button>
             </li>
-            {% for Assessment in Assessments %}
-            {% set assessment_link = Assessment[0]|replace(' ', '_') %}
-            <li><a class="dropdown-item" href="{{ url_for('classRecord.assessment_record', assessment=assessment_link) }}">{{Assessment[0]}}</a></li>
-            {% endfor %}
+            <li class="nav-item" role="presentation">
+              <button class="nav-link" id="gradedistribution-tab" data-bs-toggle="tab" data-bs-target="#gradedistribution" type="button" role="tab" aria-controls="gradedistribution" aria-selected="false">Grade Distribution</button>
+            </li>
+            <li class="nav-item" role="presentation">
+              <button class="nav-link" id="gradeconversion-tab" data-bs-toggle="tab" data-bs-target="#gradeconversion" type="button" role="tab" aria-controls="gradeconversion" aria-selected="false">Grade Conversion</button>
+            </li>
+            <li class="nav-item" role="presentation">
+                <button class="nav-link" id="learningoutcome-tab" data-bs-toggle="tab" data-bs-target="#learningoutcome" type="button" role="tab" aria-controls="learningoutcome" aria-selected="false">Learning Outcomes</button>
+              </li>
         </ul>
-    </div>
-</div>
-<div class="classRecord-header">
-    <div class="row">
-        <div class="col-3 d-flex gap-3">
-            
-            <button type="button" class="btn btn-secondary BtnStyle AddStudentBtn ms-3" data-bs-toggle="modal" data-bs-target="#addStudentModal">
-                <i class="fa-solid fa-user-plus"></i> Add Student
-                
-            </button>   
-            <button type="button" class="btn btn-secondary import-csv-modal float-end" data-bs-toggle="modal" data-bs-target="#importCSVModal">
-                <i class="fa-solid fa-file-csv" style="color: #ffffff;"></i> CSV
-            </button>
-        </div>
-        <div class = "col-2">
-            
-        </div>
-        <!-- <div class="col-4" id="flash-messages-container">
-            {% if flash_message %}
-            <div class="alert alert-{{ flash_message.type }} alert-dismissible fade show" role="alert">
-                <div class="d-flex justify-content-between align-items-center">
-                <span>{{ flash_message.message | safe }}</span>
-                <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
-                </div>
-            </div>
-            {% endif %}
-        </div> -->
-        
-    </div>
-</div>
 
-<div class="table-container d-flex pb-4">
-    <div class="classRecord-body">
-        <table class="table table-hover" id="dynamic-table">
-            <thead>
-                <tr>
-                    <th>#</th>
-                    <th>Student ID</th>
-                    <th>First Name</th>
-                    <th>Last Name</th>
-                    <th>Course Code</th>
-                    <th>Total Grade</th>
-                    <th>Action</th>
-                </tr>
-            </thead>
-            <tbody>
-                {% if Students|length == 0 %}
-                <td colspan="7" class="text-center">No Students Entrolled on This Class.</td>
-                {% else %} {% for Student in Students %}
-                <tr>
-                    <td>{{Student[0]}}</td>
-                    <td>{{Student[1]}}</td>
-                    <td>{{Student[2]}}</td>
-                    <td>{{Student[3]}}</td>
-                    <td>{{Student[4]}}</td>
-                    <td>{{Student[5]}}</td>
-                    <!-- <td>{{Student[6]}}</td> -->
-                    <td>
-                        <button type="button" class="btn 1">
-                            <i class="fa-solid fa-bell" style="color: #000000;"></i>
-                        </button>
-                        <button type="button" class="btn btn-outline-light delete-student" data-studentid="{{Student[1]}}" data-firstname="{{Student[2]}}" data-lastname="{{Student[3]}}" data-bs-toggle="modal" data-bs-target="#askDelete">
-                            <i class="fa-solid fa-trash" style="color: #000000;"></i>
-                        </button>
-                    </td>
-                </tr>
-                {% endfor %} {% endif %}
-            </tbody>
-        </table>
-    </div>
-</div>
-
-<hr class="pt-4">
-
-<div class="row dist-con mx-5">
-    <div class="col-6 table-container">
-        <div class="grade-distribution mx-5">
-            <div>
-                <h3>Grade Distribution
-                    <button type="button" class="btn btn-secondary BtnStyle" style="height: 37px;" data-bs-toggle="modal" data-bs-target="#addAssessment">
-                    <i class="fa-solid fa-plus"></i>
-                </button>
-            </h3>
-            </div>
-            <table class="table table-hover">
-                <thead>
-                    <tr>
-                        <th>Assessments</th>
-                        <th>Percentage</th>
-                        <th>Action</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    {% if GradeDistributions|length == 0 %}
-                    <td colspan="3" class="text-center">No Assessments Available.</td>
-                    {% else %} {% for GradeDistribution in GradeDistributions %}
-                    <tr>
-                        <td>{{GradeDistribution[1]}}</td>
-                        <td>{{GradeDistribution[2]}}%</td>
-                        <td>
-                            <button type="button" class="btn btn-outline-light delete-assessment" data-assessmentid="{{GradeDistribution[0]}}" data-name="{{GradeDistribution[1]}}" data-bs-toggle="modal" data-bs-target="#askDeleteAssessment">
-                                <i class="fa-solid fa-trash" style="color: #000000;"></i>
+        <div class="tab-content px-5 py-4">
+            <div class="tab-pane active" id="classrecord" role="tabpanel" aria-labelledby="classrecord-tab">
+                <div class="classRecord-header">
+                    <div class="row">
+                        <div class="col-3 d-flex gap-3">
+                            <button type="button" class="btn btn-secondary BtnStyle AddStudentBtn ms-3" data-bs-toggle="modal" data-bs-target="#addStudentModal">
+                                <i class="fa-solid fa-user-plus"></i> Add Student
                             </button>
-                        </td>
-                    </tr>
-                    {% endfor %} {% endif %}
-                </tbody>
-            </table>
-        </div>
-        <!-- {% if flash_message %}
-        <div class="d-flex justify-content-center mx-5 mt-5">
-            <div class="alert alert-{{ flash_message.type }} alert-dismissible fade show w-100" role="alert">
-                <div class="d-flex justify-content-between align-items-center">
-                    <span>{{ flash_message.message | safe }}</span>
-                    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                            <button type="button" class="btn btn-secondary import-csv-modal BtnStyle" data-bs-toggle="modal" data-bs-target="#importCSVModal">
+                                <i class="fa-solid fa-file-csv" style="color: #ffffff;"></i> Import CSV
+                            </button>
+                        </div>
+                        <div class = "col-2">
+                        </div>
+                    </div>
+                </div>
+                <div class="table-container d-flex pb-4">
+                    <div class="classRecord-body">
+                        <table class="table table-hover" id="dynamic-table">
+                            <thead>
+                                <tr>
+                                    <th>#</th>
+                                    <th>Student ID</th>
+                                    <th>First Name</th>
+                                    <th>Last Name</th>
+                                    <th>Course Code</th>
+                                    <th>Total Grade</th>
+                                    <th>Action</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <td colspan="7" class="text-center">No Students Entrolled on This Class.</td>
+                                <tr>
+                                    <td></td>
+                                    <td></td>
+                                    <td></td>
+                                    <td></td>
+                                    <td></td>
+                                    <td></td>
+                                    <td>
+                                        <button type="button" class="btn btn-outline-light">
+                                            <i class="fa-solid fa-plus" style="color: #000000;"></i>
+                                        </button>
+                                        <button type="button" class="btn btn-outline-light">
+                                            <i class="fa-solid fa-bell" style="color: #000000;"></i>
+                                        </button>
+                                        <button type="button" class="btn btn-outline-light delete-student" data-studentid="" data-firstname="" data-lastname="" data-bs-toggle="modal" data-bs-target="#askDelete">
+                                            <i class="fa-solid fa-trash" style="color: #000000;"></i>
+                                        </button>
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+            <div class="tab-pane" id="gradedistribution" role="tabpanel" aria-labelledby="gradedistribution-tab">
+                <div class="classRecord-header">
+                    <div class="d-flex gap-3">
+                        <button type="button" class="btn btn-secondary BtnStyle" style="height: 37px;" data-bs-toggle="modal" data-bs-target="#addAssessment">
+                            <i class="fa-solid fa-plus"></i> Add Assessment
+                        </button>
+                        <button type="button" class="btn btn-secondary BtnStyle addActivity" style="height: 37px;" data-bs-toggle="modal" data-bs-target="#addActivity">
+                            <i class="fa-solid fa-plus"></i> Add Activity
+                        </button>
+                    </div>
+                </div>
+                <div style="margin-left: 200px; margin-right: 150px;">
+                    <h3 class="text-center">Grade Distribution</h3>
+                    <table class="table table-hover">
+                        <thead class="text-center">
+                            <tr>
+                                <th>Assessments</th>
+                                <th>Percentage</th>
+                                <th>Action</th>
+                            </tr>
+                        </thead>
+                        <tbody class="text-center">
+                            <td colspan="3" class="text-center">No Assessments Available.</td>
+                            <tr>
+                                <td></td>
+                                <td></td>
+                                <td>
+                                    <button type="button" class="btn btn-outline-light delete-assessment" data-assessmentid="" data-name="" data-bs-toggle="modal" data-bs-target="#askDeleteAssessment">
+                                        <i class="fa-solid fa-trash" style="color: #000000;"></i>
+                                    </button>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+            <div class="tab-pane" id="gradeconversion" role="tabpanel" aria-labelledby="gradeconversion-tab">
+                <div class="classRecord-header">
+                    <div class="d-flex">
+                        <button type="button" class="btn btn-secondary BtnStyle">
+                            <i class="fa-solid fa-pen"></i> Edit Grade Conversion
+                        </button>
+                    </div>
+                </div>
+                <div style="margin-left: 200px; margin-right: 150px;">
+                    <h3 class="text-center">Grade Conversion</h3>
+                    <table class="table table-hover">
+                        <thead class="text-center">
+                            <tr>
+                                <th>Grade Range</th>
+                                <th>Grade Point</th>
+                            </tr>
+                        </thead>
+                        <tbody class="text-center">
+                            <tr>
+                                <td>97-100</td>
+                                <td>1</td>
+                            </tr>
+                            <tr>
+                                <td>94-96</td>
+                                <td>1.25</td>
+                            </tr>
+                            <tr>
+                                <td>91-93</td>
+                                <td>1.50</td>
+                            </tr>
+                            <tr>
+                                <td>88-90</td>
+                                <td>1.75</td>
+                            </tr>
+                            <tr>
+                                <td>85-87</td>
+                                <td>2.00</td>
+                            </tr>
+                            <tr>
+                                <td>82-84</td>
+                                <td>2.25</td>
+                            </tr>
+                            <tr>
+                                <td>79-81</td>
+                                <td>2.50</td>
+                            </tr>
+                            <tr>
+                                <td>76-78</td>
+                                <td>2.75</td>
+                            </tr>
+                            <tr>
+                                <td>75</td>
+                                <td>3.00</td>
+                            </tr>
+                            <tr>
+                                <td>FAIL</td>
+                                <td>4.00-BELOW</td>
+                            </tr>
+                            <tr>
+                                <td>--</td>
+                                <td>INC/DROP</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+            <div class="tab-pane" id="learningoutcome" role="tabpanel" aria-labelledby="learningoutcome-tab">
+                <div class="accordion" id="accordionPanelsStayOpenExample">
+                    <div class="accordion-item">
+                        <h1 class="accordion-header">
+                            <button class="accordion-button" type="button" data-bs-toggle="collapse"
+                                data-bs-target="#panelsStayOpen-collapseOne" aria-expanded="true"
+                                aria-controls="panelsStayOpen-collapseOne">
+                                <b>Learning Outcome 1</b>
+                            </button>
+                        </h1>
+                        <div id="panelsStayOpen-collapseOne" class="accordion-collapse collapse show">
+                            <div class="accordion-body">
+                                <strong>This is the first item's accordion body.</strong> This is the first item's accordion body.
+                                It is hidden by default, until the collapse plugin adds the apprasdasdopriate classes that we use to
+                                style each element. These classes control the overall appearance, as well as the showing and hiding
+                                via CSS transitions.
+                            </div>
+                        </div>
+                    </div>
+                    <div class="accordion-item">
+                        <h2 class="accordion-header">
+                            <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse"
+                                data-bs-target="#panelsStayOpen-collapseTwo" aria-expanded="false"
+                                aria-controls="panelsStayOpen-collapseTwo">
+                                <b>Learning Outcome 2</b>
+                            </button>
+                        </h2>
+                        <div id="panelsStayOpen-collapseTwo" class="accordion-collapse collapse">
+                            <div class="accordion-body">
+                                <strong>This is the second item's accordion body.</strong>This is the first item's accordion body.
+                                It is hidden by default, until the collapse plugin adds the apprasdasdopriate classes that we use to
+                                style each element. These classes control the overall appearance, as well as the showing and hiding
+                                via CSS transitions.
+                            </div>
+                        </div>
+                    </div>
+                    <div class="accordion-item">
+                        <h2 class="accordion-header">
+                            <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse"
+                                data-bs-target="#panelsStayOpen-collapseThree" aria-expanded="false"
+                                aria-controls="panelsStayOpen-collapseThree">
+                                <b>Learning Outcome 3</b>
+                            </button>
+                        </h2>
+                        <div id="panelsStayOpen-collapseThree" class="accordion-collapse collapse">
+                            <div class="accordion-body">
+                                <strong>This is the third item's accordion body.</strong> This is the first item's accordion body.
+                                It is hidden by default, until the collapse plugin adds the apprasdasdopriate classes that we use to
+                                style each element. These classes control the overall appearance, as well as the showing and hiding
+                                via CSS transitions.
+                            </div>
+                        </div>
+                    </div>
                 </div>
             </div>
         </div>
-        {% endif %} -->
-    </div>
-    <div class="col-6 table-container">
-        <div class="grade-conversion mx-5">
-            <div>
-                <h3>Grade Conversion</h3>
-            </div>
-            <table class="table table-hover">
-                <thead>
-                    <tr>
-                        <th>Grade Range</th>
-                        <th>Grade Point</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    <tr>
-                        <td>97-100</td>
-                        <td>1</td>
-                    </tr>
-                    <tr>
-                        <td>94-96</td>
-                        <td>1.25</td>
-                    </tr>
-                    <tr>
-                        <td>91-93</td>
-                        <td>1.50</td>
-                    </tr>
-                    <tr>
-                        <td>88-90</td>
-                        <td>1.75</td>
-                    </tr>
-                    <tr>
-                        <td>85-87</td>
-                        <td>2.00</td>
-                    </tr>
-                    <tr>
-                        <td>82-84</td>
-                        <td>2.25</td>
-                    </tr>
-                    <tr>
-                        <td>79-81</td>
-                        <td>2.50</td>
-                    </tr>
-                    <tr>
-                        <td>76-78</td>
-                        <td>2.75</td>
-                    </tr>
-                    <tr>
-                        <td>75</td>
-                        <td>3.00</td>
-                    </tr>
-                    <tr>
-                        <td>FAIL</td>
-                        <td>4.00-BELOW</td>
-                    </tr>
-                    <tr>
-                        <td>--</td>
-                        <td>INC/DROP</td>
-                    </tr>
-                </tbody>
-            </table>
-            <button type="button" class="btn btn-secondary BtnStyle">
-                <i class="fa-solid fa-pen"></i>
-            </button>
-        </div>
+        <hr class="pt-4 pb-4">
     </div>
 </div>
 
-<hr class="pt-4">
-
-<div class="accordion" id="accordionPanelsStayOpenExample">
-    <div class="accordion-item">
-        <h1 class="accordion-header">
-            <button class="accordion-button" type="button" data-bs-toggle="collapse"
-                data-bs-target="#panelsStayOpen-collapseOne" aria-expanded="true"
-                aria-controls="panelsStayOpen-collapseOne">
-                <b>Learning Outcome 1</b>
-            </button>
-        </h1>
-        <div id="panelsStayOpen-collapseOne" class="accordion-collapse collapse show">
-            <div class="accordion-body">
-                <strong>This is the first item's accordion body.</strong> This is the first item's accordion body.
-                It is hidden by default, until the collapse plugin adds the apprasdasdopriate classes that we use to
-                style each element. These classes control the overall appearance, as well as the showing and hiding
-                via CSS transitions.
-            </div>
-        </div>
-    </div>
-    <div class="accordion-item">
-        <h2 class="accordion-header">
-            <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse"
-                data-bs-target="#panelsStayOpen-collapseTwo" aria-expanded="false"
-                aria-controls="panelsStayOpen-collapseTwo">
-                <b>Learning Outcome 2</b>
-            </button>
-        </h2>
-        <div id="panelsStayOpen-collapseTwo" class="accordion-collapse collapse">
-            <div class="accordion-body">
-                <strong>This is the second item's accordion body.</strong>This is the first item's accordion body.
-                It is hidden by default, until the collapse plugin adds the apprasdasdopriate classes that we use to
-                style each element. These classes control the overall appearance, as well as the showing and hiding
-                via CSS transitions.
-            </div>
-        </div>
-    </div>
-    <div class="accordion-item">
-        <h2 class="accordion-header">
-            <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse"
-                data-bs-target="#panelsStayOpen-collapseThree" aria-expanded="false"
-                aria-controls="panelsStayOpen-collapseThree">
-                <b>Learning Outcome 3</b>
-            </button>
-        </h2>
-        <div id="panelsStayOpen-collapseThree" class="accordion-collapse collapse">
-            <div class="accordion-body">
-                <strong>This is the third item's accordion body.</strong> This is the first item's accordion body.
-                It is hidden by default, until the collapse plugin adds the apprasdasdopriate classes that we use to
-                style each element. These classes control the overall appearance, as well as the showing and hiding
-                via CSS transitions.
-            </div>
-        </div>
-    </div>
-</div>
-
-<div class="modal fade" id="addStudentModal" data-bs-backdrop="static" tabindex="-1" role="dialog"
-    aria-labelledby="editFacultyModalLabel" aria-hidden="true">
+<!-- Modals -->
+<div class="modal fade" id="addStudentModal" data-bs-backdrop="static" tabindex="-1" role="dialog" aria-labelledby="editFacultyModalLabel" aria-hidden="true">
     <div class="modal-dialog" role="document">
-        <form action="{{ url_for('classRecord.create_student') }}" method="POST">
+        <form action="#" method="POST">
             <input type="hidden" name="csrf_token" value="{{ csrf_token()}}">
             <div class="modal-content">
                 <div class="modal-header class-record-modal-header">
@@ -297,33 +298,34 @@
                         <i class="fa-solid fa-xmark" style="color: #ffffff;"></i> Close
                     </button>
                     <button type="submit" class="btn btn-success" data-bs-dismiss="modal"> <i
-                            class="fa-solid fa-user-pen"></i>Add Student</button>
+                            class="fa-solid fa-user-pen"></i>Add Student
+                    </button>
                 </div>
             </div>
         </form>
     </div>
 </div>
+
 <div class="modal" tabindex="-1" id="askDelete" data-bs-backdrop="static">
     <div class="modal-dialog">
-      <div class="modal-content">
+        <div class="modal-content">
         <div class="modal-header">
-          <h5 class="modal-title">Confirmation</h5>
-          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            <h5 class="modal-title">Confirmation</h5>
+            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
         </div>
         <div class="modal-body delete-modal-body">
-          <!-- Faculty details will be dynamically inserted here -->
         </div>
         <div class="modal-footer">
-          <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">No</button>
-          <button type="button" class="btn btn-primary delete-button">Yes</button>
+            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">No</button>
+            <button type="button" class="btn btn-primary delete-button">Yes</button>
         </div>
-      </div>
+        </div>
     </div>
 </div>
-<div class="modal fade" id="addAssessment" data-bs-backdrop="static" tabindex="-1" role="dialog"
-    aria-labelledby="editFacultyModalLabel" aria-hidden="true">
+
+<div class="modal fade" id="addAssessment" data-bs-backdrop="static" tabindex="-1" role="dialog" aria-labelledby="editFacultyModalLabel" aria-hidden="true">
     <div class="modal-dialog" role="document">
-        <form action="{{ url_for('classRecord.create_grade_distribution') }}" method="POST">
+        <form action="#" method="POST">
             <input type="hidden" name="csrf_token" value="{{ csrf_token()}}">
             <div class="modal-content">
                 <div class="modal-header class-record-modal-header">
@@ -351,30 +353,30 @@
         </form>
     </div>
 </div>
+
 <div class="modal" tabindex="-1" id="askDeleteAssessment" data-bs-backdrop="static">
     <div class="modal-dialog">
-      <div class="modal-content">
+        <div class="modal-content">
         <div class="modal-header">
-          <h5 class="modal-title">Confirmation</h5>
-          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            <h5 class="modal-title">Confirmation</h5>
+            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
         </div>
         <div class="modal-body delete-modal-body">
-          <!-- Faculty details will be dynamically inserted here -->
         </div>
         <div class="modal-footer">
-          <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">No</button>
-          <button type="button" class="btn btn-primary delete-button">Yes</button>
+            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">No</button>
+            <button type="button" class="btn btn-primary delete-button">Yes</button>
         </div>
-      </div>
+        </div>
     </div>
-  </div>
+</div>
 
-  <div class="modal" id = "importCSVModal" tabindex="-1">
+<div class="modal" id = "importCSVModal" tabindex="-1">
     <div class="modal-dialog">
-      <div class="modal-content">
+        <div class="modal-content">
         <div class="modal-header">
-          <h5 class="modal-title">Import CSV</h5>
-          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            <h5 class="modal-title">Import CSV</h5>
+            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
         </div>
         <div class="modal-body">
             <form id="csvForm" action="/upload" method="POST" enctype="multipart/form-data">
@@ -387,10 +389,46 @@
                 <button class = "btn btn-secondary" id = "downloadTemplateCR" type = "button"><i class="fa-solid fa-file-arrow-down" style="color: #ffffff;"></i> Template</button>
                 <button type="submit" class="btn btn-primary float-end">Upload</button>
             </form>
-            
         </div>
-      </div>
+        </div>
     </div>
-  </div>
 </div>
+
+<div class="modal fade" id="addActivity" data-bs-backdrop="static" tabindex="-1" role="dialog"
+    aria-labelledby="addActivityModal" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <form action="" method="POST">
+            <input type="hidden" name="csrf_token" value="{{ csrf_token()}}">
+            <div class="modal-content">
+                <div class="modal-header class-record-modal-header">
+                    <h5 class="modal-title">Add Assessment Activity</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body class-record-modal-body">
+                    <div class="form-group">
+                        <label>Activity Name</label>
+                        <input type="text" name="activityname" id="name" class="form-control" placeholder="Enter Activity">
+                    </div>
+                    <div class="form-group">
+                        <label>Score Limit</label>
+                        <input type="text" name="scorelimit" id="score" class="form-control" placeholder="Enter Score Limit">
+                    </div>
+                </div>
+                <div class="modal-footer class-record-modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">
+                        <i class="fa-solid fa-xmark" style="color: #ffffff;"></i> Close
+                    </button>
+                    <button type="submit" id="submit" class="btn btn-success" data-bs-dismiss="modal"> <i
+                            class="fa-solid fa-user-pen"></i>Add Activity
+                    </button>
+                </div>
+            </div>
+        </form>
+    </div>
+</div>
+
+{% endblock %}
+
+{% block pagescript %}
+<script type="text/javascript" src="{{ url_for('static', filename='js/class-record.js') }}"></script>
 {% endblock %}
