@@ -3,7 +3,44 @@ import csv
 from decimal import Decimal
 
 class ClassRecord:
-    pass
+
+    @classmethod
+    def getClassRecordData(cls, classrecordid):
+        try:
+            cursor = mysql.connection.cursor()
+            sql = '''SELECT
+                        s.subjectCode,
+                        af.sectionID,
+                        s.description,
+                        s.credits,
+                        af.sem,
+                        af.schoolYear
+                    FROM
+                        assignFaculty AS af
+                    LEFT JOIN
+                        subject AS s ON af.subjectID = s.subjectCode
+                    LEFT JOIN
+                        faculty AS f ON af.facultyID = f.facultyID
+                    WHERE
+                        af.assignFacultyID = %s'''
+            cursor.execute(sql, (classrecordid,))
+            result = cursor.fetchone()
+            return result
+        except Exception as e:
+            return f"Failed to load details for AssignFacultyID: {str(e)}"
+
+    @staticmethod
+    def getClassRecordStudents(classrecordid):
+        try:
+            cursor = mysql.connection.cursor()
+            sql = 'SELECT * FROM students WHERE classrecordID = %s ORDER BY classID'
+            cursor.execute(sql,(classrecordid,))
+            result = cursor.fetchall()
+            cursor.close()
+            return result
+        except Exception as e:
+            return f"Failed to fetch students: {str(e)}"
+
     # @staticmethod
     # def createClassRecordTable(subject_code, section_code, school_year, sem):
     #     try:

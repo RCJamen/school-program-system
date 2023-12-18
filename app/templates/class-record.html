@@ -14,7 +14,7 @@
     <div class="classRecord-title">
         <div class="row">
             <div class="col-11">
-                <h1><b>Class Record</b></h1>
+                <h1><b>Class Record:</b> {{ClassDetails[0]}} - {{ClassDetails[2]}}</h1>
             </div>
             <div class="col-1">
                 <a href="/subjects-handled" alt="Back to Subject Handled">
@@ -24,7 +24,18 @@
                 </a>
             </div>
         </div>
-        <h3><b>Section</b></h3>
+        <h3><b>Section:</b> {{ClassDetails[1]}} - {{session['name']}}</h3>
+        <p>
+            <b>School Year:</b> {{ClassDetails[5]}},
+            {% if ClassDetails[4] == '1' %}
+            <b>Semester:</b> {{ClassDetails[4]}}st,
+            {% elif ClassDetails[4] == '2' %}
+            <b>Semester:</b> {{ClassDetails[4]}}2nd,
+            {% elif ClassDetails[4] == 'S' %}
+            <b>Semester:</b> Summer,
+            {% endif %}
+            <b>Units:</b> {{ClassDetails[3]}}
+        </p>
     </div>
     <hr class="pt-3">
     <div class="classRecord-content">

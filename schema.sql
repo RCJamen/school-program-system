@@ -85,39 +85,63 @@ use `progsys_db`;
 -- FOREIGN KEY(departmentID) REFERENCES departments(departmentID)
 -- );
 
-DROP TABLE IF EXISTS `assessments`;
-CREATE TABLE IF NOT EXISTS `assessments`(
-assessID INT AUTO_INCREMENT NOT NULL,
-name VARCHAR(255) NOT NULL,
-score INT NOT NULL,
-totalScore INT NOT NULL,
-PRIMARY KEY(assessID)
+-- FOR CLASS RECORD
+-- CREATE TABLE IF NOT EXISTS `class_records` (
+-- classRecordno INT AUTO_INCREMENT NOT NULL,
+-- studentID VARCHAR (10) NOT NULL,
+-- lastname VARCHAR(255) NOT NULL,
+-- firstname VARCHAR(255) NOT NULL,
+-- email VARCHAR(255) NOT NULL,
+-- PRIMARY KEY (classRecordno)
+-- );
+
+-- USED
+DROP TABLE IF EXISTS `assignFaculty`;
+CREATE TABLE IF NOT EXISTS `assignFaculty`(
+assignFacultyID INT NOT NULL AUTO_INCREMENT PRIMARY KEY,
+facultyID VARCHAR(10),
+subjectID VARCHAR(255),
+sectionID VARCHAR(255),
+sem VARCHAR(1),
+schoolYear VARCHAR(10),
+UNIQUE KEY unique_assignFaculty (facultyID, subjectID, sectionID, sem, schoolYear)
 );
+
 
 DROP TABLE IF EXISTS `students`;
 CREATE TABLE IF NOT EXISTS `students`(
+classID INT AUTO_INCREMENT NOT NULL,
+classrecordID INT NOT NULL,
 studentID VARCHAR(10) NOT NULL,
 firstname VARCHAR(255) NOT NULL,
 lastname VARCHAR(255) NOT NULL,
-courseID INT NOT NULL,
-gmail VARCHAR(255) NOT NULL,
-PRIMARY KEY(studentID)
-);
-
--- FOR CLASS RECORD
-CREATE TABLE IF NOT EXISTS `class_records` (
-classRecordno INT AUTO_INCREMENT NOT NULL,
-studentID VARCHAR (10) NOT NULL,
-lastname VARCHAR(255) NOT NULL,
-firstname VARCHAR(255) NOT NULL,
+courseID VARCHAR(255) NOT NULL,
+finalgrade DECIMAL(6,2) NOT NULL DEFAULT 0.00,
 email VARCHAR(255) NOT NULL,
-PRIMARY KEY (classRecordno)
+PRIMARY KEY (classID),
+UNIQUE KEY unique_student (classrecordID, studentID),
+FOREIGN KEY(classrecordID) REFERENCES assignFaculty(assignFacultyID)
 );
 
-DROP TABLE IF EXISTS `gradeDistribution`;
-CREATE TABLE IF NOT EXISTS `gradeDistribution`(
+DROP TABLE IF EXISTS `grade_distribution`;
+CREATE TABLE IF NOT EXISTS `grade_distribution`(
+assessmentID INT AUTO_INCREMENT NOT NULL,
+classrecordID INT NOT NULL,
 name VARCHAR(255) NOT NULL,
-percentage INT NOT NULL
+percentage INT NOT NULL,
+PRIMARY KEY (assessmentID),
+FOREIGN KEY(classrecordID) REFERENCES assignFaculty(assignFacultyID)
+);
+
+DROP TABLE IF EXISTS `activity`;
+CREATE TABLE IF NOT EXISTS `activity`(
+activityID INT AUTO_INCREMENT NOT NULL,
+assessmentID INT NOT NULL,
+classID INT NOT NULL,
+totalScore INT NOT NULL,
+PRIMARY KEY(activityID),
+FOREIGN KEY(assessmentID) REFERENCES grade_distribution(assessmentID),
+FOREIGN KEY(classID) REFERENCES students(classID)
 );
 
 -- USED
@@ -154,20 +178,6 @@ subjectID VARCHAR(10),
 sectionID VARCHAR(255) DEFAULT 'None',
 UNIQUE KEY unique_subject_section (subjectID, sectionID)
 );
-
--- USED
-DROP TABLE IF EXISTS `assignFaculty`;
-CREATE TABLE IF NOT EXISTS `assignFaculty`(
-assignFacultyID INT NOT NULL AUTO_INCREMENT PRIMARY KEY,
-facultyID VARCHAR(10),
-subjectID VARCHAR(255),
-sectionID VARCHAR(255),
-sem VARCHAR(1),
-schoolYear VARCHAR(10),
-UNIQUE KEY unique_assignFaculty (facultyID, subjectID, sectionID, sem, schoolYear)
-);
-
-
 
 --  INSERT VALUES SECTION
 INSERT INTO `faculty` (facultyID, firstname, lastname, email, role)
