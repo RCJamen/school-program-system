@@ -7,7 +7,7 @@ class Subjects(object):
         self.description = description
         self.credits = credits
         self.handler = handler
-    
+
     def add(self):
         try:
             cursor = mysql.connection.cursor()
@@ -23,8 +23,8 @@ class Subjects(object):
             mysql.connection.commit()
             return "Faculty created successfully"
         except Exception as e:
-            return f"Failed to create Faculty: {str(e)}"    
-        
+            return f"Failed to create Faculty: {str(e)}"
+
     def add_section(self):
         try:
             cursor = mysql.connection.cursor()
@@ -37,9 +37,9 @@ class Subjects(object):
             mysql.connection.commit()
             return "Faculty created successfully"
         except Exception as e:
-            return f"Failed to create Faculty: {str(e)}"    
+            return f"Failed to create Faculty: {str(e)}"
 
-    
+
     csv_data = None
 
     @classmethod
@@ -123,15 +123,15 @@ class Subjects(object):
             mysql.connection.commit()
 
             return "Subject truncated successfully"
-        
+
         except mysql.connector.Error as err:
             return f"MySQL Error: {err}"
-        
+
         except Exception as e:
             return f"Error: {str(e)}"
 
 
-    
+
     @classmethod
     def delete(cls, subjectCode, section, handler):
         try:
@@ -151,10 +151,10 @@ class Subjects(object):
             cursor.execute(sql_get_subject_section, (subjectCode, section))
             subsecID_result = cursor.fetchone()
             subsecID = subsecID_result[0]
-            
+
             subject_section = "DELETE FROM subject_section WHERE subsecID = %s"
-            assignFaculty = "DELETE FROM assignFaculty WHERE assignFacultyID = %s"         
-            subject = "DELETE FROM subject WHERE subjectCode = %s"    
+            assignFaculty = "DELETE FROM assignFaculty WHERE assignFacultyID = %s"
+            subject = "DELETE FROM subject WHERE subjectCode = %s"
 
             params_subject_section = (subsecID,)
             params_assignFaculty = (assignFacultyID,)
@@ -190,9 +190,9 @@ class Subjects(object):
             cursor.execute(sql_get_subject_section, (subjectCode, section))
             subsecID_result = cursor.fetchone()
             subsecID = subsecID_result[0]
-            
+
             subject_section = "DELETE FROM subject_section WHERE subsecID = %s"
-            assignFaculty = "DELETE FROM assignFaculty WHERE assignFacultyID = %s"         
+            assignFaculty = "DELETE FROM assignFaculty WHERE assignFacultyID = %s"
 
             params_subject_section = (subsecID,)
             params_assignFaculty = (assignFacultyID,)
@@ -243,7 +243,7 @@ class Subjects(object):
             return "Subject edited successfully"
         except Exception as e:
             return f"Failed to edit subject: {str(e)}"
-        
+
 
     @classmethod
     def exists(cls, code):
@@ -271,7 +271,7 @@ class Subjects(object):
         cursor.execute(sql)
         result = cursor.fetchall()
         return result
-    
+
     @classmethod
     def refer_handler(cls):
         cursor = mysql.connection.cursor()
@@ -289,26 +289,26 @@ class Subjects(object):
         if result:
             return result[0]
         else:
-            return None 
+            return None
 
     @classmethod
     def all(cls):
         try:
             cursor = mysql.connection.cursor()
-            sql = '''SELECT 
+            sql = '''SELECT
                         s.subjectCode,
                         ss.sectionID,
                         s.description,
                         s.credits,
                         CASE WHEN f.firstname = f.lastname THEN f.firstname
                             ELSE CONCAT(f.firstname, ' ', f.lastname) END AS handlerName
-                    FROM 
+                    FROM
                         subject AS s
-                    LEFT JOIN 
+                    LEFT JOIN
                         subject_section AS ss ON s.subjectCode = ss.subjectID
-                    LEFT JOIN 
+                    LEFT JOIN
                         assignFaculty AS af ON ss.subjectID = af.subjectID AND ss.sectionID = af.sectionID
-                    LEFT JOIN 
+                    LEFT JOIN
                         faculty AS f ON af.facultyID = f.facultyID
                     ORDER BY s.subjectCode, ss.sectionID'''
             cursor.execute(sql)
@@ -316,58 +316,30 @@ class Subjects(object):
             return result
         except Exception as e:
             return f"Failed to load Subject List: {str(e)}"
-    
-    @classmethod    
+
+    @classmethod
     def getSubjectsHandled(cls, userEmail):
         try:
             cursor = mysql.connection.cursor()
-            sql = '''SELECT 
-                        s.subjectCode, 
-                        af.sectionID, 
-                        s.description, 
+            sql = '''SELECT
+                        af.assignFacultyID,
+                        s.subjectCode,
+                        af.sectionID,
+                        s.description,
                         s.credits,
                         af.sem,
-                        af.schoolYear 
-                    FROM 
+                        af.schoolYear
+                    FROM
                         assignFaculty AS af
-                    LEFT JOIN 
+                    LEFT JOIN
                         subject AS s ON af.subjectID = s.subjectCode
                     LEFT JOIN
                         faculty AS f ON af.facultyID = f.facultyID
                     WHERE
                         f.email = %s
                     ORDER BY s.subjectCode, af.sectionID'''
-                        # f.facultyID = (SELECT facultyID from faculty where email = %s)
             cursor.execute(sql, (userEmail,))
             result = cursor.fetchall()
             return result
         except Exception as e:
             return f"Failed to load list of Subjects Handled: {str(e)}"
-
-    # supposedly, to map google_id to user's facultyID
-    # @classmethod
-    # def setGoogleID(cls, googleID, userEmail):
-    #     try:
-    #         cursor = mysql.connection.cursor()
-    #         sql = '''UPDATE faculty
-    #                 SET
-    #                     googleID = %s
-    #                 WHERE
-    #                     email = %s'''
-    #         cursor.execute(sql, (googleID, userEmail,))
-    #         mysql.connection.commit()
-    #     except Exception as e:
-    #         return f"Failed to set Google ID: {str(e)}"
-
-    
-    # GET LIST OF SUBJECTS BY SEMESTER
-    # def semester(cls, sem):
-    #     cursor = mysql.connection.cursor()
-    #     sql = '''SELECT sl.subjectCode, s.sectionCode, sl.description, sl.credits, concat(f.firstname, ' ', f.lastname) AS handlerName FROM sections AS s 
-    #             RIGHT JOIN faculty AS f ON s.handlerID = f.facultyID 
-    #             RIGHT JOIN subjectList AS sl ON s.subjectCode = sl.subjectCode
-    #             WHERE sl.semester = 1'''
-    #     cursor.execute(sql)
-    #     result = cursor.fetchall()
-
-    #     return result

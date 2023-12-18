@@ -9,9 +9,6 @@ from app.models.subjectModel import Subjects
 @subjectsHandled.route("/subjects-handled")
 @login_is_required
 def index():
-    # handlerGoogleID = session["google_id"]
     userEmail = session["email"]
-    # Subjects.setGoogleID(handlerGoogleID, userEmail)
-    # subjectsHandledList = Subjects.getSubjectsHandled(handlerGoogleID)
     subjectsHandledList = Subjects.getSubjectsHandled(userEmail)
     return render_template("subjectsHandled.html", subjectsHandledList=subjectsHandledList)
