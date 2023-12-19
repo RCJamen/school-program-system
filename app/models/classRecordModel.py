@@ -147,6 +147,69 @@ class ClassRecord:
             return f"Failed to insert students to Activity: {str(e)}"
 
 
+    csv_data = None
+    @classmethod
+    def upload_csv(cls, file, classrecordid):
+        try:
+            if file and file.filename.endswith('.csv'):
+                cls.load_csv_data(file)
+                cursor = mysql.connection.cursor()
+                for index, row in enumerate(cls.csv_data):
+                    if index == 0:
+                        continue
+
+                    insert_query = f"INSERT INTO students (classrecordID, studentID, firstname, lastname, courseID, email) VALUES (%s, %s, %s, %s, %s, %s)"
+                    values = (classrecordid, row[0], row[1], row[2], row[3], row[4])
+                    cursor.execute(insert_query, values)
+
+                mysql.connection.commit()
+                return {"type": "success", "message": 'File uploaded and data inserted successfully.'}
+            else:
+                return {"type": "danger", "message": 'Invalid file format. Please upload a CSV file.'}
+        except Exception as e:
+            error_message = f'Error: {str(e)}'
+            return {"type": "danger", "message": error_message}
+
+    @classmethod
+    def truncate_classrecord (cls, classrecordid):
+        try:
+            cursor = mysql.connection.cursor()
+            sql = 'DELETE FROM students WHERE classrecordID = %s)'
+            cursor.execute(sql,(classrecordid))
+            mysql.connection.commit()
+            return "Classrecord truncated successfully"
+        except Exception as e:
+            return f"Error: {str(e)}"
+
+    @classmethod
+    def load_csv_data(cls, file):
+        if cls.csv_data is None:
+            cls.csv_data = None
+        file_content = file.read().decode('utf-8').splitlines()
+        cls.csv_data = list(csv.reader(file_content))
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
     # @staticmethod
     # def createAssessmentTable(subject_code, section_code, school_year, sem, name, rows):
     #     try:
@@ -250,102 +313,7 @@ class ClassRecord:
     #     except Exception as e:
     #         return f"{str(e)}"
 
-    # csv_data = None
 
-    # @classmethod
-    # def upload_csv(cls, file, subject_code, section_code, school_year, sem):
-    #     try:
-    #         # Check if the file is provided and has a CSV extension
-    #         if file and file.filename.endswith('.csv'):
-    #             # Load CSV data
-    #             cls.load_csv_data(file)  # Load CSV data
-
-    #             # Continue with the rest of the code
-    #             cursor = mysql.connection.cursor()
-
-    #             as_table_name = f'AS_{subject_code}_{section_code}_{school_year}_{sem}%'.replace('-', '_')
-    #             cursor.execute("SELECT table_name FROM information_schema.tables WHERE table_name LIKE %s AND table_schema = 'progsys_db'", (as_table_name,))
-    #             as_tables = cursor.fetchall()
-
-    #             for index, row in enumerate(cls.csv_data):
-    #                 if index == 0:  # Skip the header (first row)
-    #                     continue
-
-    #                 tablename = f'CR_{subject_code}_{section_code}_{school_year}_{sem}'.replace('-', '_')
-    #                 insert_query = f"INSERT INTO {tablename} (studentID, firstname, lastname, courseID, email) VALUES (%s, %s, %s, %s, %s)"
-    #                 values = (row[0], row[1], row[2], row[3], row[4])
-    #                 cursor.execute(insert_query, values)
-
-    #             for table in as_tables:
-    #                 as_table_name = table[0]
-    #                 for index, row in enumerate(cls.csv_data):
-    #                     if index == 0:  # Skip the header (first row)
-    #                         continue
-
-    #                     cursor.execute(f"INSERT INTO {as_table_name} (studentID, firstname, lastname, email) VALUES (%s, %s, %s, %s)", (row[0], row[1], row[2], row[3]))
-
-    #             # Commit the changes to the database
-    #             mysql.connection.commit()
-
-    #             return {"type": "success", "message": 'File uploaded and data inserted successfully.'}
-
-    #         else:
-    #             return {"type": "danger", "message": 'Invalid file format. Please upload a CSV file.'}
-
-    #     except Exception as e:
-    #         error_message = f'Error: {str(e)}'
-    #         return {"type": "danger", "message": error_message}
-
-
-
-
-    # @classmethod
-    # def truncate_assessment(cls, subject_code, section_code, school_year, sem):
-    #     try:
-    #         cursor = mysql.connection.cursor()
-
-    #         as_table_name = f'AS_{subject_code}_{section_code}_{school_year}_{sem}%'.replace('-', '_')
-    #         cursor.execute("SELECT table_name FROM information_schema.tables WHERE table_name LIKE %s AND table_schema = 'progsys_db'", (as_table_name,))
-    #         as_tables = cursor.fetchall()
-    #         print("count", as_tables)
-
-    #         for table in as_tables:
-    #             as_table_name = table[0]
-    #             cursor.execute(f"TRUNCATE TABLE {as_table_name}")
-    #             mysql.connection.commit()
-
-
-    #         mysql.connection.commit()
-
-    #         return "Assessments truncated successfully"
-
-    #     except Exception as e:
-    #         return f"Error: {str(e)}"
-
-    # @classmethod
-    # def truncate_classrecord (cls, subject_code, section_code, school_year, sem):
-    #     try:
-    #         cursor = mysql.connection.cursor()
-    #         tablename = f'CR_{subject_code}_{section_code}_{school_year}_{sem}'.replace('-', '_')
-
-    #         cursor.execute(f"TRUNCATE TABLE {tablename}")
-
-    #         mysql.connection.commit()
-
-    #         return "Classrecord truncated successfully"
-
-    #     except Exception as e:
-    #         return f"Error: {str(e)}"
-
-
-    # @classmethod
-    # def load_csv_data(cls, file):
-    #     # Set cls.csv_data to None only if it is not already loaded
-    #     if cls.csv_data is None:
-    #         cls.csv_data = None
-
-    #     file_content = file.read().decode('utf-8').splitlines()
-    #     cls.csv_data = list(csv.reader(file_content))
 
 
     # @staticmethod

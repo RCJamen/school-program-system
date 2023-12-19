@@ -123,6 +123,9 @@
                 </div>
             </div>
             <div class="tab-pane" id="gradedistribution" role="tabpanel" aria-labelledby="gradedistribution-tab">
+                {% if Students|length == 0 %}
+                <h1 class="text-center">Add or Import students before setting up Grade Distribution</h1>
+                {% else %}
                 <div class="classRecord-header">
                     <div class="d-flex gap-3">
                         <button type="button" class="btn btn-secondary BtnStyle" style="height: 37px;" data-bs-toggle="modal" data-bs-target="#addAssessment">
@@ -160,8 +163,12 @@
                         </tbody>
                     </table>
                 </div>
+                {% endif %}
             </div>
             <div class="tab-pane" id="gradeconversion" role="tabpanel" aria-labelledby="gradeconversion-tab">
+                {% if Students|length == 0 %}
+                <h1 class="text-center">Add or Import students before setting up Grade Conversion</h1>
+                {% else %}
                 <div class="classRecord-header">
                     <div class="d-flex">
                         <button type="button" class="btn btn-secondary BtnStyle">
@@ -226,6 +233,7 @@
                         </tbody>
                     </table>
                 </div>
+                {% endif %}
             </div>
             <div class="tab-pane" id="learningoutcome" role="tabpanel" aria-labelledby="learningoutcome-tab">
                 <div class="accordion" id="accordionPanelsStayOpenExample">
@@ -402,7 +410,7 @@
             <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
         </div>
         <div class="modal-body">
-            <form id="csvForm" action="/upload" method="POST" enctype="multipart/form-data">
+            <form id="csvForm" action="{{ url_for('classRecord.upload_file', classrecordid=ClassRecordID) }}" method="POST" enctype="multipart/form-data">
                 <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
                 <div class="form-group">
                     <label for="file">File</label>
