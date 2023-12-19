@@ -96,8 +96,8 @@ class ClassRecord:
     def postGradeDistribution(classrecordid, name, percentage):
         try:
             cursor = mysql.connection.cursor()
-            check_query = 'SELECT COALESCE(SUM(%s), 0) FROM grade_distribution WHERE classrecordID = %s'
-            cursor.execute(check_query,(percentage, classrecordid,))
+            check_query = 'SELECT COALESCE(SUM(percentage), 0) FROM grade_distribution WHERE classrecordID = %s'
+            cursor.execute(check_query,(classrecordid,))
             total_percentage = Decimal(cursor.fetchone()[0])
             percentage = Decimal(str(percentage))
             if total_percentage + percentage > 100:
@@ -138,7 +138,6 @@ class ClassRecord:
         try:
             cursor = mysql.connection.cursor()
             for student in studentsID:
-                print(student)
                 sql = 'INSERT INTO activity (assessmentID, classID) VALUES (%s, %s)'
                 cursor.execute(sql,(asessmentID, student))
             mysql.connection.commit()
