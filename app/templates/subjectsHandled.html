@@ -49,14 +49,14 @@
             {% else %}
             {% for subject in subjectsHandledList %}
             <tr class="subHandled-table-data">
-              <td scope="row" class="fw-bold">{{ subject[0] }}</td>
-              <td>{{ subject[1] }}</td>
+              <td scope="row" class="fw-bold">{{ subject[1] }}</td>
               <td>{{ subject[2] }}</td>
               <td>{{ subject[3] }}</td>
               <td>{{ subject[4] }}</td>
               <td>{{ subject[5] }}</td>
+              <td>{{ subject[6] }}</td>
               <td>
-                <a href="{{ url_for('classRecord.index', subject_code=subject[0], section_code=subject[1], description=subject[2], credits=subject[3] , sem=subject[4], school_year=subject[5] )}}"
+                <a href="{{ url_for('classRecord.index', classrecordid=subject[0])}}"
                   class="btn btn-outline-light class-record"><i class="fa-solid fa-clipboard fa-lg"
                     style="color: #000000;"></i></a>
                 </a>

@@ -14,16 +14,16 @@
 <!-- User Role: {{ session.get("role") }} -->
 <div class=" main-container d-flex">
 <div class="sidebar" id="side_nav">
-  <div class="header-box px-2 pt-3 pb-4 mt-2 d-flex justify-content-between">
+  <div class="header-box px-2 pt-1 pb-4 mt-2 gap-2 d-flex justify-content-between align-items-center">
+    <a href="#" class = "menu-bars" id = "hide-menu" ><i class="fas fa-bars" style="color: #ffffff;"></i></a>
     <h1 class="fs-3">
       <img src="{{ url_for('static', filename='pictures/iit-seal.png') }}" alt="iit-seal"
         style="max-width: 12%; margin-left: 10px;">
       <span class="text-white ps-2">My.IIT</span>
     </h1>
-    <button class="btn d-md-none d-block close-btn px-1 py-0 text-white pe-2"><i
-        class="fa-solid fa-bars-staggered"></i></button>
+    
   </div>
-  
+
   <ul class="list-unstyled px-2">
     <li class=""><a href="/home" class="text-decoration-none px-3 py-2 d-block">
         <i class="fas fa-home"></i>
@@ -39,8 +39,8 @@
       <li class=""><a href="/subjects" class="text-decoration-none px-3 py-2 d-block"><i class="fas fa-list-alt"></i>
           <span class="ms-3">Subject List</span></a></li>
     {% endif %}
-    
-    <li class=""><a href="/curriculum" class="text-decoration-none px-3 py-2 d-block"><i class="fas fa-file"></i>
+
+    <li class=""><a href= "#" class="text-decoration-none px-3 py-2 d-block"><i class="fas fa-file"></i>
         &nbsp;<span class="ms-3">College Curriculum</span></a></li>
   </ul>
   <hr class="border">
@@ -52,23 +52,15 @@
 </div>
 <div class="content">
   <div class="header-header">
-    <nav class="navbar navbar-expand-md" style="background-color: #A41D21">
+    <nav class="navbar navbar-expand-md" style="background-color: #A41D21;">
         <div class="container-fluid">
             <div class="d-flex justify-content-between d-md-none d-block">
-                <button class="btn px-1 py-0 open-btn me-2 text-white"><i class="fa-solid fa-bars-staggered"></i></button>
-                <a class="navbar-brand fs-4" href="/home">
-                    <span class="bg-dark rounded px-2 py-0 text-white">My.IIT</span>
-                </a>
             </div>
-            <button class="navbar-toggler p-0 border-0 text-white" type="button" data-bs-toggle="collapse"
-                data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false"
-                aria-label="Toggle navigation">
-                <i class="fa fa-bars"></i>
-            </button>
+            <a href="#" class = "menu-bars" id = "show-menu"><i class="fas fa-bars" style="color: #ffffff;"></i></a>
             <div class="collapse navbar-collapse justify-content-end" id="navbarSupportedContent">
                 <ul class="navbar-nav mb-2 mb-lg-0">
                     <li class="nav-item">
-                        <a class="nav-link" aria-current="page" href="#">
+                        <a class="nav-link" aria-current="page" href="/subjects-handled">
                             {% if session.get("profile_picture") %}
                             <img src="{{ session['profile_picture'] }}" alt="Profile Picture" class="rounded-circle"
                                 style="width: 30px; height: 30px;">
@@ -83,7 +75,7 @@
         </div>
     </nav>
 </div>
-
+<div class="header-placeholder"></div>
   <div class="dashboard-content px-3 pt-4">
     {% block pages%}
     {% endblock %}
@@ -117,7 +109,71 @@
       }
     });
   });
+
+  function setDashboardPosition() {
+    const isSidebarActive = localStorage.getItem('sidebarActive') === 'true';
+    const dashboardContent = document.querySelector(".dashboard-content");
+    const sidebar = document.querySelector(".sidebar");
+    
+
+    if (isSidebarActive) {
+        document.querySelector("#side_nav").classList.add('active');
+        dashboardContent.style.position = 'sticky';
+        sidebar.style.zIndex = 2002;
+    } else {
+        document.querySelector("#side_nav").classList.remove('active');
+        dashboardContent.style.position = 'fixed';
+        sidebar.style.zIndex = 3002;
+    }
+}
+
+// Check and set the position on the initial page load
+setDashboardPosition();
+
+const openMenu = document.querySelector("#show-menu");
+const hideMenu = document.querySelector("#hide-menu");
+const sideMenu = document.querySelector("#side_nav");
+
+openMenu.addEventListener("click", function() {
+    sideMenu.classList.add('active');
+    setTimeout(setDashboardPosition, 250); // Set the position after a delay
+    localStorage.setItem('sidebarActive', 'true');
+});
+
+hideMenu.addEventListener("click", function() {
+    sideMenu.classList.remove('active');
+    setDashboardPosition(); // Set the position immediately
+    localStorage.setItem('sidebarActive', 'false');
+});
+
+// Additional event listeners for page redirects (assuming they trigger a new page load)
+window.addEventListener('load', setDashboardPosition);
+
+$(document).ready(function() {
+    // Function to set header z-index
+    function setHeaderZIndex(zIndex) {
+      $(".header-header").css("z-index", zIndex);
+    }
+   
+
+    // Event listener for modal shown (opened)
+    $('.modal').on('shown.bs.modal', function () {
+      
+      setHeaderZIndex(2000);
+      $(".header-header").css("display", "none");
+      
+    });
+
+    // Event listener for modal hidden (closed)
+    $('.modal').on('hidden.bs.modal', function () {
+      
+      setHeaderZIndex(2001);
+      $(".header-header").css("display", "block");
+    });
+  });
+
 </script>
 {% block pagescript %}
+<script type="text/javascript" src="../static/js/master_layout.js"></script>
 {% endblock %}
 {% endblock %}

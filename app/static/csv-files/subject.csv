@@ -1,7 +1,28 @@
 SubjectCode,Section,Description,Credits,Handler,Sem,School Year
-CCC100,None,Fundam223entals,3,None,1,2023-2024
-CSC101,None,Fundam11entals,3,None,2,2023-2024
-CSC108,None,Funda1mentals,3,None,S,2023-2024
-CSC69,CS1A,Fundam1entals,3,None,1,2023-2024
-CSC50,None,Funda1mentals,3,None,1,2023-2024
-CSC250,CS1A,Fundam1entals,3,None,1,2023-2024
+MAT051,None,Calculus 1,5,None,1,2023-2024
+GEC105,None,Readings in Philippine History,3,None,1,2023-2024
+PED001,None,Exercise Prescription and Management,2,None,1,2023-2024
+NST001,None,National Service Training Program,1,None,1,2023-2024
+CCC121,None,Data Structures and Algorithms,3,None,1,2023-2024
+STT101,None,Descriptive and Inferential Statistics,4,None,1,2023-2024
+CSC130,None,Discrete Structures,3,None,1,2023-2024
+CSC142,None,Automata Computability and Complexity,3,None,1,2023-2024
+GEC106,None,Art Appreciation,3,None,1,2023-2024
+HIS003,None,History of Filipino Muslims and Indigenous Peoples of MINSUPALA,3,None,1,2023-2024
+PED003,None,Individual / Dual Sports / Traditional / Recreational Games,2,None,1,2023-2024
+CCC181,None,Applications Development and Emerging Technologies,3,None,1,2023-2024
+CSC145,None,Programming Languages,3,None,1,2023-2024
+CSC155,None,Introduction to Operating Systems,3,None,1,2023-2024
+CSC171,None,Introduction to Artificial Intelligence,3,None,1,2023-2024
+CSC181,None,Software Engineering,4,None,1,2023-2024
+FPE101,None,Fundamentals of Peace Education,3,None,1,2023-2024
+CSC113,None,Computer Networks and Data Communications,3,None,1,2023-2024
+CSC133,None,Modeling and Simulation,3,None,1,2023-2024
+CSC161,None,Computer Systems Security,3,None,1,2023-2024
+CSC175,None,Parallel and Distributed Computing,3,None,1,2023-2024
+CSC194,None,Computer Science Seminar,1,None,1,2023-2024
+GEC101,None,Understanding the Self,3,None,1,2023-2024
+GEC104,None,Mathematics in the Modern World,3,None,1,2023-2024
+CSC193,None,Special Topics in Computer Science,3,None,1,2023-2024
+CSC198,None,Research Methods,3,None,1,2023-2024
+GEC107,None,Ethics,3,None,1,2023-2024

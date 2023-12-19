@@ -64,3 +64,11 @@
     padding-left: 16px;
     border-radius: 16px;
 }
+
+.nav-link.active {
+    font-weight: bold;
+  }
+
+  .nav-link:not(.active) {
+    color: black;
+  }
