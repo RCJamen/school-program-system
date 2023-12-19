@@ -27,7 +27,7 @@ td {
     transform: translateX(-50%);
     width: 25vw;
     /* Adjust the width as needed */
-    z-index: 2000;
+    z-index: 20000;
 }
 
 #inner-message {
