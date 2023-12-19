@@ -11,7 +11,7 @@
 {% block pages %}
 <meta name="csrf-token" content="{{ csrf_token() }}">
 <div class="classRecord-container">
-    <div class="classRecord-title">
+    <div class="classRecord-title pb-1">
         <div class="row">
             <div class="col-11">
                 <h1><b>Class Record:</b> {{ClassDetails[0]}} - {{ClassDetails[2]}}</h1>
@@ -39,7 +39,7 @@
     </div>
     <hr class="pt-3">
     <div class="classRecord-content">
-        <ul class="nav nav-tabs px-3" id="myTab" role="tablist">
+        <ul class="nav nav-tabs px-4" id="myTab" role="tablist">
             <li class="nav-item" role="presentation">
               <button class="nav-link active" id="classrecord-tab" data-bs-toggle="tab" data-bs-target="#classrecord" type="button" role="tab" aria-controls="classrecord" aria-selected="true">Class Record</button>
             </li>

@@ -138,7 +138,7 @@ CREATE TABLE IF NOT EXISTS `activity`(
 activityID INT AUTO_INCREMENT NOT NULL,
 assessmentID INT NOT NULL,
 classID INT NOT NULL,
-totalScore INT NOT NULL,
+finalscore DECIMAL(6,2) DEFAULT 0.00,
 PRIMARY KEY(activityID),
 FOREIGN KEY(assessmentID) REFERENCES grade_distribution(assessmentID),
 FOREIGN KEY(classID) REFERENCES students(classID)

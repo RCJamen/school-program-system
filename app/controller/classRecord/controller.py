@@ -53,7 +53,8 @@ def create_student(classrecordid):
 @classRecord.route("/<string:classrecordid>/delete_student/<string:studentID>", methods=['POST'])
 def delete_student(classrecordid, studentID):
     try:
-        result = ClassRecord.deleteStudentFromClassRecord(classrecordid, studentID)
+        classID = ClassRecord.getstudentclassID(classrecordid, studentID)
+        result = ClassRecord.deleteStudentFromClassRecord(classrecordid, studentID, classID)
         flash_message = {"type": "success", "message": f"{result}"}
         session['flash_message'] = flash_message
         return jsonify({'success': True, 'message': 'Student deleted successfully', 'flash_message': flash_message})
@@ -69,6 +70,9 @@ def create_grade_distribution(classrecordid):
         percentage = form.percentage.data
         result = ClassRecord.postGradeDistribution(classrecordid, name, percentage)
         if "success" in result:
+            asessmentID = ClassRecord.getAssessmentID(classrecordid, name)
+            studentsID = Utils.getClassID(ClassRecord.getClassRecordStudents(classrecordid))
+            ClassRecord.postCreateActivity(asessmentID, studentsID)
             credentials_message = f"<br>Name: <strong>{name}</strong><br>Percentage: <strong>{percentage}</strong>"
             flash_message = {"type": "success", "message": f"Assessment Created successfully:{credentials_message}"}
             session['flash_message'] = flash_message
@@ -85,9 +89,7 @@ def create_grade_distribution(classrecordid):
 @classRecord.route("/<string:classrecordid>/delete_grade_distribution/<string:assessmentname>", methods=['POST'])
 def delete_grade_distribution(classrecordid, assessmentname):
     try:
-        print(f"ClassRecord ID: {classrecordid}, Assessment Name: {assessmentname}")
         result = ClassRecord.deleteGradeDistribution(classrecordid, assessmentname)
-        print(result)
         flash_message = {"type": "success", "message": f"{result}"}
         session['flash_message'] = flash_message
         return jsonify({'success': True, 'message': 'Assessment Deleted Successfully', 'flash_message': flash_message})

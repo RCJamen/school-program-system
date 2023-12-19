@@ -41,6 +41,18 @@ class ClassRecord:
             return f"Failed to fetch students: {str(e)}"
 
     @staticmethod
+    def getstudentclassID(classrecordid, studentID):
+        try:
+            cursor = mysql.connection.cursor()
+            sql = 'SELECT classID FROM students WHERE classrecordID = %s AND studentID = %s'
+            cursor.execute(sql,(classrecordid, studentID))
+            result = cursor.fetchone()[0]
+            cursor.close()
+            return result
+        except Exception as e:
+            return f"Failed to fetch students: {str(e)}"
+
+    @staticmethod
     def postStudentToClassRecord(classrecordid, studentID, firstname, lastname, coursecode, email):
         try:
             cursor = mysql.connection.cursor()
@@ -53,11 +65,14 @@ class ClassRecord:
             return f"Failed to create Student: {str(e)}"
 
     @staticmethod
-    def deleteStudentFromClassRecord(classrecordid, studentID):
+    def deleteStudentFromClassRecord(classrecordid, studentID, classID):
         try:
             cursor = mysql.connection.cursor()
+            sql = 'DELETE FROM activity WHERE classID = %s'
+            cursor.execute(sql,(classID,))
+            mysql.connection.commit()
             sql = 'DELETE FROM students WHERE classrecordID = %s AND studentID = %s'
-            cursor.execute(sql,(classrecordid,studentID,))
+            cursor.execute(sql,(classrecordid, studentID,))
             mysql.connection.commit()
             cursor.close()
             return "Student deleted successfully"
@@ -106,38 +121,31 @@ class ClassRecord:
         except Exception as e:
             return f"Failed to Delete Assessment: {str(e)}"
 
+    @staticmethod
+    def getAssessmentID(classrecordid, name):
+        try:
+            cursor = mysql.connection.cursor()
+            sql = 'SELECT assessmentID FROM grade_distribution WHERE classrecordID = %s AND name = %s'
+            cursor.execute(sql,(classrecordid, name,))
+            result = cursor.fetchone()[0]
+            cursor.close()
+            return result
+        except Exception as e:
+            return f"Failed to get assessmentID: {str(e)}"
 
+    @staticmethod
+    def postCreateActivity(asessmentID, studentsID):
+        try:
+            cursor = mysql.connection.cursor()
+            for student in studentsID:
+                print(student)
+                sql = 'INSERT INTO activity (assessmentID, classID) VALUES (%s, %s)'
+                cursor.execute(sql,(asessmentID, student))
+            mysql.connection.commit()
+            return "Student Inserted in Activity Successfully"
+        except Exception as e:
+            return f"Failed to insert students to Activity: {str(e)}"
 
-
-    # @classmethod
-    # def deleteGradeAssessment(cls, subject_code, section_code, school_year, sem, assessmentid):
-    #     try:
-    #         cursor = mysql.connection.cursor()
-    #         table_name = f'GD_{subject_code}_{section_code}_{school_year}_{sem}'.replace('-', '_')
-
-    #         cursor.execute(f"DELETE FROM {table_name} WHERE assessmentID = %s", (assessmentid,))
-    #         mysql.connection.commit()
-
-    #         cursor.execute(f"SET @new_assessmentID := 0;")
-    #         cursor.execute(f"UPDATE {table_name} SET assessmentID = @new_assessmentID := @new_assessmentID + 1 ORDER BY assessmentid;")
-    #         mysql.connection.commit()
-
-    #         return "Assessment deleted successfully"
-    #     except Exception as e:
-    #         return f"Failed to delete assessment: {str(e)}"
-
-    # @staticmethod
-    # def getRowsClassRecord(subject_code, section_code, school_year, sem):
-    #     try:
-    #         cursor = mysql.connection.cursor()
-    #         table_name = f'CR_{subject_code}_{section_code}_{school_year}_{sem}'.replace('-', '_')
-    #         sql = f"SELECT classID, studentID, firstname, lastname, email FROM {table_name}"
-    #         cursor.execute(sql)
-    #         result = cursor.fetchall()
-    #         cursor.close()
-    #         return result
-    #     except Exception as e:
-    #         return f"Failed to fetch students: {str(e)}"
 
     # @staticmethod
     # def createAssessmentTable(subject_code, section_code, school_year, sem, name, rows):
@@ -487,3 +495,35 @@ class ClassRecord:
     #         return "Assessment created successfully"
     #     except Exception as e:
     #         return f"{str(e)}"
+
+
+
+    # @classmethod
+    # def deleteGradeAssessment(cls, subject_code, section_code, school_year, sem, assessmentid):
+    #     try:
+    #         cursor = mysql.connection.cursor()
+    #         table_name = f'GD_{subject_code}_{section_code}_{school_year}_{sem}'.replace('-', '_')
+
+    #         cursor.execute(f"DELETE FROM {table_name} WHERE assessmentID = %s", (assessmentid,))
+    #         mysql.connection.commit()
+
+    #         cursor.execute(f"SET @new_assessmentID := 0;")
+    #         cursor.execute(f"UPDATE {table_name} SET assessmentID = @new_assessmentID := @new_assessmentID + 1 ORDER BY assessmentid;")
+    #         mysql.connection.commit()
+
+    #         return "Assessment deleted successfully"
+    #     except Exception as e:
+    #         return f"Failed to delete assessment: {str(e)}"
+
+    # @staticmethod
+    # def getRowsClassRecord(subject_code, section_code, school_year, sem):
+    #     try:
+    #         cursor = mysql.connection.cursor()
+    #         table_name = f'CR_{subject_code}_{section_code}_{school_year}_{sem}'.replace('-', '_')
+    #         sql = f"SELECT classID, studentID, firstname, lastname, email FROM {table_name}"
+    #         cursor.execute(sql)
+    #         result = cursor.fetchall()
+    #         cursor.close()
+    #         return result
+    #     except Exception as e:
+    #         return f"Failed to fetch students: {str(e)}"
