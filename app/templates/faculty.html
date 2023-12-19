@@ -108,7 +108,7 @@
 <div
   class="modal fade"
   id="addFacultyModal"
-  data-bs-backdrop="static"
+  data-bs-backdrop="false"
   tabindex="-1"
   role="dialog"
   aria-labelledby="FacultyModalLabel"
@@ -170,7 +170,7 @@
   </div>
 </div>
 
-<div class="modal" tabindex="-1" id="askDelete" data-bs-backdrop="static">
+<div class="modal" tabindex="-1" id="askDelete" data-bs-backdrop="false">
   <div class="modal-dialog">
     <div class="modal-content">
       <div class="modal-header">
@@ -193,14 +193,14 @@
 <div
   class="modal fade"
   id="editFacultyModal"
-  data-bs-backdrop="static"
+  data-bs-backdrop="false"
   tabindex="-1"
   role="dialog"
   aria-labelledby="editFacultyModalLabel"
   aria-hidden="true"
 >
   <div class="modal-dialog" role="document">
-    <form method="POST" id ="editFacultyForm">4
+    <form method="POST" id ="editFacultyForm">
     
       {{ update_form.csrf_token }}
       {{ update_form.hidden_tag() }}

@@ -11,7 +11,14 @@ th,
 td {
     vertical-align: middle;
 }
-
+.modal.fade .modal-dialog {
+    transition: transform 0.1.2s ease-out !important;
+    transform: translateY(-25%) !important;
+  }
+  
+  .modal.show .modal-dialog {
+    transform: translateY(0) !important;
+  }
 #message {
     position: fixed;
     top: 20px;

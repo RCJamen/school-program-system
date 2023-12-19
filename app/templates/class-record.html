@@ -296,7 +296,7 @@
 </div>
 
 <!-- Modals -->
-<div class="modal fade" id="addStudentModal" data-bs-backdrop="static" tabindex="-1" role="dialog" aria-labelledby="editFacultyModalLabel" aria-hidden="true">
+<div class="modal" id="addStudentModal" data-bs-backdrop="false" tabindex="-1" role="dialog" aria-labelledby="editFacultyModalLabel" aria-hidden="true">
     <div class="modal-dialog" role="document">
         <form action="{{ url_for('classRecord.create_student', classrecordid=ClassRecordID) }}" method="POST">
             <input type="hidden" name="csrf_token" value="{{ csrf_token()}}">
@@ -339,7 +339,7 @@
     </div>
 </div>
 
-<div class="modal" tabindex="-1" id="askDelete" data-bs-backdrop="static">
+<div class="modal" tabindex="-1" id="askDelete" data-bs-backdrop="false">
     <div class="modal-dialog">
         <div class="modal-content">
         <div class="modal-header">
@@ -355,7 +355,7 @@
     </div>
 </div>
 
-<div class="modal fade" id="addAssessment" data-bs-backdrop="static" tabindex="-1" role="dialog" aria-labelledby="editFacultyModalLabel" aria-hidden="true">
+<div class="modal" id="addAssessment" data-bs-backdrop="false" tabindex="-1" role="dialog" aria-labelledby="editFacultyModalLabel" aria-hidden="true">
     <div class="modal-dialog" role="document">
         <form action="{{ url_for('classRecord.create_grade_distribution', classrecordid=ClassRecordID) }}" method="POST">
             <input type="hidden" name="csrf_token" value="{{ csrf_token()}}">
@@ -385,7 +385,7 @@
     </div>
 </div>
 
-<div class="modal" tabindex="-1" id="askDeleteAssessment" data-bs-backdrop="static">
+<div class="modal" tabindex="-1" id="askDeleteAssessment" data-bs-backdrop="false">
     <div class="modal-dialog">
         <div class="modal-content">
         <div class="modal-header">
@@ -402,7 +402,7 @@
     </div>
 </div>
 
-<div class="modal" id = "importCSVModal" tabindex="-1">
+<div class="modal" id = "importCSVModal" tabindex="-1" data-bs-backdrop="false">
     <div class="modal-dialog">
         <div class="modal-content">
         <div class="modal-header">
@@ -425,7 +425,7 @@
     </div>
 </div>
 
-<div class="modal fade" id="addActivity" data-bs-backdrop="static" tabindex="-1" role="dialog"
+<div class="modal" id="addActivity" data-bs-backdrop="false" tabindex="-1" role="dialog"
     aria-labelledby="addActivityModal" aria-hidden="true">
     <div class="modal-dialog" role="document">
         <form action="" method="POST">
