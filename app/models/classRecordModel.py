@@ -174,8 +174,8 @@ class ClassRecord:
     def truncate_classrecord (cls, classrecordid):
         try:
             cursor = mysql.connection.cursor()
-            sql = 'DELETE FROM students WHERE classrecordID = %s)'
-            cursor.execute(sql,(classrecordid))
+            sql = 'DELETE FROM students WHERE classrecordID = %s'
+            cursor.execute(sql, (classrecordid,))
             mysql.connection.commit()
             return "Classrecord truncated successfully"
         except Exception as e:

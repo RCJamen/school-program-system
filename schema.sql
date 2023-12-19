@@ -197,8 +197,7 @@ VALUES
 ('CSC112', 'Computer Organization and Architecture', 3),
 ('CSC124', 'Design and Analysis of Algorithms', 3),
 ('CSC186', 'Human-Computer Interaction', 3),
-('CCC181', 'Applications Development and
-Emerging Technologies', 3),
+('CCC181', 'Applications Development and Emerging Technologies', 3),
 ('CSC145', 'Programming Languages', 3);
 
 INSERT INTO section (sectionCode)
