@@ -54,7 +54,6 @@ def create_student(classrecordid):
 def delete_student(classrecordid, studentID):
     try:
         result = ClassRecord.deleteStudentFromClassRecord(classrecordid, studentID)
-        print(result)
         flash_message = {"type": "success", "message": f"{result}"}
         session['flash_message'] = flash_message
         return jsonify({'success': True, 'message': 'Student deleted successfully', 'flash_message': flash_message})
@@ -83,33 +82,18 @@ def create_grade_distribution(classrecordid):
         return redirect(url_for(".index", classrecordid=classrecordid))
 
 
+@classRecord.route("/<string:classrecordid>/delete_grade_distribution/<string:assessmentname>", methods=['POST'])
+def delete_grade_distribution(classrecordid, assessmentname):
+    try:
+        print(f"ClassRecord ID: {classrecordid}, Assessment Name: {assessmentname}")
+        result = ClassRecord.deleteGradeDistribution(classrecordid, assessmentname)
+        print(result)
+        flash_message = {"type": "success", "message": f"{result}"}
+        session['flash_message'] = flash_message
+        return jsonify({'success': True, 'message': 'Assessment Deleted Successfully', 'flash_message': flash_message})
+    except Exception as e:
+        return jsonify({'success': False, 'error': str(e)})
 
-
-# @classRecord.route("/grade_distribution/create_grade_distribution", methods=['POST','GET'])
-# def create_grade_distribution():
-#     form = gradeDistributionForm(request.form)
-#     ClassDetails = session.get('ClassDetails', None)
-#     subject_code, description, section_code, credits, sem, school_year = ClassDetails
-
-#     if request.method == "POST" and form.validate():
-#         name = form.name.data
-#         percentage = form.percentage.data
-#         result = ClassRecord.addGradeDistribution(subject_code, section_code, school_year, sem, name, percentage)
-#         rows = ClassRecord.getRowsClassRecord(subject_code, section_code, school_year, sem)
-
-#         if "success" in result:
-#             ClassRecord.createAssessmentTable(subject_code, section_code, school_year, sem, name, rows)
-#             credentials_message = f"<br>Name: <strong>{name}</strong><br>Percentage: <strong>{percentage}</strong>"
-#             flash_message = {"type": "success", "message": f"Assessment Created successfully:{credentials_message}"}
-#             session['flash_message'] = flash_message
-#         else:
-#             flash_message = {"type": "danger", "message": f"Failed to create Assessment: {result}"}
-#             session['flash_message'] = flash_message
-#         return redirect(url_for(".index", subject_code=subject_code, description=description, section_code=section_code, credits=credits, sem=sem, school_year=school_year, message=flash_message))
-#     else:
-#         flash_message = {"type": "danger", "message": f"Failed to Add Assessment.<br>*  Make Sure Percentage will equate to 100%<br>*  Make Sure Percentage is not Negative"}
-#         session['flash_message'] = flash_message
-#         return redirect(url_for(".index", subject_code=subject_code, description=description, section_code=section_code, credits=credits, sem=sem, school_year=school_year, message=flash_message))
 
 
 # @classRecord.route("/grade_distribution/delete_assessment/<string:assessmentid>/<string:name>", methods=['POST'])
@@ -256,3 +240,30 @@ def create_grade_distribution(classrecordid):
 #         return jsonify({'success': True, 'message': 'Student deleted successfully', 'flash_message': flash_message})
 #     except Exception as e:
 #         return jsonify({'success': False, 'error': str(e)})
+
+
+# @classRecord.route("/grade_distribution/create_grade_distribution", methods=['POST','GET'])
+# def create_grade_distribution():
+#     form = gradeDistributionForm(request.form)
+#     ClassDetails = session.get('ClassDetails', None)
+#     subject_code, description, section_code, credits, sem, school_year = ClassDetails
+
+#     if request.method == "POST" and form.validate():
+#         name = form.name.data
+#         percentage = form.percentage.data
+#         result = ClassRecord.addGradeDistribution(subject_code, section_code, school_year, sem, name, percentage)
+#         rows = ClassRecord.getRowsClassRecord(subject_code, section_code, school_year, sem)
+
+#         if "success" in result:
+#             ClassRecord.createAssessmentTable(subject_code, section_code, school_year, sem, name, rows)
+#             credentials_message = f"<br>Name: <strong>{name}</strong><br>Percentage: <strong>{percentage}</strong>"
+#             flash_message = {"type": "success", "message": f"Assessment Created successfully:{credentials_message}"}
+#             session['flash_message'] = flash_message
+#         else:
+#             flash_message = {"type": "danger", "message": f"Failed to create Assessment: {result}"}
+#             session['flash_message'] = flash_message
+#         return redirect(url_for(".index", subject_code=subject_code, description=description, section_code=section_code, credits=credits, sem=sem, school_year=school_year, message=flash_message))
+#     else:
+#         flash_message = {"type": "danger", "message": f"Failed to Add Assessment.<br>*  Make Sure Percentage will equate to 100%<br>*  Make Sure Percentage is not Negative"}
+#         session['flash_message'] = flash_message
+#         return redirect(url_for(".index", subject_code=subject_code, description=description, section_code=section_code, credits=credits, sem=sem, school_year=school_year, message=flash_message))

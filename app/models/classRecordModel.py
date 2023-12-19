@@ -94,27 +94,20 @@ class ClassRecord:
         except Exception as e:
             return f"{str(e)}"
 
+    @classmethod
+    def deleteGradeDistribution(cls, classrecordid, assessmentname):
+        try:
+            cursor = mysql.connection.cursor()
+            sql = 'DELETE FROM grade_distribution WHERE classrecordID = %s AND name = %s'
+            cursor.execute(sql, (classrecordid, assessmentname,))
+            mysql.connection.commit()
+            cursor.close()
+            return "Assessment deleted successfully"
+        except Exception as e:
+            return f"Failed to Delete Assessment: {str(e)}"
 
 
 
-    # @staticmethod
-    # def addGradeDistribution(subject_code, section_code, school_year, sem, name, percentage):
-    #     try:
-    #         cursor = mysql.connection.cursor()
-    #         table_name = f'GD_{subject_code}_{section_code}_{school_year}_{sem}'.replace('-', '_')
-    #         check_query = f"SELECT COALESCE(SUM(percentage), 0) FROM {table_name}"
-    #         cursor.execute(check_query)
-    #         total_percentage = Decimal(cursor.fetchone()[0])
-    #         percentage = Decimal(str(percentage))
-    #         if total_percentage + percentage > 100:
-    #             return "Sum of percentage values cannot exceed 100"
-    #         insert_query = f"INSERT INTO {table_name} (name, percentage) VALUES (%s, %s)"
-    #         values = (name, percentage)
-    #         cursor.execute(insert_query, values)
-    #         mysql.connection.commit()
-    #         return "Assessment created successfully"
-    #     except Exception as e:
-    #         return f"{str(e)}"
 
     # @classmethod
     # def deleteGradeAssessment(cls, subject_code, section_code, school_year, sem, assessmentid):
@@ -474,3 +467,23 @@ class ClassRecord:
     #         return True
     #     except Exception as e:
     #         return f"Failed to Create Database: {str(e)}"
+
+
+    # @staticmethod
+    # def addGradeDistribution(subject_code, section_code, school_year, sem, name, percentage):
+    #     try:
+    #         cursor = mysql.connection.cursor()
+    #         table_name = f'GD_{subject_code}_{section_code}_{school_year}_{sem}'.replace('-', '_')
+    #         check_query = f"SELECT COALESCE(SUM(percentage), 0) FROM {table_name}"
+    #         cursor.execute(check_query)
+    #         total_percentage = Decimal(cursor.fetchone()[0])
+    #         percentage = Decimal(str(percentage))
+    #         if total_percentage + percentage > 100:
+    #             return "Sum of percentage values cannot exceed 100"
+    #         insert_query = f"INSERT INTO {table_name} (name, percentage) VALUES (%s, %s)"
+    #         values = (name, percentage)
+    #         cursor.execute(insert_query, values)
+    #         mysql.connection.commit()
+    #         return "Assessment created successfully"
+    #     except Exception as e:
+    #         return f"{str(e)}"

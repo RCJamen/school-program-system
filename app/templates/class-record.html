@@ -80,6 +80,12 @@
                                     <th>First Name</th>
                                     <th>Last Name</th>
                                     <th>Course Code</th>
+                                    {% if Assessments|length == 0 %}
+                                    {% else %}
+                                        {% for Assessment in Assessments %}
+                                        <th>{{Assessment[0]}}({{Assessment[1]}}%)</th>
+                                        {% endfor %}
+                                    {% endif %}
                                     <th>Total Grade</th>
                                     <th>Action</th>
                                 </tr>
@@ -95,6 +101,8 @@
                                     <td>{{Student[3]}}</td>
                                     <td>{{Student[4]}}</td>
                                     <td>{{Student[5]}}</td>
+                                    <td></td>
+                                    <td></td>
                                     <td>{{Student[6]}}</td>
                                     <td>
                                         <button type="button" class="btn btn-outline-light">
@@ -143,7 +151,7 @@
                                 <td>{{Assessment[0]}}</td>
                                 <td>{{Assessment[1]}}%</td>
                                 <td>
-                                    <button type="button" class="btn btn-outline-light delete-assessment" data-assessmentname="{{Assessment[0]}}" data-percentage="{{Assessment[1]}}" data-classrecordid="{{ClassRecordID}}" data-bs-toggle="modal" data-bs-target="#askDeleteAssessment">
+                                    <button type="button" class="btn btn-outline-light delete-assessment" data-assessmentname="{{Assessment[0]}}" data-classrecordid="{{ClassRecordID}}" data-bs-toggle="modal" data-bs-target="#askDeleteAssessment">
                                         <i class="fa-solid fa-trash" style="color: #000000;"></i>
                                     </button>
                                 </td>
