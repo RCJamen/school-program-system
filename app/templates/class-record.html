@@ -125,7 +125,7 @@
                         </button>
                     </div>
                 </div>
-                <div style="margin-left: 200px; margin-right: 150px;">
+                <div style="margin-left: 150px; margin-right: 200px;">
                     <h3 class="text-center">Grade Distribution</h3>
                     <table class="table table-hover">
                         <thead class="text-center">
@@ -136,16 +136,19 @@
                             </tr>
                         </thead>
                         <tbody class="text-center">
+                            {% if Assessments|length == 0 %}
                             <td colspan="3" class="text-center">No Assessments Available.</td>
+                            {% else %} {% for Assessment in Assessments %}
                             <tr>
-                                <td></td>
-                                <td></td>
+                                <td>{{Assessment[0]}}</td>
+                                <td>{{Assessment[1]}}%</td>
                                 <td>
-                                    <button type="button" class="btn btn-outline-light delete-assessment" data-assessmentid="" data-name="" data-bs-toggle="modal" data-bs-target="#askDeleteAssessment">
+                                    <button type="button" class="btn btn-outline-light delete-assessment" data-assessmentname="{{Assessment[0]}}" data-percentage="{{Assessment[1]}}" data-classrecordid="{{ClassRecordID}}" data-bs-toggle="modal" data-bs-target="#askDeleteAssessment">
                                         <i class="fa-solid fa-trash" style="color: #000000;"></i>
                                     </button>
                                 </td>
                             </tr>
+                            {% endfor %} {% endif %}
                         </tbody>
                     </table>
                 </div>
