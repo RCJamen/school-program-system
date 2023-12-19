@@ -84,7 +84,7 @@ class ClassRecord:
     def getGradeDistribution(classrecordid):
         try:
             cursor = mysql.connection.cursor()
-            sql = 'SELECT name, percentage FROM grade_distribution WHERE classrecordID = %s ORDER BY assessmentID'
+            sql = 'SELECT assessmentID, name, percentage FROM grade_distribution WHERE classrecordID = %s ORDER BY assessmentID'
             cursor.execute(sql,(classrecordid,))
             result = cursor.fetchall()
             cursor.close()
@@ -187,7 +187,24 @@ class ClassRecord:
         file_content = file.read().decode('utf-8').splitlines()
         cls.csv_data = list(csv.reader(file_content))
 
+    @staticmethod
+    def getFinalScores(assessmentIDs):
+        try:
+            cursor = mysql.connection.cursor()
+            sql = """
+                SELECT finalscore
+                FROM activity
+                WHERE assessmentID IN {}
+                ORDER BY assessmentID, classID
+            """.format(tuple(assessmentIDs))
 
+            cursor.execute(sql)
+            results = cursor.fetchall()
+            cursor.close()
+
+            return results
+        except Exception as e:
+            return f"Failed to fetch assessments: {str(e)}"
 
 
 

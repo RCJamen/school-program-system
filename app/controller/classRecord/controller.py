@@ -21,9 +21,14 @@ def index(classrecordid):
     ClassDetails = ClassRecord.getClassRecordData(classrecordid)
     Students = Utils.sortStudent(ClassRecord.getClassRecordStudents(classrecordid))
     Assessments = ClassRecord.getGradeDistribution(classrecordid)
+    assessmentIDs = Utils.getAssessmentID(Assessments)
+    Tables = len(assessmentIDs)
+    print(Tables)
+    FinalScores = ClassRecord.getFinalScores(assessmentIDs)
+    print(FinalScores)
     flash_message = session.get('flash_message')
     session.pop('flash_message', None)
-    return render_template("class-record.html", ClassRecordID=classrecordid, ClassDetails=ClassDetails, Students=Students, Assessments=Assessments, flash_message=flash_message)
+    return render_template("class-record.html", ClassRecordID=classrecordid, ClassDetails=ClassDetails, Students=Students, Assessments=Assessments, Tables=Tables, FinalScores=FinalScores, flash_message=flash_message)
 
 
 @classRecord.route("/<string:classrecordid>/create_student", methods =['GET', 'POST'])

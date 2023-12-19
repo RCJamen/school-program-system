@@ -108,9 +108,6 @@ $(document).ready(function() {
     }
 });
 
-const tooltipTriggerList = document.querySelectorAll('[data-bs-toggle="tooltip"]')
-const tooltipList = [...tooltipTriggerList].map(tooltipTriggerEl => new bootstrap.Tooltip(tooltipTriggerEl))
-
 document.getElementById('downloadTemplateCR').addEventListener('click', function () {
     // Replace '/download/subject' with the route that serves the file in your Flask app
     var downloadRoute = '/download/classrecord';

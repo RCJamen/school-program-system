@@ -57,21 +57,17 @@
         <div class="tab-content px-5 py-4">
             <div class="tab-pane active" id="classrecord" role="tabpanel" aria-labelledby="classrecord-tab">
                 <div class="classRecord-header">
-                    <div class="row">
-                        <div class="col-3 d-flex gap-3">
-                            <button type="button" class="btn btn-secondary BtnStyle AddStudentBtn ms-3" data-bs-toggle="modal" data-bs-target="#addStudentModal">
-                                <i class="fa-solid fa-user-plus"></i> Add Student
-                            </button>
-                            <button type="button" class="btn btn-secondary import-csv-modal BtnStyle" data-bs-toggle="modal" data-bs-target="#importCSVModal">
-                                <i class="fa-solid fa-file-csv" style="color: #ffffff;"></i> Import CSV
-                            </button>
-                        </div>
-                        <div class = "col-2">
-                        </div>
+                   <div class="d-flex gap-3">
+                        <button type="button" class="btn btn-secondary BtnStyle AddStudentBtn ms-3" data-bs-toggle="modal" data-bs-target="#addStudentModal">
+                            <i class="fa-solid fa-user-plus"></i> Add Student
+                        </button>
+                        <button type="button" class="btn btn-secondary import-csv-modal BtnStyle" data-bs-toggle="modal" data-bs-target="#importCSVModal">
+                            <i class="fa-solid fa-file-csv" style="color: #ffffff;"></i> Import CSV
+                        </button>
                     </div>
                 </div>
-                <div class="table-container d-flex pb-4">
-                    <div class="classRecord-body">
+                <div class="table-container pb-4">
+                    <div class="table-responsive">
                         <table class="table table-hover" id="dynamic-table">
                             <thead>
                                 <tr>
@@ -83,14 +79,14 @@
                                     {% if Assessments|length == 0 %}
                                     {% else %}
                                         {% for Assessment in Assessments %}
-                                        <th>{{Assessment[0]}}({{Assessment[1]}}%)</th>
+                                        <th>{{Assessment[1]}}({{Assessment[2]}}%)</th>
                                         {% endfor %}
                                     {% endif %}
                                     <th>Total Grade</th>
                                     <th>Action</th>
                                 </tr>
                             </thead>
-                            <tbody>
+                            <tbody class="table-group-divider">
                                 {% if Students|length == 0 %}
                                 <td colspan="8" class="text-center">No Students Entrolled on This Class.</td>
                                 {% else %}
@@ -101,8 +97,6 @@
                                     <td>{{Student[3]}}</td>
                                     <td>{{Student[4]}}</td>
                                     <td>{{Student[5]}}</td>
-                                    <td></td>
-                                    <td></td>
                                     <td>{{Student[6]}}</td>
                                     <td>
                                         <button type="button" class="btn btn-outline-light">
@@ -151,10 +145,10 @@
                             <td colspan="3" class="text-center">No Assessments Available.</td>
                             {% else %} {% for Assessment in Assessments %}
                             <tr>
-                                <td>{{Assessment[0]}}</td>
-                                <td>{{Assessment[1]}}%</td>
+                                <td>{{Assessment[1]}}</td>
+                                <td>{{Assessment[2]}}%</td>
                                 <td>
-                                    <button type="button" class="btn btn-outline-light delete-assessment" data-assessmentname="{{Assessment[0]}}" data-classrecordid="{{ClassRecordID}}" data-bs-toggle="modal" data-bs-target="#askDeleteAssessment">
+                                    <button type="button" class="btn btn-outline-light delete-assessment" data-assessmentname="{{Assessment[1]}}" data-classrecordid="{{ClassRecordID}}" data-bs-toggle="modal" data-bs-target="#askDeleteAssessment">
                                         <i class="fa-solid fa-trash" style="color: #000000;"></i>
                                     </button>
                                 </td>
