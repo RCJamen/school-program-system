@@ -141,7 +141,7 @@ classID INT NOT NULL,
 finalscore DECIMAL(6,2) DEFAULT 0.00,
 PRIMARY KEY(activityID),
 FOREIGN KEY(assessmentID) REFERENCES grade_distribution(assessmentID) ON DELETE CASCADE,
-FOREIGN KEY(classID) REFERENCES students(classID)
+FOREIGN KEY(classID) REFERENCES students(classID) ON DELETE CASCADE
 );
 
 -- USED
