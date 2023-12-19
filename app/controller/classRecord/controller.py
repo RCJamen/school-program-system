@@ -4,6 +4,7 @@ from flask.helpers import url_for
 from app.controller.admin.controller import login_is_required
 from app.models.classRecordModel import ClassRecord
 from app.controller.classRecord.forms import classRecordForm, gradeDistributionForm, activityForm
+from app.controller.classRecord.utils import Utils
 from . import classRecord
 
 def classRecord_route(rule, **options):
@@ -18,8 +19,12 @@ def classRecord_route(rule, **options):
 @classRecord.route("/<string:classrecordid>", methods =['GET', 'POST'])
 def index(classrecordid):
     ClassDetails = ClassRecord.getClassRecordData(classrecordid)
-    Students = ClassRecord.getClassRecordStudents(classrecordid)
-    return render_template("class-record.html", ClassDetails=ClassDetails, Students=Students)
+    Students = Utils.sortStudent(ClassRecord.getClassRecordStudents(classrecordid))
+    Assessments = ClassRecord.getGradeDistribution(classrecordid)
+    flash_message = session.get('flash_message')
+    session.pop('flash_message', None)
+    return render_template("class-record.html", ClassRecordID=classrecordid, ClassDetails=ClassDetails, Students=Students, Assessments=Assessments, flash_message=flash_message)
+
 
 @classRecord.route("/<string:classrecordid>/create_student", methods =['GET', 'POST'])
 def create_student(classrecordid):
@@ -30,7 +35,7 @@ def create_student(classrecordid):
         lastname = form.lastname.data
         coursecode = form.coursecode.data
         email = form.email.data
-        result = ClassRecord.addStudent(classrecordid, studentID, firstname, lastname, coursecode, email)
+        result = ClassRecord.postStudentToClassRecord(classrecordid, studentID, firstname, lastname, coursecode, email)
         if "success" in result:
             credentials_message = f"<br>Student ID: <strong>{studentID}</strong><br>First Name: <strong>{firstname}</strong><br> Last Name: <strong>{lastname}</strong><br>Course Code: <strong>{coursecode}</strong><br>Email: <strong>{email}</strong>"
             flash_message = {"type": "success", "message": f"Subject created successfully:{credentials_message}"}
@@ -38,55 +43,46 @@ def create_student(classrecordid):
         else:
             flash_message = {"type": "danger", "message": f"Failed to create Subject: {result}"}
             session['flash_message'] = flash_message
-        return redirect(url_for(".index", classrecordid, message=flash_message))
+        return redirect(url_for(".index", classrecordid=classrecordid))
     else:
-        flash_message = {"type": "danger", "message": f"Failed to create Student. Please check the form for errors in the following:<br>* Student ID must be XXXX-XXXX<br>* Does not Accept Numericals in First Name and Last Name<br>* Only Accepts MSU-IIT Google Email"}
+        flash_message = {"type": "danger", "message": f"<strong>Failed to create Student</strong><br>* Student ID must be XXXX-XXXX<br>* Does not accept numericals in First Name and Last Name<br>* Only accepts MSU-IIT google email"}
         session['flash_message'] = flash_message
-        return redirect(url_for(".index", classrecordid, message=flash_message))
-
-    return redirect(url_for(".index"))
+        return redirect(url_for(".index", classrecordid=classrecordid))
 
 
-
-# @classRecord.route("/class_record/create_student", methods=['POST','GET'])
-# def create_student():
-#     form = classRecordForm(request.form)
-#     ClassDetails = session.get('ClassDetails', None)
-#     subject_code, description, section_code, credits, sem, school_year = ClassDetails
-
-#     if request.method == "POST" and form.validate():
-#         studentID = form.studentID.data
-#         firstname = form.firstname.data
-#         lastname = form.lastname.data
-#         coursecode = form.coursecode.data
-#         email = form.email.data
-
-#         result = ClassRecord.addStudent(subject_code, section_code, school_year, sem, studentID, firstname, lastname, coursecode, email)
-#         if "success" in result:
-#             credentials_message = f"<br>Student ID: <strong>{studentID}</strong><br>First Name: <strong>{firstname}</strong><br> Last Name: <strong>{lastname}</strong><br>Course Code: <strong>{coursecode}</strong><br>Email: <strong>{email}</strong>"
-#             flash_message = {"type": "success", "message": f"Subject created successfully:{credentials_message}"}
-#             session['flash_message'] = flash_message
-#         else:
-#             flash_message = {"type": "danger", "message": f"Failed to create Subject: {result}"}
-#             session['flash_message'] = flash_message
-#         return redirect(url_for(".index", subject_code=subject_code, description=description, section_code=section_code, credits=credits, sem=sem, school_year=school_year, message=flash_message))
-#     else:
-#         flash_message = {"type": "danger", "message": f"Failed to create Student. Please check the form for errors in the following:<br>* Student ID must be XXXX-XXXX<br>* Does not Accept Numericals in First Name and Last Name<br>* Only Accepts MSU-IIT Google Email"}
-#         session['flash_message'] = flash_message
-#         return redirect(url_for(".index", subject_code=subject_code, description=description, section_code=section_code, credits=credits, sem=sem, school_year=school_year, message=flash_message))
+@classRecord.route("/<string:classrecordid>/delete_student/<string:studentID>", methods=['POST'])
+def delete_student(classrecordid, studentID):
+    try:
+        result = ClassRecord.deleteStudentFromClassRecord(classrecordid, studentID)
+        print(result)
+        flash_message = {"type": "success", "message": f"{result}"}
+        session['flash_message'] = flash_message
+        return jsonify({'success': True, 'message': 'Student deleted successfully', 'flash_message': flash_message})
+    except Exception as e:
+        return jsonify({'success': False, 'error': str(e)})
 
 
-# @classRecord.route("/class_record/delete_student/<string:studentID>", methods=['POST'])
-# def delete_student(studentID):
-#     try:
-#         ClassDetails = session.get('ClassDetails', None)
-#         subject_code, description, section_code, credits, sem, school_year = ClassDetails
-#         result = ClassRecord.deleteStudent(subject_code, section_code, school_year, sem, studentID)
-#         flash_message = {"type": "success", "message": f"{result}"}
-#         session['flash_message'] = flash_message
-#         return jsonify({'success': True, 'message': 'Student deleted successfully', 'flash_message': flash_message})
-#     except Exception as e:
-#         return jsonify({'success': False, 'error': str(e)})
+@classRecord.route("/<string:classrecordid>/create_grade_distribution", methods=['POST','GET'])
+def create_grade_distribution(classrecordid):
+    form = gradeDistributionForm(request.form)
+    if request.method == "POST" and form.validate():
+        name = form.name.data
+        percentage = form.percentage.data
+        result = ClassRecord.postGradeDistribution(classrecordid, name, percentage)
+        if "success" in result:
+            credentials_message = f"<br>Name: <strong>{name}</strong><br>Percentage: <strong>{percentage}</strong>"
+            flash_message = {"type": "success", "message": f"Assessment Created successfully:{credentials_message}"}
+            session['flash_message'] = flash_message
+        else:
+            flash_message = {"type": "danger", "message": f"<strong>Failed to create Assessment:</strong><br>{result}"}
+            session['flash_message'] = flash_message
+        return redirect(url_for(".index", classrecordid=classrecordid))
+    else:
+        flash_message = {"type": "danger", "message": f"<strong>Failed to Add Assessment</strong><br>*  Make Sure Percentage will equate to 100%<br>*  Make Sure Percentage is not Negative"}
+        session['flash_message'] = flash_message
+        return redirect(url_for(".index", classrecordid=classrecordid))
+
+
 
 
 # @classRecord.route("/grade_distribution/create_grade_distribution", methods=['POST','GET'])
@@ -218,3 +214,45 @@ def create_student(classrecordid):
 #     session['ClassDetails'] = ClassDetails
 #     flash_message = session.pop('flash_message', None)
 #     return render_template("class-record.html", ClassDetails=ClassDetails, Students=Students, GradeDistributions= GradeDistributions, Assessments=Assessments, flash_message=flash_message)
+
+
+# @classRecord.route("/class_record/create_student", methods=['POST','GET'])
+# def create_student():
+#     form = classRecordForm(request.form)
+#     ClassDetails = session.get('ClassDetails', None)
+#     subject_code, description, section_code, credits, sem, school_year = ClassDetails
+
+#     if request.method == "POST" and form.validate():
+#         studentID = form.studentID.data
+#         firstname = form.firstname.data
+#         lastname = form.lastname.data
+#         coursecode = form.coursecode.data
+#         email = form.email.data
+
+#         result = ClassRecord.addStudent(subject_code, section_code, school_year, sem, studentID, firstname, lastname, coursecode, email)
+#         if "success" in result:
+#             credentials_message = f"<br>Student ID: <strong>{studentID}</strong><br>First Name: <strong>{firstname}</strong><br> Last Name: <strong>{lastname}</strong><br>Course Code: <strong>{coursecode}</strong><br>Email: <strong>{email}</strong>"
+#             flash_message = {"type": "success", "message": f"Subject created successfully:{credentials_message}"}
+#             session['flash_message'] = flash_message
+#         else:
+#             flash_message = {"type": "danger", "message": f"Failed to create Subject: {result}"}
+#             session['flash_message'] = flash_message
+#         return redirect(url_for(".index", subject_code=subject_code, description=description, section_code=section_code, credits=credits, sem=sem, school_year=school_year, message=flash_message))
+#     else:
+#         flash_message = {"type": "danger", "message": f"Failed to create Student. Please check the form for errors in the following:<br>* Student ID must be XXXX-XXXX<br>* Does not Accept Numericals in First Name and Last Name<br>* Only Accepts MSU-IIT Google Email"}
+#         session['flash_message'] = flash_message
+#         return redirect(url_for(".index", subject_code=subject_code, description=description, section_code=section_code, credits=credits, sem=sem, school_year=school_year, message=flash_message))
+
+
+
+# @classRecord.route("/class_record/delete_student/<string:studentID>", methods=['POST'])
+# def delete_student(studentID):
+#     try:
+#         ClassDetails = session.get('ClassDetails', None)
+#         subject_code, description, section_code, credits, sem, school_year = ClassDetails
+#         result = ClassRecord.deleteStudent(subject_code, section_code, school_year, sem, studentID)
+#         flash_message = {"type": "success", "message": f"{result}"}
+#         session['flash_message'] = flash_message
+#         return jsonify({'success': True, 'message': 'Student deleted successfully', 'flash_message': flash_message})
+#     except Exception as e:
+#         return jsonify({'success': False, 'error': str(e)})

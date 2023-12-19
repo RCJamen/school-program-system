@@ -4,12 +4,8 @@ $(document).ready(function() {
         var studentID = $(this).data('studentid');
         var firstname = $(this).data('firstname');
         var lastname = $(this).data('lastname');
+        var classrecordid = $(this).data('classrecordid');
         var csrfToken = $('meta[name=csrf-token]').attr('content');
-
-        console.log(studentID)
-        console.log(firstname)
-        console.log(lastname)
-        console.log(csrfToken)
 
         $('#askDelete .delete-modal-body').html(
             `<p>Do you want to delete the following Student?</p><strong>Student ID:</strong> ${studentID}
@@ -20,7 +16,7 @@ $(document).ready(function() {
         $('#askDelete .delete-button').off('click').on('click', function () {
             $.ajax({
                 type: 'POST',
-                url: `/class_record/delete_student/${studentID}`,
+                url: `/${classrecordid}/delete_student/${studentID}`,
                 headers: {
                     'X-CSRFToken': csrfToken
                 },

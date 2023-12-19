@@ -9,7 +9,7 @@
 {% endblock %}
 
 {% block pages %}
-<!-- <meta name="csrf-token" content="{{ csrf_token() }}"> -->
+<meta name="csrf-token" content="{{ csrf_token() }}">
 <div class="classRecord-container">
     <div class="classRecord-title">
         <div class="row">
@@ -85,14 +85,17 @@
                                 </tr>
                             </thead>
                             <tbody>
-                                <td colspan="7" class="text-center">No Students Entrolled on This Class.</td>
+                                {% if Students|length == 0 %}
+                                <td colspan="8" class="text-center">No Students Entrolled on This Class.</td>
+                                {% else %}
+                                {% for Student in Students %}
                                 <tr>
-                                    <td></td>
-                                    <td></td>
-                                    <td></td>
-                                    <td></td>
-                                    <td></td>
-                                    <td></td>
+                                    <td>{{Student[1]}}</td>
+                                    <td>{{Student[2]}}</td>
+                                    <td>{{Student[3]}}</td>
+                                    <td>{{Student[4]}}</td>
+                                    <td>{{Student[5]}}</td>
+                                    <td>{{Student[6]}}</td>
                                     <td>
                                         <button type="button" class="btn btn-outline-light">
                                             <i class="fa-solid fa-plus" style="color: #000000;"></i>
@@ -100,11 +103,12 @@
                                         <button type="button" class="btn btn-outline-light">
                                             <i class="fa-solid fa-bell" style="color: #000000;"></i>
                                         </button>
-                                        <button type="button" class="btn btn-outline-light delete-student" data-studentid="" data-firstname="" data-lastname="" data-bs-toggle="modal" data-bs-target="#askDelete">
+                                        <button type="button" class="btn btn-outline-light delete-student" data-studentid="{{Student[2]}}" data-firstname="{{Student[3]}}" data-lastname="{{Student[4]}}" data-classrecordid="{{ClassRecordID}}" data-bs-toggle="modal" data-bs-target="#askDelete">
                                             <i class="fa-solid fa-trash" style="color: #000000;"></i>
                                         </button>
                                     </td>
                                 </tr>
+                                {% endfor %} {% endif %}
                             </tbody>
                         </table>
                     </div>
@@ -275,12 +279,11 @@
 <!-- Modals -->
 <div class="modal fade" id="addStudentModal" data-bs-backdrop="static" tabindex="-1" role="dialog" aria-labelledby="editFacultyModalLabel" aria-hidden="true">
     <div class="modal-dialog" role="document">
-        <form action="#" method="POST">
+        <form action="{{ url_for('classRecord.create_student', classrecordid=ClassRecordID) }}" method="POST">
             <input type="hidden" name="csrf_token" value="{{ csrf_token()}}">
             <div class="modal-content">
                 <div class="modal-header class-record-modal-header">
                     <h5 class="modal-title">Add Student Information</h5>
-                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
                 <div class="modal-body class-record-modal-body">
                     <div class="form-group">
@@ -322,7 +325,6 @@
         <div class="modal-content">
         <div class="modal-header">
             <h5 class="modal-title">Confirmation</h5>
-            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
         </div>
         <div class="modal-body delete-modal-body">
         </div>
@@ -336,12 +338,11 @@
 
 <div class="modal fade" id="addAssessment" data-bs-backdrop="static" tabindex="-1" role="dialog" aria-labelledby="editFacultyModalLabel" aria-hidden="true">
     <div class="modal-dialog" role="document">
-        <form action="#" method="POST">
+        <form action="{{ url_for('classRecord.create_grade_distribution', classrecordid=ClassRecordID) }}" method="POST">
             <input type="hidden" name="csrf_token" value="{{ csrf_token()}}">
             <div class="modal-content">
                 <div class="modal-header class-record-modal-header">
                     <h5 class="modal-title">Add Class Assessment</h5>
-                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
                 <div class="modal-body class-record-modal-body">
                     <div class="form-group">
