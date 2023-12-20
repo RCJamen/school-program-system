@@ -29,6 +29,7 @@ class gradeDistributionForm(FlaskForm):
     submit = SubmitField("Submit")
 
 class activityForm(FlaskForm):
+    Assessment = StringField("Assessment", [validators.DataRequired()])
     activityname = StringField("activityname", [validators.DataRequired()])
     scorelimit = DecimalField("scorelimit", [
         validators.DataRequired(),

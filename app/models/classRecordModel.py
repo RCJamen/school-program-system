@@ -134,7 +134,7 @@ class ClassRecord:
             return f"Failed to get assessmentID: {str(e)}"
 
     @staticmethod
-    def postCreateActivity(asessmentID, studentsID):
+    def postCreateFinalScore(asessmentID, studentsID):
         try:
             cursor = mysql.connection.cursor()
             for student in studentsID:
@@ -207,7 +207,17 @@ class ClassRecord:
             return f"Failed to fetch assessments: {str(e)}"
 
 
-
+    @staticmethod
+    def addActivity(assessmentID, name, scorelimit, studentsID):
+        try:
+            cursor = mysql.connection.cursor()
+            for student in studentsID:
+                sql = 'INSERT INTO activity (assessmentID, classID, scoreLimit, activityName) VALUES (%s, %s, %s, %s)'
+                cursor.execute(sql,(assessmentID, student, scorelimit, name,))
+            mysql.connection.commit()
+            return "Activity created successfully"
+        except Exception as e:
+            return f"Failed to create activity: {str(e)}"
 
 
 

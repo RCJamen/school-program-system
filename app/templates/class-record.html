@@ -422,7 +422,7 @@
 <div class="modal" id="addActivity" data-bs-backdrop="false" tabindex="-1" role="dialog"
     aria-labelledby="addActivityModal" aria-hidden="true">
     <div class="modal-dialog" role="document">
-        <form action="" method="POST">
+        <form action="{{ url_for('classRecord.create_activity', classrecordid=ClassRecordID) }}" method="POST">
             <input type="hidden" name="csrf_token" value="{{ csrf_token()}}">
             <div class="modal-content">
                 <div class="modal-header class-record-modal-header">
@@ -434,16 +434,16 @@
                         <label>Assessment</label>
                         <select name="Assessment" class="form-select" id="Assessment">
                             <option value="" disabled selected>Create activity for:</option>
-                            <option value="None">Exam</option>
-                            <option value="None">Performance Task</option>
-                            <option value="None">Quizzes</option>
+                            {% for Assessment in Assessments %}
+                            <option value="{{Assessment[0]}}">{{Assessment[1]}}</option>
+                            {% endfor %}
                         </select>
                     </div>
                     <div class="row">
                         <div class="col-7">
                             <div class="form-group">
                                 <label>Activity</label>
-                                <input type="text" name="activityName" id="activityName" class="form-control" placeholder="Activity Name">
+                                <input type="text" name="activityname" id="activityName" class="form-control" placeholder="Activity Name">
                             </div>
                         </div>
                         <div class="col-5">
@@ -490,7 +490,7 @@
                     <label>Activity List</label>
                     <div class = "activityList">
                         <div class="row">
-                           
+
                         </div>
                         <div class="row">
                             <div class="col-8">
@@ -544,7 +544,7 @@
                             </div>
                         </div>
                     </div>
-                    
+
                 </div>
                 <div class="modal-footer class-record-modal-footer">
                     <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">
