@@ -124,3 +124,14 @@ overflow-x: auto;
     z-index: 1;
     right: 0;
 }
+
+.activityList {
+    border: 1px solid #ccc; /* Add a border with a color of your choice */
+    border-radius: 10px; /* Smoothen the edges by adding border-radius */
+    padding: 20px 20px 0px 20px;; /* Add padding for better visual appearance */
+}
+
+.activityList h3{
+    border: none;
+    
+}

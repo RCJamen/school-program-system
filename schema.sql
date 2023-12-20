@@ -133,15 +133,29 @@ PRIMARY KEY (assessmentID),
 FOREIGN KEY(classrecordID) REFERENCES assignFaculty(assignFacultyID)
 );
 
-DROP TABLE IF EXISTS `activity`;
-CREATE TABLE IF NOT EXISTS `activity`(
-activityID INT AUTO_INCREMENT NOT NULL,
+DROP TABLE IF EXISTS `finalscore`;
+CREATE TABLE IF NOT EXISTS `finalscore`(
+finalscoreID INT AUTO_INCREMENT NOT NULL,
 assessmentID INT NOT NULL,
 classID INT NOT NULL,
 finalscore DECIMAL(6,2) DEFAULT 0.00,
-PRIMARY KEY(activityID),
+PRIMARY KEY(finalscoreID),
 FOREIGN KEY(assessmentID) REFERENCES grade_distribution(assessmentID) ON DELETE CASCADE,
 FOREIGN KEY(classID) REFERENCES students(classID) ON DELETE CASCADE
+);
+
+DROP TABLE IF EXISTS `activity`;
+CREATE TABLE IF NOT EXISTS `activity` (
+    activityID INT AUTO_INCREMENT NOT NULL,
+    assessmentID INT NOT NULL,
+    studentID VARCHAR(10) NOT NULL,
+    scoreLimit DECIMAL(6,2) NOT NULL,
+    activityName VARCHAR(255) NOT NULL,
+    score DECIMAL(6,2) DEFAULT 0.00,
+    PRIMARY KEY (activityID),
+    UNIQUE KEY unique_activity (assessmentID, studentID, activityName),
+    FOREIGN KEY (assessmentID) REFERENCES grade_distribution(assessmentID) ON DELETE CASCADE,
+    FOREIGN KEY (studentID) REFERENCES students(studentID) ON DELETE CASCADE
 );
 
 -- USED

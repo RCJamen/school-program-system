@@ -99,7 +99,7 @@
                                     <td>{{Student[5]}}</td>
                                     <td>{{Student[6]}}</td>
                                     <td>
-                                        <button type="button" class="btn btn-outline-light">
+                                        <button type="button" class="btn btn-outline-light" data-bs-toggle="modal" data-bs-target="#addScoreModal">
                                             <i class="fa-solid fa-plus" style="color: #000000;"></i>
                                         </button>
                                         <button type="button" class="btn btn-outline-light">
@@ -431,12 +431,27 @@
                 </div>
                 <div class="modal-body class-record-modal-body">
                     <div class="form-group">
-                        <label>Activity Name</label>
-                        <input type="text" name="activityname" id="name" class="form-control" placeholder="Enter Activity">
+                        <label>Assessment</label>
+                        <select name="Assessment" class="form-select" id="Assessment">
+                            <option value="" disabled selected>Create activity for:</option>
+                            <option value="None">Exam</option>
+                            <option value="None">Performance Task</option>
+                            <option value="None">Quizzes</option>
+                        </select>
                     </div>
-                    <div class="form-group">
-                        <label>Score Limit</label>
-                        <input type="text" name="scorelimit" id="score" class="form-control" placeholder="Enter Score Limit">
+                    <div class="row">
+                        <div class="col-7">
+                            <div class="form-group">
+                                <label>Activity</label>
+                                <input type="text" name="activityName" id="activityName" class="form-control" placeholder="Activity Name">
+                            </div>
+                        </div>
+                        <div class="col-5">
+                            <div class="form-group">
+                                <label>Score Limit</label>
+                                <input type="text" name="scorelimit" id="score" class="form-control" placeholder="Max Score">
+                            </div>
+                        </div>
                     </div>
                 </div>
                 <div class="modal-footer class-record-modal-footer">
@@ -452,6 +467,97 @@
     </div>
 </div>
 
+<div class="modal" id="addScoreModal" data-bs-backdrop="false" tabindex="-1" role="dialog"
+    aria-labelledby="addActivityModal" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <form action="" method="POST">
+            <input type="hidden" name="csrf_token" value="{{ csrf_token()}}">
+            <div class="modal-content">
+                <div class="modal-header class-record-modal-header">
+                    <h5 class="modal-title">Add Score</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body class-record-modal-body">
+                    <div class="form-group">
+                        <label>Assessment</label>
+                        <select name="Assessment" class="form-select" id="Assessment">
+                            <option value="" disabled selected>Select Assessment:</option>
+                            <option value="None">Exam</option>
+                            <option value="None">Performance Task</option>
+                            <option value="None">Quizzes</option>
+                        </select>
+                    </div>
+                    <label>Activity List</label>
+                    <div class = "activityList">
+                        <div class="row">
+                           
+                        </div>
+                        <div class="row">
+                            <div class="col-8">
+                                <div class="form-group">
+                                    <!-- <label></label> -->
+                                    <h3 class="form-control"><strong>Performance Task 1</strong></h3>
+                                </div>
+                            </div>
+                            <div class="col-4">
+                                <div class="form-group">
+                                    <!-- <label></label> -->
+                                    <div class="input-group">
+                                        <input type="text" name="scorelimit" id="score" class="form-control" placeholder="Score" maxlength="3">
+                                        <span class="input-group-text">/50</span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-8">
+                                <div class="form-group">
+                                    <!-- <label></label> -->
+                                    <h3 class="form-control"><strong>Oral Recitation Science</strong></h3>
+                                </div>
+                            </div>
+                            <div class="col-4">
+                                <div class="form-group">
+                                    <!-- <label></label> -->
+                                    <div class="input-group">
+                                        <input type="text" name="scorelimit" id="score" class="form-control" placeholder="Score" maxlength="3">
+                                        <span class="input-group-text">/50</span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-8">
+                                <div class="form-group">
+                                    <!-- <label></label> -->
+                                    <h3 class="form-control"><strong>Tatlong Milyong Puta</strong></h3>
+                                </div>
+                            </div>
+                            <div class="col-4">
+                                <div class="form-group">
+                                    <!-- <label></label> -->
+                                    <div class="input-group">
+                                        <input type="text" name="scorelimit" id="score" class="form-control" placeholder="Score" maxlength="3">
+                                        <span class="input-group-text">/50</span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                </div>
+                <div class="modal-footer class-record-modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">
+                        <i class="fa-solid fa-xmark" style="color: #ffffff;"></i> Close
+                    </button>
+                    <button type="submit" id="submit" class="btn btn-success" data-bs-dismiss="modal"> <i
+                            class="fa-solid fa-user-pen"></i>Add Score
+                    </button>
+                </div>
+            </div>
+        </form>
+    </div>
+</div>
 {% endblock %}
 
 {% block pagescript %}
