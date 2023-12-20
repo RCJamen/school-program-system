@@ -68,7 +68,7 @@ class ClassRecord:
     def deleteStudentFromClassRecord(classrecordid, studentID, classID):
         try:
             cursor = mysql.connection.cursor()
-            sql = 'DELETE FROM activity WHERE classID = %s'
+            sql = 'DELETE FROM finalscore WHERE classID = %s'
             cursor.execute(sql,(classID,))
             mysql.connection.commit()
             sql = 'DELETE FROM students WHERE classrecordID = %s AND studentID = %s'
@@ -138,12 +138,12 @@ class ClassRecord:
         try:
             cursor = mysql.connection.cursor()
             for student in studentsID:
-                sql = 'INSERT INTO activity (assessmentID, classID) VALUES (%s, %s)'
+                sql = 'INSERT INTO finalscore (assessmentID, classID) VALUES (%s, %s)'
                 cursor.execute(sql,(asessmentID, student))
             mysql.connection.commit()
-            return "Student Inserted in Activity Successfully"
+            return "Student Inserted in finalscore Successfully"
         except Exception as e:
-            return f"Failed to insert students to Activity: {str(e)}"
+            return f"Failed to insert students to finalscore: {str(e)}"
 
 
     csv_data = None
@@ -193,7 +193,7 @@ class ClassRecord:
             cursor = mysql.connection.cursor()
             sql = """
                 SELECT finalscore
-                FROM activity
+                FROM finalscore
                 WHERE assessmentID IN {}
                 ORDER BY assessmentID, classID
             """.format(tuple(assessmentIDs))
