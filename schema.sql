@@ -107,8 +107,8 @@ schoolYear VARCHAR(10),
 UNIQUE KEY unique_assignFaculty (facultyID, subjectID, sectionID, sem, schoolYear)
 );
 
-
-DROP TABLE IF EXISTS `students`;
+-- class_record_student untana
+DROP TABLE IF EXISTS `students`; 
 CREATE TABLE IF NOT EXISTS `students`(
 classID INT AUTO_INCREMENT NOT NULL,
 classrecordID INT NOT NULL,

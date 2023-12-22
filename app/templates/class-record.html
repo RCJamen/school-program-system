@@ -79,7 +79,7 @@
                                     {% if Assessments|length == 0 %}
                                     {% else %}
                                         {% for Assessment in Assessments %}
-                                        <th>{{Assessment[1]}}({{Assessment[2]}}%)</th>
+                                            <th>{{ Assessment[1] }} ({{ Assessment[2] }}%)</th>
                                         {% endfor %}
                                     {% endif %}
                                     <th>Total Grade</th>
@@ -88,29 +88,38 @@
                             </thead>
                             <tbody class="table-group-divider">
                                 {% if Students|length == 0 %}
-                                <td colspan="8" class="text-center">No Students Entrolled on This Class.</td>
+                                    <td colspan="8" class="text-center">No Students Enrolled in This Class.</td>
                                 {% else %}
-                                {% for Student in Students %}
-                                <tr>
-                                    <td>{{Student[1]}}</td>
-                                    <td>{{Student[2]}}</td>
-                                    <td>{{Student[3]}}</td>
-                                    <td>{{Student[4]}}</td>
-                                    <td>{{Student[5]}}</td>
-                                    <td>{{Student[6]}}</td>
-                                    <td>
-                                        <button type="button" class="btn btn-outline-light" data-bs-toggle="modal" data-bs-target="#addScoreModal">
-                                            <i class="fa-solid fa-plus" style="color: #000000;"></i>
-                                        </button>
-                                        <button type="button" class="btn btn-outline-light">
-                                            <i class="fa-solid fa-bell" style="color: #000000;"></i>
-                                        </button>
-                                        <button type="button" class="btn btn-outline-light delete-student" data-studentid="{{Student[2]}}" data-firstname="{{Student[3]}}" data-lastname="{{Student[4]}}" data-classrecordid="{{ClassRecordID}}" data-bs-toggle="modal" data-bs-target="#askDelete">
-                                            <i class="fa-solid fa-trash" style="color: #000000;"></i>
-                                        </button>
-                                    </td>
-                                </tr>
-                                {% endfor %} {% endif %}
+                                    {% for Student in Students %}
+                                        <tr>
+                                            <td>{{ Student[1] }}</td>
+                                            <td>{{ Student[2] }}</td>
+                                            <td>{{ Student[3] }}</td>
+                                            <td>{{ Student[4] }}</td>
+                                            <td>{{ Student[5] }}</td>
+                                            {% for Assessment in Assessments %}
+                                                {% for row in finalscores %}
+                                                    {% if row[0] == Student[2] and row[5] == Assessment[0] %}
+                                                        <!-- {% print (row[5], Assessment[0])%} -->
+                                                        <td>{{ row[3] }}</td>
+                                                    {% endif %}
+                                                {% endfor %}
+                                            {% endfor %}
+                                            <td>{{ Student[6] }}</td>
+                                            <td>
+                                                <button type="button" class="btn btn-outline-light" data-bs-toggle="modal" data-bs-target="#addScoreModal">
+                                                    <i class="fa-solid fa-plus" style="color: #000000;"></i>
+                                                </button>
+                                                <button type="button" class="btn btn-outline-light">
+                                                    <i class="fa-solid fa-bell" style="color: #000000;"></i>
+                                                </button>
+                                                <button type="button" class="btn btn-outline-light delete-student" data-studentid="{{ Student[2] }}" data-firstname="{{ Student[3] }}" data-lastname="{{ Student[4] }}" data-classrecordid="{{ ClassRecordID }}" data-bs-toggle="modal" data-bs-target="#askDelete" onclick="showFinalScores(this)"">
+                                                    <i class="fa-solid fa-trash" style="color: #000000;"></i>
+                                                </button>
+                                            </td>
+                                        </tr>
+                                    {% endfor %}
+                                {% endif %}
                             </tbody>
                         </table>
                     </div>
@@ -530,7 +539,7 @@
                             <div class="col-8">
                                 <div class="form-group">
                                     <!-- <label></label> -->
-                                    <h3 class="form-control"><strong>Tatlong Milyong Puta</strong></h3>
+                                    <h3 class="form-control"><strong>Examing</strong></h3>
                                 </div>
                             </div>
                             <div class="col-4">

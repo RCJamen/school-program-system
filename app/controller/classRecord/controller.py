@@ -19,14 +19,26 @@ def classRecord_route(rule, **options):
 @classRecord.route("/<string:classrecordid>", methods =['GET', 'POST'])
 def index(classrecordid):
     ClassDetails = ClassRecord.getClassRecordData(classrecordid)
+    print(ClassDetails)
     Students = Utils.sortStudent(ClassRecord.getClassRecordStudents(classrecordid))
     Assessments = ClassRecord.getGradeDistribution(classrecordid)
-    # assessmentIDs = Utils.getAssessmentID(Assessments)
-    # FinalScores = ClassRecord.getFinalScores(assessmentIDs) #Not yet Used
-    # print(FinalScores)
+    assessmentIDs = Utils.getAssessmentID(Assessments)
+    
+    finalscores = []
+
+    for assessment_id in assessmentIDs:
+        scores_for_assessment = ClassRecord.get_student_scores(classrecordid, assessment_id)
+        print("ASS",assessment_id)
+        finalscores.extend(scores_for_assessment)
+    
+    # for entry in finalscores:
+    #     print(entry)
+
+    print(assessmentIDs)
+
     flash_message = session.get('flash_message')
     session.pop('flash_message', None)
-    return render_template("class-record.html", ClassRecordID=classrecordid, ClassDetails=ClassDetails, Students=Students, Assessments=Assessments, flash_message=flash_message)
+    return render_template("class-record.html", ClassRecordID=classrecordid, ClassDetails=ClassDetails, Students=Students, Assessments=Assessments, flash_message=flash_message, finalscores=finalscores)
 
 
 @classRecord.route("/<string:classrecordid>/create_student", methods =['GET', 'POST'])

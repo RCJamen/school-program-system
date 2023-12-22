@@ -220,6 +220,45 @@ class ClassRecord:
             return f"Failed to create activity: {str(e)}"
 
 
+    @staticmethod
+    def     get_student_scores(class_record_id, assessment_id):
+        try:
+            cursor = mysql.connection.cursor()
+
+            sql = '''
+                SELECT
+                    students.studentID,
+                    students.firstname,
+                    students.lastname,
+                    COALESCE(SUM(activity.score), 0) AS finalScore,
+                    COALESCE(SUM(activity.scoreLimit), 0) AS totalScoreLimit,
+                    grade_distribution.assessmentID AS assessmentID
+                FROM
+                    students
+                LEFT JOIN
+                    finalscore ON students.classID = finalscore.classID
+                LEFT JOIN
+                    grade_distribution ON finalscore.assessmentID = grade_distribution.assessmentID
+                LEFT JOIN
+                    activity ON grade_distribution.assessmentID = activity.assessmentID
+                    AND students.classID = activity.classID
+                WHERE
+                    grade_distribution.assessmentID = %s
+                    AND students.classrecordID = %s
+                GROUP BY
+                    students.studentID, students.firstname, students.lastname, grade_distribution.assessmentID;
+
+
+            '''
+
+            cursor.execute(sql, (assessment_id, class_record_id))
+            result = cursor.fetchall()
+
+            cursor.close()
+            return result
+
+        except Exception as e:
+            return f"Failed to fetch student scores: {str(e)}"
 
 
 
