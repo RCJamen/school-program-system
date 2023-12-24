@@ -199,7 +199,17 @@ VALUES ('None', 'None', 'None', 'None', 'Faculty'),
 ('2023-0001', 'Fulgent Kvasir', 'Lavesores', 'fulgentkvasir.lavesores@g.msuiit.edu.ph', 'Faculty'),
 ('2023-0002', 'Alrick Ivan', 'Gicole', 'alrickivan.gicole@g.msuiit.edu.ph', 'Faculty'),
 ('2023-0003', 'Janella', 'Balantac', 'janellasuzanne.balantac@g.msuiit.edu.ph', 'Faculty'),
-('2023-0004', 'Ramel Cary', 'Jamen', 'ramelcary.jamen@g.msuiit.edu.ph', 'Chairperson');
+('2023-0004', 'Ramel Cary', 'Jamen', 'ramelcary.jamen@g.msuiit.edu.ph', 'Chairperson'),
+('2023-0005', 'Fulgent Kvasir', 'Lavesores', 'fulgentkvasssir.lavesores@g.msuiit.edu.ph', 'Faculty'),
+('2023-0006', 'Alrick Ivan', 'Gicole', 'alrickivsssan.gicole@g.msuiit.edu.ph', 'Faculty'),
+('2023-0007', 'Janella', 'Balantac', 'janellasuzasssnne.balantac@g.msuiit.edu.ph', 'Faculty'),
+('2023-0008', 'Ramel Cary', 'Jamen', 'ramelcasssry.jamen@g.msuiit.edu.ph', 'Chairperson'),
+('2023-0009', 'Ramel Cary', 'Jamen', 'ramel2cary.jamen@g.msuiit.edu.ph', 'Chairperson'),
+('2023-0010', 'Fulgent Kvasir', 'Lavesores', 'fulgen3tkvasssir.lavesores@g.msuiit.edu.ph', 'Faculty'),
+('2023-0011', 'Alrick Ivan', 'Gicole', 'alrickivss1san.gicole@g.msuiit.edu.ph', 'Faculty'),
+('2023-0012', 'Janella', 'Balantac', 'janellasuz4asssnne.balantac@g.msuiit.edu.ph', 'Faculty'),
+('2023-0013', 'Ramel Cary', 'Jamen', 'ramelca4sssry.jamen@g.msuiit.edu.ph', 'Chairperson');
+
 
 INSERT INTO subject (subjectCode, description, credits)
 VALUES

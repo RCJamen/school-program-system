@@ -92,7 +92,7 @@ hr.h-color {
 
 .dashboard-content {
     width: 100%;
-    position:fixed;
+    position:absolute;
     left: 0;
     z-index: 2000;
     transition: 350ms ease;

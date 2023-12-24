@@ -52,7 +52,7 @@
 </div>
 <div class="content">
   <div class="header-header">
-    <nav class="navbar navbar-expand-md" style="background-color: #A41D21;">
+    <nav class="navbar navbar-expand-md">
         <div class="container-fluid">
             <div class="d-flex justify-content-between d-md-none d-block">
             </div>
@@ -76,7 +76,7 @@
     </nav>
 </div>
 <div class="header-placeholder"></div>
-  <div class="dashboard-content px-3 pt-4">
+  <div class="dashboard-content">
     {% block pages%}
     {% endblock %}
   </div>
@@ -122,7 +122,7 @@
         sidebar.style.zIndex = 2002;
     } else {
         document.querySelector("#side_nav").classList.remove('active');
-        dashboardContent.style.position = 'fixed';
+        dashboardContent.style.position = 'absolute';
         sidebar.style.zIndex = 3002;
     }
 }
