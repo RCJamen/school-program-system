@@ -105,6 +105,9 @@ th {
   width: 100%;
 }
 
+.row.body-sort .form-select{
+  font-size: 14px;
+}
 .academic-modal-body .row.body-header {
   margin: 0px !important
 }

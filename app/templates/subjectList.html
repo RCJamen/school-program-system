@@ -11,15 +11,27 @@
 {% block pages %}
 <meta name="csrf-token" content="{{ csrf_token() }}">
 <div class="subject-list-container">
-  <div class="subject-list-title">
-    <h1 class="m-0">Subject Lists</h1>
+  <div class = "sticky-subject-title">
+    <div class="subject-list-title d-flex justify-content-between">
+      <h2 class="m-0">Subject Lists</h2>
+      <div class = "subject-buttons d-flex flex-row-reverse gap-3">
+        <button type="button" class="btn btn-primary AddSubjectBtn" data-bs-toggle="modal"
+                data-bs-target="#addFacultyModal"><i class="fa-solid fa-user-plus"></i> Add Subject 
+        </button>
+        <button type="button" class="btn btn-secondary import-csv-modal" data-bs-toggle="modal" data-bs-target="#importSubjectCSVModal" >
+                <i class="fa-solid fa-file-csv" style="color: #ffffff;"></i> CSV
+      </button>
+      </div>
+    </div>
+    <hr class = m-0>
   </div>
-  <hr />
+  
   <div class="subject-list-content">
     <div class="subject-list-header">
-      <h6>School Year</h6>
-      <div class="row">
-        <div class="col-3">
+
+      <div class="row body-sort">
+        <div class="col-2">
+          <label>School Year</label>
           <select class="form-select custom-select-size" aria-label="Default select example">
             <option selected>Feature Available Soon</option>
             <option value="1">One</option>
@@ -27,28 +39,22 @@
             <option value="3">Three</option>
           </select>
         </div>
-        <div class="col-4" id="flash-messages-container-subject">
-          <!-- {% if flash_message %}
-          <div class="alert alert-{{ flash_message.type }} alert-dismissible fade show" role="alert">
-            <div class="d-flex justify-content-between align-items-center">
-              <span>{{ flash_message.message | safe }}</span>
-              <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
-            </div>
-          </div>
-          {% endif %} -->
-
+        <div class="col-2">
+          <label>Semester</label>
+          <select class="form-select custom-select-size" aria-label="Default select example">
+            <option selected>Feature Available Soon</option>
+            <option value="1">One</option>
+            <option value="2">Two</option>
+            <option value="3">Three</option>
+          </select>
         </div>
-        <div class="col-5 d-flex flex-row-reverse gap-3"> 
-          <button type="button" class="btn btn-primary AddSubjectBtn" data-bs-toggle="modal"
-            data-bs-target="#addFacultyModal"><i class="fa-solid fa-user-plus"></i> Add Subject </button>
-            <button type="button" class="btn btn-secondary import-csv-modal" data-bs-toggle="modal" data-bs-target="#importSubjectCSVModal">
-              <i class="fa-solid fa-file-csv" style="color: #ffffff;"></i> CSV
-          </button>
+        <div class="col-8 d-flex flex-row-reverse gap-3"> 
+          
          </div>
       </div>
     </div>
-    <div class="subject-list-body">
-      <div class="bs-example container subject-list-body table-responsive" data-example-id="striped-table">
+    <div class="subject-list-body-body">
+      <div class="subject-list-body table-responsive" data-example-id="striped-table">
         <table class="table table-hover">
           <thead>
             <tr>
@@ -102,19 +108,27 @@
           <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
         </div>
         <div class="modal-body subject-list-modal-body">
-          <div class="form-group">
-            <label>Subject Code</label>
-            <input type="text" name="subjectCode" class="form-control" placeholder="Enter Code">
+          <div class = "row">
+            <div class="col-6">
+              <div class="form-group">
+                <label>Subject Code</label>
+                <input type="text" name="subjectCode" class="form-control" placeholder="Enter Code">
+              </div>
+            </div>
+            <div class="col-6">
+              <div class="form-group">
+                <label>Section</label>
+                <select name="section" class="form-select" id="Section">
+                  <option value="" disabled selected>Enter Section</option>
+                  {% for section in sectionInfo %}
+                  <option value="{{ section[0] }}">{{ section[0] }}</option>
+                  {% endfor %}
+                </select>
+              </div>
+            </div>
           </div>
-          <div class="form-group">
-            <label>Section</label>
-            <select name="section" class="form-select" id="Section">
-              <option value="" disabled selected>Enter Section</option>
-              {% for section in sectionInfo %}
-              <option value="{{ section[0] }}">{{ section[0] }}</option>
-              {% endfor %}
-            </select>
-          </div>
+          
+        
           <div class="form-group">
             <label>Description</label>
             <input type="text" name="description" class="form-control" placeholder="Enter Description">
@@ -173,21 +187,29 @@
           <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
         </div>
         <div class="modal-body subject-list-modal-body">
-          <div class="form-group">
-            <label for="editCodeInput">Subject Code</label>
-            <input value="" type="text" name="subjectCode" class="form-control" id="editCodeInput">
-            <input type="hidden" name="editCodeInputHidden" id="editCodeInputHidden">
+          <div class="row">
+            <div class="col-6">
+              <div class="form-group">
+                <label for="editCodeInput">Subject Code</label>
+                <input value="" type="text" name="subjectCode" class="form-control" id="editCodeInput">
+                <input type="hidden" name="editCodeInputHidden" id="editCodeInputHidden">
+              </div>
+            </div>
+            <div class="col-6">
+              <div class="form-group">
+                <label for="editSectionInput">Section</label>
+                <select name="section" class="form-select" id="editSectionInput">
+                  <option value="" disabled selected>Select Section</option>
+                  {% for section in sectionInfo %}
+                  <option value="{{ section[0] }}">{{ section[0] }}</option>
+                  {% endfor %}
+                </select>
+                <input type="hidden" name="editSectionInputHidden" id="editSectionInputHidden">
+              </div>
+            </div>
           </div>
-          <div class="form-group">
-            <label for="editSectionInput">Section</label>
-            <select name="section" class="form-select" id="editSectionInput">
-              <option value="" disabled selected>Select Section</option>
-              {% for section in sectionInfo %}
-              <option value="{{ section[0] }}">{{ section[0] }}</option>
-              {% endfor %}
-            </select>
-            <input type="hidden" name="editSectionInputHidden" id="editSectionInputHidden">
-          </div>
+         
+          
           <div class="form-group">
             <label for="editDescriptionInput">Description</label>
             <input value="" type="text" name="description" class="form-control" id="editDescriptionInput">
