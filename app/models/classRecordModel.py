@@ -261,7 +261,17 @@ class ClassRecord:
             return f"Failed to fetch student scores: {str(e)}"
 
 
-
+    @staticmethod
+    def getActivityScores(classID, AssessmentIDs):
+        try:
+            cursor = mysql.connection.cursor()
+            sql = 'SELECT assessmentID, classID, activityName, scoreLimit, score FROM activity WHERE classID = %s AND assessmentID IN ({})'.format(','.join(['%s'] * len(AssessmentIDs)))
+            cursor.execute(sql, (classID,) + tuple(AssessmentIDs))
+            result = cursor.fetchall()
+            cursor.close()
+            return result
+        except Exception as e:
+            return f"Failed to get assessmentID: {str(e)}"
 
 
 

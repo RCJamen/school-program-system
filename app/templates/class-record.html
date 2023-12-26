@@ -107,7 +107,7 @@
                                             {% endfor %}
                                             <td>{{ Student[6] }}</td>
                                             <td>
-                                                <button type="button" class="btn btn-outline-light" data-bs-toggle="modal" data-bs-target="#addScoreModal">
+                                                <button type="button" class="btn btn-outline-light addScore" data-studentid="{{ Student[2]}}" data-classrecordid="{{ ClassRecordID }}" data-bs-toggle="modal" data-bs-target="#addScoreModal">
                                                     <i class="fa-solid fa-plus" style="color: #000000;"></i>
                                                 </button>
                                                 <button type="button" class="btn btn-outline-light">
@@ -489,62 +489,27 @@
                 <div class="modal-body class-record-modal-body">
                     <div class="form-group">
                         <label>Assessment</label>
-                        <select name="Assessment" class="form-select" id="Assessment">
-                            <option value="" disabled selected>Select Assessment:</option>
-                            <option value="None">Exam</option>
-                            <option value="None">Performance Task</option>
-                            <option value="None">Quizzes</option>
+                        <select name="Assessment" class="form-select" id="Assessment" onchange="updateActivityList()">
+                            {% if Assessments|length == 0 %}
+                            <option value="" disabled selected>No Assessments Available.</option>
+                            {% else %}
+                            <option value="" disabled>Create activity for:</option>
+                            {% for Assessment in Assessments %}
+                            <option value="{{Assessment[0]}}">{{Assessment[1]}}</option>
+                            {% endfor %}
+                            {% endif %}
                         </select>
                     </div>
                     <label>Activity List</label>
                     <div class = "activityList">
                         <div class="row">
-
-                        </div>
-                        <div class="row">
                             <div class="col-8">
                                 <div class="form-group">
-                                    <!-- <label></label> -->
-                                    <h3 class="form-control"><strong>Performance Task 1</strong></h3>
-                                </div>
-                            </div>
-                            <div class="col-4">
-                                <div class="form-group">
-                                    <!-- <label></label> -->
-                                    <div class="input-group">
-                                        <input type="text" name="scorelimit" id="score" class="form-control" placeholder="Score" maxlength="3">
-                                        <span class="input-group-text">/50</span>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="row">
-                            <div class="col-8">
-                                <div class="form-group">
-                                    <!-- <label></label> -->
-                                    <h3 class="form-control"><strong>Oral Recitation Science</strong></h3>
-                                </div>
-                            </div>
-                            <div class="col-4">
-                                <div class="form-group">
-                                    <!-- <label></label> -->
-                                    <div class="input-group">
-                                        <input type="text" name="scorelimit" id="score" class="form-control" placeholder="Score" maxlength="3">
-                                        <span class="input-group-text">/50</span>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="row">
-                            <div class="col-8">
-                                <div class="form-group">
-                                    <!-- <label></label> -->
                                     <h3 class="form-control"><strong>Examing</strong></h3>
                                 </div>
                             </div>
                             <div class="col-4">
                                 <div class="form-group">
-                                    <!-- <label></label> -->
                                     <div class="input-group">
                                         <input type="text" name="scorelimit" id="score" class="form-control" placeholder="Score" maxlength="3">
                                         <span class="input-group-text">/50</span>
@@ -553,7 +518,6 @@
                             </div>
                         </div>
                     </div>
-
                 </div>
                 <div class="modal-footer class-record-modal-footer">
                     <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">
