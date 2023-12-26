@@ -6,15 +6,17 @@
     padding: 24px 32px 24px 32px;
 }
 
-.subject-list-body .subject-list-table .table {
-    width: 96.5%;
-    margin-left: 21px;
-}
 
 .subject-list-modal-body .form-group {
     margin-bottom: 24px;
 
 }
+.subject-list-body {
+  padding-left: 32px;
+  padding-right: 32px;
+  
+}
+
 
 .subject-list-modal-body {
     margin: 16px
@@ -38,16 +40,44 @@
 }
 
 .AddSubjectBtn {
-    background-color: rgba(164, 29, 33, 1) !important;
+    background-color: #CF252A !important;
     color: #ffffff !important;
-    border-color: rgba(164, 29, 33, 1) !important
+    border-color: #CF252A !important
 }
-
+.row.body-sort .form-select{
+    font-size: 14px;
+  }
 .AddSubject {
-    background-color: rgba(164, 29, 33, 1) !important;
+    background-color: #CF252A !important;
     color: #ffffff
         /* Text color, assuming you want it to be white */
         !important;
-    border-color: rgba(164, 29, 33, 1) !important
+    border-color: #CF252A !important
         /* Add any other styles you need */
 }
+.sticky-subject-title{
+    position: -webkit-sticky; /* For Safari */
+    position: sticky;
+    top: 58px;
+    background-color: white;
+  }
+table {
+  
+    border-spacing:0; /* Removes the cell spacing via CSS */
+    border-collapse: collapse; /* Optional - if you don't want to have double border where cells touch */
+   }
+  
+  td {
+    font-size: 14px;
+    word-wrap: break-word;
+  }
+  
+  th {
+    font-size: 14px;
+  
+  }
+  
+  .table td{
+    padding-top: 0px !important;
+    padding-bottom: 0px !important; /* Adjust as needed */
+  }

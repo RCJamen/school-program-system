@@ -10,7 +10,15 @@
     width: 96.5%;
     margin-left: 21px;
 }
+.subject-handled-body {
+    padding-left: 32px;
+    padding-right: 32px;
+    
+  }
 
+  .row.body-sort .form-select{
+    font-size: 14px;
+  }
 
 .subHandled-modal-body .form-group {
     margin-bottom: 24px;
@@ -19,7 +27,12 @@
 .subHandled-modal-body {
     margin: 16px
 }
-
+.sticky-subject-handled{
+    position: -webkit-sticky; /* For Safari */
+    position: sticky;
+    top: 58px;
+    background-color: white;
+  }
 .subHandled-modal-header {
     margin-left: 16px;
     margin-right: 16px
@@ -36,3 +49,24 @@
     padding-left: 16px;
     border-radius: 16px;
 }
+
+table {
+  
+    border-spacing:0; /* Removes the cell spacing via CSS */
+    border-collapse: collapse; /* Optional - if you don't want to have double border where cells touch */
+   }
+  
+  td {
+    font-size: 14px;
+    word-wrap: break-word;
+  }
+  
+  th {
+    font-size: 14px;
+  
+  }
+  
+  .table td{
+    padding-top: 0px !important;
+    padding-bottom: 0px !important; /* Adjust as needed */
+  }

@@ -8,37 +8,39 @@ body {
   margin: 0;
 }
 
-.note {
-  color: #777;
-  font-size: 0.85em;
-}
-
 .faculty-title {
   padding: 24px 32px 24px 32px;
+  position: -webkit-sticky; /* For Safari */
+  position: sticky;
+  top: 50px;
+}
+
+.sticky-faculty-title{
+  position: -webkit-sticky; /* For Safari */
+  position: sticky;
+  top: 58px;
+  background-color: white;
 }
 
 .faculty-header {
-  padding: 24px 32px 24px 32px;
+  padding: 24px 32px 0px 32px;
 }
 
-.faculty-body .faculty-table .table {
-  width: 96.5%;
-  margin-left: 21px;
-}
+
 
 
 .AddFacultyBtn {
-  background-color: rgba(164, 29, 33, 1) !important;
+  background-color: #CF252A !important;
   color: #ffffff !important;
-  border-color: rgba(164, 29, 33, 1) !important
+  border-color: #CF252A  !important
 }
 
 .AddFaculty {
-  background-color: rgba(164, 29, 33, 1) !important;
+  background-color: #CF252A !important;
   color: #ffffff
     /* Text color, assuming you want it to be white */
     !important;
-  border-color: rgba(164, 29, 33, 1) !important
+  border-color: #CF252A !important
     /* Add any other styles you need */
 }
 
@@ -46,7 +48,26 @@ body {
   margin-bottom: 24px;
 
 }
+table {
+  
+  border-spacing:0; /* Removes the cell spacing via CSS */
+  border-collapse: collapse; /* Optional - if you don't want to have double border where cells touch */
+ }
 
+td {
+  font-size: 14px;
+  word-wrap: break-word;
+}
+
+th {
+  font-size: 14px;
+
+}
+
+.table td{
+  padding-top: 0px !important;
+  padding-bottom: 0px !important; /* Adjust as needed */
+}
 .faculty-modal-body {
   margin: 16px
 }
@@ -59,6 +80,12 @@ body {
 .faculty-modal-footer {
   margin-left: 16px;
   margin-right: 16px
+}
+
+.faculty-table, .academic-table {
+  padding-left: 32px;
+  padding-right: 32px;
+  
 }
 
 .faculty-modal-body .form-group input.form-control {
@@ -74,16 +101,22 @@ body {
   align-items: center;
   background-color: #333333;
   color: white;
-  height: 24vh;
+  height: 18vh;
   width: 100%;
 }
 
+.row.body-sort .form-select{
+  font-size: 14px;
+}
 .academic-modal-body .row.body-header {
   margin: 0px !important
 }
 
 
+.row.body-sort{
+  padding: 24px 32px 12px 32px;
 
+}
 
 .row.body-header .col-3 .col-3-content {
   display: flex;
@@ -94,32 +127,6 @@ body {
   margin-left: 30px
 }
 
-.row.body-sort {
-  padding: 24px 72px 16px 78px;
-}
-
-.row.body-sort .col-2.school-year {
-  margin-right: 24px;
-}
-
-.profile-picture {
-  width: 6.7vw;
-  height: 14.7vh;
-  overflow: hidden;
-  border: 2px solid #ccc;
-}
-
-.profile-picture img {
-  width: 100%;
-  height: 100%;
-  object-fit: cover;
-}
-
-.col-9 .academicEditBtn {
-  margin-right: 68px;
-}
-
-
 
 .modal-body.academic-modal-body {
   padding: 0;
@@ -127,14 +134,13 @@ body {
 }
 
 
-
 /* Add styles for the horizontal line and red underline */
 .nav-underline {
   position: relative;
   border-bottom: 1px solid #888;
   /* Horizontal line color */
-  margin-left: 68px;
-  margin-right: 68px;
+  margin-left: 32px;
+  margin-right: 32px;
 }
 
 .nav-link {
@@ -171,6 +177,6 @@ body {
 }
 
 .row.body-header .col-12 .profile-content{
-  margin-left: 72px;
-  margin-right: 72px
+  margin-left: 24px;
+  margin-right: 24px
 }
