@@ -91,12 +91,12 @@
     background-color: white;
     position: -webkit-sticky;
     position: sticky;
-    top: 40px; 
+    top: 41px; 
   }
   .sticky-thead {
     position: -webkit-sticky;
     position: sticky;
-    top: 105px;
+    top: 106px;
     background-color: black !important;
     z-index: 1000; /* Ensure the sticky header appears above other elements */
 }
