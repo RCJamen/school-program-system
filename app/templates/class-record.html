@@ -79,7 +79,9 @@
                                     {% if Assessments|length == 0 %}
                                     {% else %}
                                         {% for Assessment in Assessments %}
-                                            <th class = "header"scope = "col">{{ Assessment[1] }} ({{ Assessment[2] }}%)</th>
+                                        {% set words = Assessment[1].split() %}
+                                            <th class = "header" scope = "col" data-bs-toggle="tooltip" data-bs-placement="top" title="{{ Assessment[1] }} ({{ Assessment[2] }}%)">
+                                                {{ words[0][:1] }}{% if words|length > 1 %}{{ words[1][:1] }}{% endif %} ({{ Assessment[2] }}%)</th>
                                         {% endfor %}
                                     {% endif %}
                                     <th class = "header" scope = "col">Total Grade</th>
