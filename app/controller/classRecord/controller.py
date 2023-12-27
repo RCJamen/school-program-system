@@ -21,14 +21,30 @@ def index(classrecordid):
     ClassDetails = ClassRecord.getClassRecordData(classrecordid)
     Students = Utils.sortStudent(ClassRecord.getClassRecordStudents(classrecordid))
     Assessments = ClassRecord.getGradeDistribution(classrecordid)
+    # print(Assessments)
     assessmentIDs = Utils.getAssessmentID(Assessments)
     finalscores = []
     for assessment_id in assessmentIDs:
         scores_for_assessment = ClassRecord.get_student_scores(classrecordid, assessment_id)
         finalscores.extend(scores_for_assessment)
+
+    assessment_activities = {}
+    for assessment_id in assessmentIDs:
+        print(assessment_id)
+        # Fetch activities for the current assessment
+        activities = ClassRecord.get_activities_for_assessment(assessment_id)
+
+        assessment_activities[assessment_id] = activities
+
+        # Print activities for debugging
+        # for entry in activities:
+        #     print(entry)
+
+    # Print all activities outside the loop for debugging
+    print(assessment_activities)
     flash_message = session.get('flash_message')
     session.pop('flash_message', None)
-    return render_template("class-record.html", ClassRecordID=classrecordid, ClassDetails=ClassDetails, Students=Students, Assessments=Assessments, flash_message=flash_message, finalscores=finalscores)
+    return render_template("class-record.html", ClassRecordID=classrecordid, ClassDetails=ClassDetails, Students=Students, Assessments=Assessments, flash_message=flash_message, finalscores=finalscores, assessment_activities=assessment_activities, activities=activities)
 
 
 @classRecord.route("/<string:classrecordid>/create_student", methods =['GET', 'POST'])
@@ -159,3 +175,15 @@ def get_indiv_scores (student_id, class_record_id):
     ActivityScores = ClassRecord.getActivityScores(classID, AssessmentIDs)
     print(ActivityScores)
     return jsonify(ActivityScores)
+
+
+@classRecord.route("/get_activities/<string:assessment_id>", methods=['GET'])
+def get_activities(assessment_id):
+    try:
+        # print("assessment", assessment_id)
+        activities = ClassRecord.get_activities_for_assessment(assessment_id)
+        # print("act", activities)
+        return jsonify({'activities': activities})
+    except Exception as e:
+        # Handle exceptions and return an appropriate response
+        return jsonify({'error': str(e)}), 500

@@ -491,36 +491,22 @@
                 </div>
                 <div class="modal-body class-record-modal-body">
                     <div class="form-group">
-                        <label>Assessment</label>
-                        <select name="Assessment" class="form-select" id="Assessment" onchange="updateActivityList()">
+                        <label>Select Assessment</label>
+                        <select name="Assessment" class="form-select" id="Assessment_Score" onchange="updateActivityList()">
                             {% if Assessments|length == 0 %}
-                            <option value="" disabled selected>No Assessments Available.</option>
+                                <option value="" disabled selected>No Assessments Available.</option>
                             {% else %}
-                            <option value="" disabled>Create activity for:</option>
-                            {% for Assessment in Assessments %}
-                            <option value="{{Assessment[0]}}">{{Assessment[1]}}</option>
-                            {% endfor %}
+                            <option value="" disabled selected>Add Score for:</option>
+                                {% for Assessment in Assessments %}
+                                    <option value="{{Assessment[0]}}">{{Assessment[1]}}</option>
+                                {% endfor %}
                             {% endif %}
                         </select>
                     </div>
                     <label>Activity List</label>
                     <div class = "activityList">
-                        <div class="row">
-                            <div class="col-8">
-                                <div class="form-group">
-                                    <h3 class="form-control"><strong>Examing</strong></h3>
-                                </div>
-                            </div>
-                            <div class="col-4">
-                                <div class="form-group">
-                                    <div class="input-group">
-                                        <input type="text" name="scorelimit" id="score" class="form-control" placeholder="Score" maxlength="3">
-                                        <span class="input-group-text">/50</span>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
+                        <!-- updateActivityList() append activities for each assessment -->
+                    </div>  
                 </div>
                 <div class="modal-footer class-record-modal-footer">
                     <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">

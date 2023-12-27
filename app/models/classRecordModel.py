@@ -274,6 +274,32 @@ class ClassRecord:
             return f"Failed to get assessmentID: {str(e)}"
 
 
+    def get_activities_for_assessment(assessment_id):
+        try:
+            cursor = mysql.connection.cursor()
+
+            sql = '''
+                SELECT DISTINCT
+                    activity.assessmentID,
+                    activity.activityName,
+                    activity.scoreLimit
+                FROM
+                    activity
+                WHERE
+                    activity.assessmentID = %s
+            '''
+
+            cursor.execute(sql, (assessment_id,))
+            activities = cursor.fetchall()
+
+            cursor.close()
+
+            print('Fetched activities:', activities)  # Add this line for debugging
+
+            return activities
+        except Exception as e:
+            print(f"Error in get_activities_for_assessment: {e}")
+            return []
 
 
 
