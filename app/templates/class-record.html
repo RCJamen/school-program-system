@@ -11,21 +11,21 @@
 {% block pages %}
 <meta name="csrf-token" content="{{ csrf_token() }}">
 <div class="classRecord-container">
-    <div class="classRecord-title pb-1">
+    <div class="classRecord-title d-flex flex-column justify-content-evenly">
         <div class="row">
             <div class="col-11">
-                <h1><b>Class Record:</b> {{ClassDetails[0]}} - {{ClassDetails[2]}}</h1>
+                <h2 class = "m-0"><b>Class Record:</b> {{ClassDetails[0]}} - {{ClassDetails[2]}}</h2>
             </div>
             <div class="col-1">
                 <a href="/subjects-handled" alt="Back to Subject Handled">
                     <button type="button" class="btn btn btn-outline-secondary">
-                        <i class="fa-solid fa-arrow-left-long fa-3x" style="color: #000000;"></i>
+                        <i class="fa-solid fa-arrow-left-long btn-sm" style="color: #000000;"></i>
                     </button>
                 </a>
             </div>
         </div>
-        <h3><b>Section:</b> {{ClassDetails[1]}} - {{session['name']}}</h3>
-        <p>
+        <h4 class = "m-0"><b>Section:</b> {{ClassDetails[1]}} - {{session['name']}}</h4>
+        <h6 class = "m-0">
             <b>School Year:</b> {{ClassDetails[5]}},
             {% if ClassDetails[4] == '1' %}
             <b>Semester:</b> {{ClassDetails[4]}}st,
@@ -35,11 +35,11 @@
             <b>Semester:</b> Summer,
             {% endif %}
             <b>Units:</b> {{ClassDetails[3]}}
-        </p>
+        </h6>
     </div>
-    <hr class="pt-3">
+    <hr class="m-0">
     <div class="classRecord-content">
-        <ul class="nav nav-tabs px-4" id="myTab" role="tablist">
+        <ul class="nav nav-tabs" id="myTab" role="tablist">
             <li class="nav-item" role="presentation">
               <button class="nav-link active" id="classrecord-tab" data-bs-toggle="tab" data-bs-target="#classrecord" type="button" role="tab" aria-controls="classrecord" aria-selected="true">Class Record</button>
             </li>
@@ -54,73 +54,79 @@
               </li>
         </ul>
 
-        <div class="tab-content px-5 py-4">
+        <div class="tab-content">
             <div class="tab-pane active" id="classrecord" role="tabpanel" aria-labelledby="classrecord-tab">
                 <div class="classRecord-header">
-                    <div class="row">
-                        <div class="col-3 d-flex gap-3">
-                            <button type="button" class="btn btn-secondary BtnStyle AddStudentBtn ms-3" data-bs-toggle="modal" data-bs-target="#addStudentModal">
-                                <i class="fa-solid fa-user-plus"></i> Add Student
-                            </button>
-                            <button type="button" class="btn btn-secondary import-csv-modal BtnStyle" data-bs-toggle="modal" data-bs-target="#importCSVModal">
-                                <i class="fa-solid fa-file-csv" style="color: #ffffff;"></i> Import CSV
-                            </button>
-                        </div>
-                        <div class = "col-2">
-                        </div>
+                   <div class="d-flex gap-3">
+                        <button type="button" class="btn btn-secondary BtnStyle AddStudentBtn btn-sm" data-bs-toggle="modal" data-bs-target="#addStudentModal">
+                            <i class="fa-solid fa-user-plus"></i> Add Student
+                        </button>
+                        <button type="button" class="btn btn-secondary import-csv-modal BtnStyle btn-sm" data-bs-toggle="modal" data-bs-target="#importCSVModal">
+                            <i class="fa-solid fa-file-csv" style="color: #ffffff;"></i> Import CSV
+                        </button>
                     </div>
                 </div>
-                <div class="table-container d-flex pb-4">
-                    <div class="classRecord-body">
+                <div class="table-container m-0 p-0">
+                    <div class="class-record-table" data-example-id="striped-table">
                         <table class="table table-hover" id="dynamic-table">
-                            <thead>
+                            <thead class = "sticky-thead">
                                 <tr>
-                                    <th>#</th>
-                                    <th>Student ID</th>
-                                    <th>First Name</th>
-                                    <th>Last Name</th>
-                                    <th>Course Code</th>
+                                    <th class = "header" scope = "col">#</th>
+                                    <th class = "header" scope = "col">Student ID</th>
+                                    <th class = "header"scope = "col">First Name</th>
+                                    <th class = "header"scope = "col">Last Name</th>
+                                    <th class = "header"scope = "col">Course Code</th>
                                     {% if Assessments|length == 0 %}
                                     {% else %}
                                         {% for Assessment in Assessments %}
-                                        <th>{{Assessment[0]}}({{Assessment[1]}}%)</th>
+                                        {% set words = Assessment[1].split() %}
+                                            <th class = "header" scope = "col" data-bs-toggle="tooltip" data-bs-placement="top" title="{{ Assessment[1] }} ({{ Assessment[2] }}%)">
+                                                {{ words[0][:1] }}{% if words|length > 1 %}{{ words[1][:1] }}{% endif %} ({{ Assessment[2] }}%)</th>
                                         {% endfor %}
                                     {% endif %}
-                                    <th>Total Grade</th>
-                                    <th>Action</th>
+                                    <th class = "header" scope = "col">Total Grade</th>
+                                    <th class = "header" scope = "col">Action</th>
                                 </tr>
                             </thead>
                             <tbody>
                                 {% if Students|length == 0 %}
-                                <td colspan="8" class="text-center">No Students Entrolled on This Class.</td>
+                                    <td colspan="8" class="text-center">No Students Enrolled in This Class.</td>
                                 {% else %}
-                                {% for Student in Students %}
-                                <tr>
-                                    <td>{{Student[1]}}</td>
-                                    <td>{{Student[2]}}</td>
-                                    <td>{{Student[3]}}</td>
-                                    <td>{{Student[4]}}</td>
-                                    <td>{{Student[5]}}</td>
-                                    <td></td>
-                                    <td></td>
-                                    <td>{{Student[6]}}</td>
-                                    <td>
-                                        <button type="button" class="btn btn-outline-light">
-                                            <i class="fa-solid fa-plus" style="color: #000000;"></i>
-                                        </button>
-                                        <button type="button" class="btn btn-outline-light">
-                                            <i class="fa-solid fa-bell" style="color: #000000;"></i>
-                                        </button>
-                                        <button type="button" class="btn btn-outline-light delete-student" data-studentid="{{Student[2]}}" data-firstname="{{Student[3]}}" data-lastname="{{Student[4]}}" data-classrecordid="{{ClassRecordID}}" data-bs-toggle="modal" data-bs-target="#askDelete">
-                                            <i class="fa-solid fa-trash" style="color: #000000;"></i>
-                                        </button>
-                                    </td>
-                                </tr>
-                                {% endfor %} {% endif %}
+                                    {% for Student in Students %}
+                                        <tr>
+                                            <td scope = "row">{{ Student[1] }}</td>
+                                            <td scope = "row"><mark>{{ Student[2] }}</mark></td>
+                                            <td>{{ Student[3] }}</td>
+                                            <td>{{ Student[4] }}</td>
+                                            <td>{{ Student[5] }}</td>
+                                            {% for Assessment in Assessments %}
+                                                {% for row in finalscores %}
+                                                    {% if row[0] == Student[2] and row[5] == Assessment[0] %}
+                                                        <!-- {% print (row[5], Assessment[0])%} -->
+                                                        <td>{{ row[3] }}</td>
+                                                    {% endif %}
+                                                {% endfor %}
+                                            {% endfor %}
+                                            <td>{{ Student[6] }}</td>
+                                            <td>
+                                                <button type="button" class="btn btn-outline-light addScore" data-studentid="{{ Student[2]}}" data-classrecordid="{{ ClassRecordID }}" data-bs-toggle="modal" data-bs-target="#addScoreModal">
+                                                    <i class="fa-solid fa-plus" style="color: #000000;"></i>
+                                                </button>
+                                                <button type="button" class="btn btn-outline-light">
+                                                    <i class="fa-solid fa-bell" style="color: #000000;"></i>
+                                                </button>
+                                                <button type="button" class="btn btn-outline-light delete-student" data-studentid="{{ Student[2] }}" data-firstname="{{ Student[3] }}" data-lastname="{{ Student[4] }}" data-classrecordid="{{ ClassRecordID }}" data-bs-toggle="modal" data-bs-target="#askDelete" onclick="showFinalScores(this)"">
+                                                    <i class="fa-solid fa-trash" style="color: #000000;"></i>
+                                                </button>
+                                            </td>
+                                        </tr>
+                                    {% endfor %}
+                                {% endif %}
                             </tbody>
                         </table>
                     </div>
                 </div>
+                <hr class="divider">
             </div>
             <div class="tab-pane" id="gradedistribution" role="tabpanel" aria-labelledby="gradedistribution-tab">
                 {% if Students|length == 0 %}
@@ -151,10 +157,10 @@
                             <td colspan="3" class="text-center">No Assessments Available.</td>
                             {% else %} {% for Assessment in Assessments %}
                             <tr>
-                                <td>{{Assessment[0]}}</td>
-                                <td>{{Assessment[1]}}%</td>
+                                <td>{{Assessment[1]}}</td>
+                                <td>{{Assessment[2]}}%</td>
                                 <td>
-                                    <button type="button" class="btn btn-outline-light delete-assessment" data-assessmentname="{{Assessment[0]}}" data-classrecordid="{{ClassRecordID}}" data-bs-toggle="modal" data-bs-target="#askDeleteAssessment">
+                                    <button type="button" class="btn btn-outline-light delete-assessment" data-assessmentname="{{Assessment[1]}}" data-classrecordid="{{ClassRecordID}}" data-bs-toggle="modal" data-bs-target="#askDeleteAssessment">
                                         <i class="fa-solid fa-trash" style="color: #000000;"></i>
                                     </button>
                                 </td>
@@ -428,7 +434,7 @@
 <div class="modal" id="addActivity" data-bs-backdrop="false" tabindex="-1" role="dialog"
     aria-labelledby="addActivityModal" aria-hidden="true">
     <div class="modal-dialog" role="document">
-        <form action="" method="POST">
+        <form action="{{ url_for('classRecord.create_activity', classrecordid=ClassRecordID) }}" method="POST">
             <input type="hidden" name="csrf_token" value="{{ csrf_token()}}">
             <div class="modal-content">
                 <div class="modal-header class-record-modal-header">
@@ -437,12 +443,27 @@
                 </div>
                 <div class="modal-body class-record-modal-body">
                     <div class="form-group">
-                        <label>Activity Name</label>
-                        <input type="text" name="activityname" id="name" class="form-control" placeholder="Enter Activity">
+                        <label>Assessment</label>
+                        <select name="Assessment" class="form-select" id="Assessment">
+                            <option value="" disabled selected>Create activity for:</option>
+                            {% for Assessment in Assessments %}
+                            <option value="{{Assessment[0]}}">{{Assessment[1]}}</option>
+                            {% endfor %}
+                        </select>
                     </div>
-                    <div class="form-group">
-                        <label>Score Limit</label>
-                        <input type="text" name="scorelimit" id="score" class="form-control" placeholder="Enter Score Limit">
+                    <div class="row">
+                        <div class="col-7">
+                            <div class="form-group">
+                                <label>Activity</label>
+                                <input type="text" name="activityname" id="activityName" class="form-control" placeholder="Activity Name">
+                            </div>
+                        </div>
+                        <div class="col-5">
+                            <div class="form-group">
+                                <label>Score Limit</label>
+                                <input type="text" name="scorelimit" id="score" class="form-control" placeholder="Max Score">
+                            </div>
+                        </div>
                     </div>
                 </div>
                 <div class="modal-footer class-record-modal-footer">
@@ -458,6 +479,47 @@
     </div>
 </div>
 
+<div class="modal" id="addScoreModal" data-bs-backdrop="false" tabindex="-1" role="dialog"
+    aria-labelledby="addActivityModal" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <form action="" method="POST">
+            <input type="hidden" name="csrf_token" value="{{ csrf_token()}}">
+            <div class="modal-content">
+                <div class="modal-header class-record-modal-header">
+                    <h5 class="modal-title">Add Score</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body class-record-modal-body">
+                    <div class="form-group">
+                        <label>Select Assessment</label>
+                        <select name="Assessment" class="form-select" id="Assessment_Score" onchange="updateActivityList()">
+                            {% if Assessments|length == 0 %}
+                                <option value="" disabled selected>No Assessments Available.</option>
+                            {% else %}
+                            <option value="" disabled selected>Add Score for:</option>
+                                {% for Assessment in Assessments %}
+                                    <option value="{{Assessment[0]}}">{{Assessment[1]}}</option>
+                                {% endfor %}
+                            {% endif %}
+                        </select>
+                    </div>
+                    <label>Activity List</label>
+                    <div class = "activityList">
+                        <!-- updateActivityList() append activities for each assessment -->
+                    </div>  
+                </div>
+                <div class="modal-footer class-record-modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">
+                        <i class="fa-solid fa-xmark" style="color: #ffffff;"></i> Close
+                    </button>
+                    <button type="submit" id="submit" class="btn btn-success" data-bs-dismiss="modal"> <i
+                            class="fa-solid fa-user-pen"></i>Add Score
+                    </button>
+                </div>
+            </div>
+        </form>
+    </div>
+</div>
 {% endblock %}
 
 {% block pagescript %}

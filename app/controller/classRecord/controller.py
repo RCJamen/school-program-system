@@ -21,9 +21,30 @@ def index(classrecordid):
     ClassDetails = ClassRecord.getClassRecordData(classrecordid)
     Students = Utils.sortStudent(ClassRecord.getClassRecordStudents(classrecordid))
     Assessments = ClassRecord.getGradeDistribution(classrecordid)
+    # print(Assessments)
+    assessmentIDs = Utils.getAssessmentID(Assessments)
+    finalscores = []
+    for assessment_id in assessmentIDs:
+        scores_for_assessment = ClassRecord.get_student_scores(classrecordid, assessment_id)
+        finalscores.extend(scores_for_assessment)
+
+    assessment_activities = {}
+    for assessment_id in assessmentIDs:
+        print(assessment_id)
+        # Fetch activities for the current assessment
+        activities = ClassRecord.get_activities_for_assessment(assessment_id)
+
+        assessment_activities[assessment_id] = activities
+
+        # Print activities for debugging
+        # for entry in activities:
+        #     print(entry)
+
+    # Print all activities outside the loop for debugging
+    print(assessment_activities)
     flash_message = session.get('flash_message')
     session.pop('flash_message', None)
-    return render_template("class-record.html", ClassRecordID=classrecordid, ClassDetails=ClassDetails, Students=Students, Assessments=Assessments, flash_message=flash_message)
+    return render_template("class-record.html", ClassRecordID=classrecordid, ClassDetails=ClassDetails, Students=Students, Assessments=Assessments, flash_message=flash_message, finalscores=finalscores, assessment_activities=assessment_activities, activities=activities)
 
 
 @classRecord.route("/<string:classrecordid>/create_student", methods =['GET', 'POST'])
@@ -72,7 +93,7 @@ def create_grade_distribution(classrecordid):
         if "success" in result:
             asessmentID = ClassRecord.getAssessmentID(classrecordid, name)
             studentsID = Utils.getClassID(ClassRecord.getClassRecordStudents(classrecordid))
-            ClassRecord.postCreateActivity(asessmentID, studentsID)
+            ClassRecord.postCreateFinalScore(asessmentID, studentsID)
             credentials_message = f"<br>Name: <strong>{name}</strong><br>Percentage: <strong>{percentage}</strong>"
             flash_message = {"type": "success", "message": f"Assessment Created successfully:{credentials_message}"}
             session['flash_message'] = flash_message
@@ -122,142 +143,47 @@ def download_classrecord_file():
     file_path = current_app.root_path + '/static/csv-files/class-record.csv'
     return send_file(file_path, as_attachment=True, download_name='class-record.csv')
 
-
-# @classRecord.route("/grade_distribution/delete_assessment/<string:assessmentid>/<string:name>", methods=['POST'])
-# def delete_grade_distribution(assessmentid, name):
-#     try:
-#         ClassDetails = session.get('ClassDetails', None)
-#         subject_code, description, section_code, credits, sem, school_year = ClassDetails
-#         result = ClassRecord.deleteGradeAssessment(subject_code, section_code, school_year, sem, assessmentid)
-#         ClassRecord.deleteAssessmentTable(subject_code, section_code, school_year, sem, name)
-#         flash_message = {"type": "success", "message": f"{result}"}
-#         session['flash_message'] = flash_message
-#         return jsonify({'success': True, 'message': 'Assessment Deleted Successfully', 'flash_message': flash_message})
-#     except Exception as e:
-#         return jsonify({'success': False, 'error': str(e)})
-
-
-# @classRecord.route("/class_record/<string:assessment>")
-# def assessment_record (assessment):
-#     ClassDetails = session.get('ClassDetails', None)
-#     subject_code, description, section_code, credits, sem, school_year = ClassDetails
-#     session['Assessment'] = assessment
-#     Name = assessment.replace('_', ' ')
-#     Assessments = ClassRecord.getAssessmentList(subject_code, section_code, school_year, sem)
-#     Students = ClassRecord.getStudentsInAssessment(subject_code, section_code, school_year, sem, assessment)
-#     Tables = ClassRecord.getAssessmentColumns(subject_code, section_code, school_year, sem, assessment)
-#     flash_message = session.pop('flash_message', None)
-#     return render_template("assessment-table.html", Name=Name, ClassDetails=ClassDetails, Assessments=Assessments, Students=Students, Tables=Tables, flash_message=flash_message)
+@classRecord.route("/<string:classrecordid>/create_activity", methods=['POST','GET'])
+def create_activity (classrecordid):
+    form = activityForm(request.form)
+    if request.method == "POST" and form.validate():
+        assessmentID = form.Assessment.data
+        activityname = form.activityname.data
+        scorelimit = form.scorelimit.data
+        studentsID = Utils.getClassID(ClassRecord.getClassRecordStudents(classrecordid))
+        result = ClassRecord.addActivity(assessmentID, activityname, scorelimit, studentsID)
+        if "success" in result:
+            credentials_message = f"<br>Activity Name: <strong>{activityname}</strong><br>Score Limit: <strong>{scorelimit}</strong>"
+            flash_message = {"type": "success", "message": f"Activity Created successfully:{credentials_message}"}
+            session['flash_message'] = flash_message
+        else:
+            flash_message = {"type": "danger", "message": f"Failed to create Assessment: {result}"}
+            session['flash_message'] = flash_message
+        return redirect(url_for(".index", classrecordid=classrecordid))
+    else:
+        flash_message = {"type": "danger", "message": f"Failed to Add Activity. Please check the form for errors."}
+        session['flash_message'] = flash_message
+        return redirect(url_for(".index", classrecordid=classrecordid))
 
 
-# @classRecord.route("/class_record/assessment/create_activity", methods=['POST','GET'])
-# def create_activity ():
-#     form = activityForm(request.form)
-#     ClassDetails = session.get('ClassDetails', None)
-#     subject_code, description, section_code, credits, sem, school_year = ClassDetails
-#     assessment = session.pop('Assessment', None)
-#     if request.method == "POST" and form.validate():
-#         activityname = form.activityname.data
-#         scorelimit = form.scorelimit.data
-#         name = activityname.replace(' ', '_')
-#         print(name)
-
-#         result = ClassRecord.addAssessmentActivity(subject_code, section_code, school_year, sem, assessment, name, scorelimit)
-#         if "success" in result:
-#             credentials_message = f"<br>Activity Name: <strong>{activityname}</strong><br>Score Limit: <strong>{scorelimit}</strong>"
-#             flash_message = {"type": "success", "message": f"Activity Created successfully:{credentials_message}"}
-#             session['flash_message'] = flash_message
-#         else:
-#             flash_message = {"type": "danger", "message": f"Failed to create Assessment: {result}"}
-#             session['flash_message'] = flash_message
-#         return redirect(url_for(".assessment_record", assessment=assessment, message=flash_message))
-#     else:
-#         flash_message = {"type": "danger", "message": f"Failed to Add Activity. Please check the form for errors."}
-#         session['flash_message'] = flash_message
-#         return redirect(url_for(".assessment_record", assessment=assessment, message=flash_message))
+@classRecord.route("/get_modal_data/<string:class_record_id>/<string:student_id>", methods =['GET'])
+def get_indiv_scores (student_id, class_record_id):
+    print(student_id, class_record_id)
+    classID = ClassRecord.getstudentclassID(class_record_id, student_id)
+    Assessments = ClassRecord.getGradeDistribution(class_record_id)
+    AssessmentIDs = Utils.getAssessmentID(Assessments)
+    ActivityScores = ClassRecord.getActivityScores(classID, AssessmentIDs)
+    print(ActivityScores)
+    return jsonify(ActivityScores)
 
 
-
-
-
-
-# @classRecord.route('/class_record/<string:subject_code>/<string:description>/<string:section_code>/<string:credits>/<string:sem>/<string:school_year>', methods =['GET', 'POST'])
-# def index(subject_code, section_code, description, credits ,sem, school_year):
-#     ClassDetails = [subject_code, description, section_code, credits, sem, school_year]
-#     ClassRecord.createClassRecordTable(subject_code, section_code, school_year, sem)
-#     ClassRecord.createGradeDistributionTable(subject_code, section_code, school_year, sem)
-#     Students = ClassRecord.getStudents(subject_code, section_code, school_year, sem)
-#     GradeDistributions = ClassRecord.getGradeDistribution(subject_code, section_code, school_year, sem)
-#     Assessments = ClassRecord.getAssessmentList(subject_code, section_code, school_year, sem)
-#     session['ClassDetails'] = ClassDetails
-#     flash_message = session.pop('flash_message', None)
-#     return render_template("class-record.html", ClassDetails=ClassDetails, Students=Students, GradeDistributions= GradeDistributions, Assessments=Assessments, flash_message=flash_message)
-
-
-# @classRecord.route("/class_record/create_student", methods=['POST','GET'])
-# def create_student():
-#     form = classRecordForm(request.form)
-#     ClassDetails = session.get('ClassDetails', None)
-#     subject_code, description, section_code, credits, sem, school_year = ClassDetails
-
-#     if request.method == "POST" and form.validate():
-#         studentID = form.studentID.data
-#         firstname = form.firstname.data
-#         lastname = form.lastname.data
-#         coursecode = form.coursecode.data
-#         email = form.email.data
-
-#         result = ClassRecord.addStudent(subject_code, section_code, school_year, sem, studentID, firstname, lastname, coursecode, email)
-#         if "success" in result:
-#             credentials_message = f"<br>Student ID: <strong>{studentID}</strong><br>First Name: <strong>{firstname}</strong><br> Last Name: <strong>{lastname}</strong><br>Course Code: <strong>{coursecode}</strong><br>Email: <strong>{email}</strong>"
-#             flash_message = {"type": "success", "message": f"Subject created successfully:{credentials_message}"}
-#             session['flash_message'] = flash_message
-#         else:
-#             flash_message = {"type": "danger", "message": f"Failed to create Subject: {result}"}
-#             session['flash_message'] = flash_message
-#         return redirect(url_for(".index", subject_code=subject_code, description=description, section_code=section_code, credits=credits, sem=sem, school_year=school_year, message=flash_message))
-#     else:
-#         flash_message = {"type": "danger", "message": f"Failed to create Student. Please check the form for errors in the following:<br>* Student ID must be XXXX-XXXX<br>* Does not Accept Numericals in First Name and Last Name<br>* Only Accepts MSU-IIT Google Email"}
-#         session['flash_message'] = flash_message
-#         return redirect(url_for(".index", subject_code=subject_code, description=description, section_code=section_code, credits=credits, sem=sem, school_year=school_year, message=flash_message))
-
-
-
-# @classRecord.route("/class_record/delete_student/<string:studentID>", methods=['POST'])
-# def delete_student(studentID):
-#     try:
-#         ClassDetails = session.get('ClassDetails', None)
-#         subject_code, description, section_code, credits, sem, school_year = ClassDetails
-#         result = ClassRecord.deleteStudent(subject_code, section_code, school_year, sem, studentID)
-#         flash_message = {"type": "success", "message": f"{result}"}
-#         session['flash_message'] = flash_message
-#         return jsonify({'success': True, 'message': 'Student deleted successfully', 'flash_message': flash_message})
-#     except Exception as e:
-#         return jsonify({'success': False, 'error': str(e)})
-
-
-# @classRecord.route("/grade_distribution/create_grade_distribution", methods=['POST','GET'])
-# def create_grade_distribution():
-#     form = gradeDistributionForm(request.form)
-#     ClassDetails = session.get('ClassDetails', None)
-#     subject_code, description, section_code, credits, sem, school_year = ClassDetails
-
-#     if request.method == "POST" and form.validate():
-#         name = form.name.data
-#         percentage = form.percentage.data
-#         result = ClassRecord.addGradeDistribution(subject_code, section_code, school_year, sem, name, percentage)
-#         rows = ClassRecord.getRowsClassRecord(subject_code, section_code, school_year, sem)
-
-#         if "success" in result:
-#             ClassRecord.createAssessmentTable(subject_code, section_code, school_year, sem, name, rows)
-#             credentials_message = f"<br>Name: <strong>{name}</strong><br>Percentage: <strong>{percentage}</strong>"
-#             flash_message = {"type": "success", "message": f"Assessment Created successfully:{credentials_message}"}
-#             session['flash_message'] = flash_message
-#         else:
-#             flash_message = {"type": "danger", "message": f"Failed to create Assessment: {result}"}
-#             session['flash_message'] = flash_message
-#         return redirect(url_for(".index", subject_code=subject_code, description=description, section_code=section_code, credits=credits, sem=sem, school_year=school_year, message=flash_message))
-#     else:
-#         flash_message = {"type": "danger", "message": f"Failed to Add Assessment.<br>*  Make Sure Percentage will equate to 100%<br>*  Make Sure Percentage is not Negative"}
-#         session['flash_message'] = flash_message
-#         return redirect(url_for(".index", subject_code=subject_code, description=description, section_code=section_code, credits=credits, sem=sem, school_year=school_year, message=flash_message))
+@classRecord.route("/get_activities/<string:assessment_id>", methods=['GET'])
+def get_activities(assessment_id):
+    try:
+        # print("assessment", assessment_id)
+        activities = ClassRecord.get_activities_for_assessment(assessment_id)
+        # print("act", activities)
+        return jsonify({'activities': activities})
+    except Exception as e:
+        # Handle exceptions and return an appropriate response
+        return jsonify({'error': str(e)}), 500

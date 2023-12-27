@@ -68,7 +68,7 @@ class ClassRecord:
     def deleteStudentFromClassRecord(classrecordid, studentID, classID):
         try:
             cursor = mysql.connection.cursor()
-            sql = 'DELETE FROM activity WHERE classID = %s'
+            sql = 'DELETE FROM finalscore WHERE classID = %s'
             cursor.execute(sql,(classID,))
             mysql.connection.commit()
             sql = 'DELETE FROM students WHERE classrecordID = %s AND studentID = %s'
@@ -84,7 +84,7 @@ class ClassRecord:
     def getGradeDistribution(classrecordid):
         try:
             cursor = mysql.connection.cursor()
-            sql = 'SELECT name, percentage FROM grade_distribution WHERE classrecordID = %s ORDER BY assessmentID'
+            sql = 'SELECT assessmentID, name, percentage FROM grade_distribution WHERE classrecordID = %s ORDER BY assessmentID'
             cursor.execute(sql,(classrecordid,))
             result = cursor.fetchall()
             cursor.close()
@@ -134,16 +134,16 @@ class ClassRecord:
             return f"Failed to get assessmentID: {str(e)}"
 
     @staticmethod
-    def postCreateActivity(asessmentID, studentsID):
+    def postCreateFinalScore(asessmentID, studentsID):
         try:
             cursor = mysql.connection.cursor()
             for student in studentsID:
-                sql = 'INSERT INTO activity (assessmentID, classID) VALUES (%s, %s)'
+                sql = 'INSERT INTO finalscore (assessmentID, classID) VALUES (%s, %s)'
                 cursor.execute(sql,(asessmentID, student))
             mysql.connection.commit()
-            return "Student Inserted in Activity Successfully"
+            return "Student Inserted in finalscore Successfully"
         except Exception as e:
-            return f"Failed to insert students to Activity: {str(e)}"
+            return f"Failed to insert students to finalscore: {str(e)}"
 
 
     csv_data = None
@@ -187,17 +187,119 @@ class ClassRecord:
         file_content = file.read().decode('utf-8').splitlines()
         cls.csv_data = list(csv.reader(file_content))
 
+    @staticmethod
+    def getFinalScores(assessmentIDs):
+        try:
+            cursor = mysql.connection.cursor()
+            sql = """
+                SELECT finalscore
+                FROM finalscore
+                WHERE assessmentID IN {}
+                ORDER BY assessmentID, classID
+            """.format(tuple(assessmentIDs))
+
+            cursor.execute(sql)
+            results = cursor.fetchall()
+            cursor.close()
+
+            return results
+        except Exception as e:
+            return f"Failed to fetch assessments: {str(e)}"
 
 
+    @staticmethod
+    def addActivity(assessmentID, name, scorelimit, studentsID):
+        try:
+            cursor = mysql.connection.cursor()
+            for student in studentsID:
+                sql = 'INSERT INTO activity (assessmentID, classID, scoreLimit, activityName) VALUES (%s, %s, %s, %s)'
+                cursor.execute(sql,(assessmentID, student, scorelimit, name,))
+            mysql.connection.commit()
+            return "Activity created successfully"
+        except Exception as e:
+            return f"Failed to create activity: {str(e)}"
 
 
+    @staticmethod
+    def     get_student_scores(class_record_id, assessment_id):
+        try:
+            cursor = mysql.connection.cursor()
+
+            sql = '''
+                SELECT
+                    students.studentID,
+                    students.firstname,
+                    students.lastname,
+                    COALESCE(SUM(activity.score), 0) AS finalScore,
+                    COALESCE(SUM(activity.scoreLimit), 0) AS totalScoreLimit,
+                    grade_distribution.assessmentID AS assessmentID
+                FROM
+                    students
+                LEFT JOIN
+                    finalscore ON students.classID = finalscore.classID
+                LEFT JOIN
+                    grade_distribution ON finalscore.assessmentID = grade_distribution.assessmentID
+                LEFT JOIN
+                    activity ON grade_distribution.assessmentID = activity.assessmentID
+                    AND students.classID = activity.classID
+                WHERE
+                    grade_distribution.assessmentID = %s
+                    AND students.classrecordID = %s
+                GROUP BY
+                    students.studentID, students.firstname, students.lastname, grade_distribution.assessmentID;
 
 
+            '''
+
+            cursor.execute(sql, (assessment_id, class_record_id))
+            result = cursor.fetchall()
+
+            cursor.close()
+            return result
+
+        except Exception as e:
+            return f"Failed to fetch student scores: {str(e)}"
 
 
+    @staticmethod
+    def getActivityScores(classID, AssessmentIDs):
+        try:
+            cursor = mysql.connection.cursor()
+            sql = 'SELECT assessmentID, classID, activityName, scoreLimit, score FROM activity WHERE classID = %s AND assessmentID IN ({})'.format(','.join(['%s'] * len(AssessmentIDs)))
+            cursor.execute(sql, (classID,) + tuple(AssessmentIDs))
+            result = cursor.fetchall()
+            cursor.close()
+            return result
+        except Exception as e:
+            return f"Failed to get assessmentID: {str(e)}"
 
 
+    def get_activities_for_assessment(assessment_id):
+        try:
+            cursor = mysql.connection.cursor()
 
+            sql = '''
+                SELECT DISTINCT
+                    activity.assessmentID,
+                    activity.activityName,
+                    activity.scoreLimit
+                FROM
+                    activity
+                WHERE
+                    activity.assessmentID = %s
+            '''
+
+            cursor.execute(sql, (assessment_id,))
+            activities = cursor.fetchall()
+
+            cursor.close()
+
+            print('Fetched activities:', activities)  # Add this line for debugging
+
+            return activities
+        except Exception as e:
+            print(f"Error in get_activities_for_assessment: {e}")
+            return []
 
 
 

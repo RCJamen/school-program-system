@@ -14,16 +14,22 @@
 
 <meta name="csrf-token" content="{{ csrf_token() }}">
 <div class = "faculty-container">
-    <div class = "faculty-title">
-        <h1 class ="m-0"> Faculty List </h1>
+  <div class = sticky-faculty-title>
+    <div class = "faculty-title d-flex justify-content-between">
+        <h2 class ="m-0"> Faculty List </h2>
+        <button type="button" class="btn btn-primary float-end AddFacultyBtn btn-sm" 
+        data-bs-toggle="modal" data-bs-target="#addFacultyModal"><i class="fa-solid fa-user-plus"></i> Add Faculty </button> 
     </div>
-        <hr>
+    <hr class = "m-0">
+  </div>
+        
         <div class = "faculty-content"> 
         
             <div class = "faculty-header">
-                 <h6>School Year</h6>
-                    <div class = "row">
-                        <div class="col-3">
+             
+                    <!-- <div class = "row">
+                        <div class="col-2">
+                          <label>School year</label>
                             <select class="form-select custom-select-size" aria-label="Default select example">
                                 <option selected>Feature Available Soon</option>
                                 <option value="1">One</option>
@@ -31,34 +37,23 @@
                                 <option value="3">Three</option>
                             </select>
                         </div>
-                        <div class="col-4" id = "flash-messages-container">
-                          <!-- {% if flash_message %}
-                              <div class="alert alert-{{ flash_message.type }} alert-dismissible fade show" role="alert">
-                                  <div class="d-flex justify-content-between align-items-center">
-                                      <span>{{ flash_message.message | safe }}</span>
-                                      <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
-                                  </div>
-                              </div>
-                          {% endif %} -->
-
-                          <!-- {% for field, errors in add_form.errors.items() %}
-                              <div class="alert alert-danger alert-dismissible fade show" role="alert">
-                                  <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
-                                  {{ ', '.join(errors) }}
-                              </div>
-                          {% endfor %} -->
-
-
+                        <div class="col-2">
+                          <label>Semester</label>
+                          <select class="form-select custom-select-size" aria-label="Default select example">
+                              <option selected>Feature Available Soon</option>
+                              <option value="1">One</option>
+                              <option value="2">Two</option>
+                              <option value="3">Three</option>
+                          </select>
                       </div>
                         
 
-                        <div class = "col-5"> <button type="button" class="btn btn-primary float-end AddFacultyBtn" 
-                          data-bs-toggle="modal" data-bs-target="#addFacultyModal"><i class="fa-solid fa-user-plus"></i> Add Faculty </button> </div>
+                        <div class = "col-6"> </div>
 
-                    </div>
+                    </div> -->
             </div>
             <div class="faculty-body ">
-                <div class="bs-example container faculty-table table-responsive" data-example-id="striped-table">
+                <div class="faculty-table table-responsive" data-example-id="striped-table">
                     <table class="table table-hover ">
                           
                           <thead>
@@ -106,7 +101,7 @@
 </div>
 
 <div
-  class="modal fade"
+  class="modal"
   id="addFacultyModal"
   data-bs-backdrop="false"
   tabindex="-1"
@@ -129,29 +124,41 @@
           ></button>
         </div>
         <div class="modal-body faculty-modal-body">
+          <div class = "row">
+            <div class="col-6">
+              <div class="form-group">
+                <label for="facultyIDInput">ID</label>
+                {{ add_form.facultyIDInput(class="form-control", placeholder="Faculty ID", required=True, id="facultyIDInput") }}
+              </div>
+            </div>
+            <div class="col-6">
+              <div class="form-group">
+                <label for="facultyRole">Faculty Role</label>
+                {% set is_admin = session["role"] != "Admin" %}
+                {{ add_form.facultyRole(class="form-control", placeholder="Faculty Role", required=True, id="facultyRole", disabled=is_admin)}}
+              </div>
+            </div>
+          </div>
+          <div class = "row">
+            <div class="col-6">
+              <div class="form-group">
+                <label for="facultyfirstName">First Name</label>
+                {{ add_form.facultyfirstName(class="form-control", placeholder="First Name", required=True, id="facultyfirstName") }}
+              </div>
+            </div>
+            <div class="col-6">
+              <div class="form-group">
+                <label for="facultylastName">Last Name</label>
+                {{ add_form.facultylastName(class="form-control", placeholder="Last Name", required=True, id="facultylastName") }}
+              </div>
+            </div>
+          </div>
           
-          <div class="form-group">
-            <label for="facultyIDInput">ID</label>
-            {{ add_form.facultyIDInput(class="form-control", placeholder="Faculty ID", required=True, id="facultyIDInput") }}
-          </div>
-          <div class="form-group">
-            <label for="facultyfirstName">First Name</label>
-            {{ add_form.facultyfirstName(class="form-control", placeholder="First Name", required=True, id="facultyfirstName") }}
-          </div>
-          <!-- Properly closed the second form-group -->
-          <div class="form-group">
-            <label for="facultylastName">Last Name</label>
-            {{ add_form.facultylastName(class="form-control", placeholder="Last Name", required=True, id="facultylastName") }}
-          </div>
           <div class="form-group">
             <label for="facultyEmail">MSU-IIT Email</label>
             {{ add_form.facultyEmail(class="form-control", placeholder="Email", required=True, id="facultyEmail") }}
           </div>
-          <div class="form-group">
-            <label for="facultyRole">Faculty Role</label>
-            {% set is_admin = session["role"] != "Admin" %}
-            {{ add_form.facultyRole(class="form-control", placeholder="Faculty Role", required=True, id="facultyRole", disabled=is_admin)}}
-          </div>
+          
         </div>
         
         <div class="modal-footer faculty-modal-footer">
@@ -191,7 +198,7 @@
 
 
 <div
-  class="modal fade"
+  class="modal"
   id="editFacultyModal"
   data-bs-backdrop="false"
   tabindex="-1"
@@ -215,29 +222,43 @@
           ></button>
         </div>
         <div class="modal-body faculty-modal-body">
+          <div class = "row">
+            <div class="col-6">
+              <div class="form-group">
+                <label for="editFacultyIDInput">ID</label>
+                {{ update_form.editFacultyIDInput(class="form-control", placeholder="Faculty ID", required=True, id="editFacultyIDInput", readonly=True) }}
+              </div>
+            </div>
+            <div class="col-6">
+              <div class="form-group">
+                <label for="editFacultyRole">Faculty Role</label>
+                {% set is_admin = session["role"] != "Admin" %}
+                {{ update_form.editFacultyRole(class="form-control", placeholder="Role", required=True, id="editFacultyRole", disabled=is_admin) }}
+              </div>
+            </div>
+          </div>
+          <div class = "row">
+            <div class="col-6">
+              <div class="form-group">
+                <label for="editFacultyfirstName">First Name</label>
+                {{ update_form.editFacultyfirstName(class="form-control", placeholder="First Name", required=True, id="editFacultyfirstName") }}
+              </div>
+            </div>
+            <div class="col-6">
+              <div class="form-group">
+                <label for="editFacultylastName">Last Name</label>
+                {{ update_form.editFacultylastName(class="form-control", placeholder="Last Name", required=True, id="editFacultylastName") }}
+              </div>
+            </div>
+          </div>
           
-          <div class="form-group">
-            <label for="editFacultyIDInput">ID</label>
-            {{ update_form.editFacultyIDInput(class="form-control", placeholder="Faculty ID", required=True, id="editFacultyIDInput", readonly=True) }}
-          </div>
-          <div class="form-group">
-            <label for="editFacultyfirstName">First Name</label>
-            {{ update_form.editFacultyfirstName(class="form-control", placeholder="First Name", required=True, id="editFacultyfirstName") }}
-          </div>
           <!-- Properly closed the second form-group -->
-          <div class="form-group">
-            <label for="editFacultylastName">Last Name</label>
-            {{ update_form.editFacultylastName(class="form-control", placeholder="Last Name", required=True, id="editFacultylastName") }}
-          </div>
+          
           <div class="form-group">
             <label for="editFacultyEmail">MSU-IIT Email</label>
             {{ update_form.editFacultyEmail(class="form-control", placeholder="Email", required=True, id="editFacultyEmail") }}
           </div>
-          <div class="form-group">
-            <label for="editFacultyRole">Faculty Role</label>
-            {% set is_admin = session["role"] != "Admin" %}
-            {{ update_form.editFacultyRole(class="form-control", placeholder="Role", required=True, id="editFacultyRole", disabled=is_admin) }}
-          </div>
+          
         </div>
         
         <div class="modal-footer faculty-modal-footer">
@@ -258,7 +279,7 @@
 
 
 <div class="modal" tabindex="-1" id = academic-load>
-  <div class="modal-dialog modal-fullscreen modal-dialog-scrollable" >
+  <div class="modal-dialog modal-fullscreen">
     <div class="modal-content">
       
      
@@ -270,15 +291,15 @@
         <div class = "row body-header">
             <div class = "col-12" >
             <div class = "profile-content d-flex flex-column">
-              <h1  class id = "academic-faculty-name"></h6>
-              <h4 id = academic-faculty-id></h5>
+              <h2  class id = "academic-faculty-name"></h2>
+              <h5 id = academic-faculty-id></h5>
             </div>
           </div>
         
         </div>
         <div class = "row body-sort" >
           <div class = "col-2 school-year">
-            <h6>Semester</h6>
+            <label>Semester</label>
             <select class="form-select custom-select-size" aria-label="Default select example">
               <option selected>1st Semester</option>
               <option value="1">One</option>
@@ -287,7 +308,7 @@
           </select>
           </div>
           <div class = "col-2 semester">
-            <h6>School Year</h6>
+            <label>School Year</label>
             <select class="form-select custom-select-size" aria-label="Default select example">
               <option selected>2023-2024</option>
               <option value="1">One</option>
@@ -299,7 +320,7 @@
 
           </div>
         </div>
-        <div class="container-fluid">
+        <div class="container-fluid p-0">
           <ul class="nav nav-underline" id="myTabs">
               <li class="nav-item">
                   <a class="nav-link active" id="academicLoad-tab" data-bs-toggle="tab" href="#academicLoad">Academic Load</a>
@@ -307,8 +328,8 @@
           </ul>
           <div class="tab-content mt-3">
               <div class="tab-pane fade show active" id="academicLoad">
-                  <div class="academic-table">
-                      <div class="bs-example container academic-table table-responsive" data-example-id="striped-table">
+                  <div class="academic-table-table">
+                      <div class="academic-table table-responsive" data-example-id="striped-table">
                           <table class="table table-hover" id ="myTable" data-auto-refresh="true">
                               <thead>
                               <tr>

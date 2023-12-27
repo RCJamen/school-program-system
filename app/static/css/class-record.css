@@ -6,11 +6,6 @@
     padding: 24px 32px 24px 32px;
 }
 
-.classRecord-body {
-    width: 96.5%;
-    margin-left: 50px;
-}
-
 /* Override padding */
 .table> :not(caption)>*>* {
     padding: .5rem .5rem !important;
@@ -72,3 +67,99 @@
   .nav-link:not(.active) {
     color: black;
   }
+
+
+
+  td {
+    font-size: 14px;
+    word-wrap: break-word;
+  }
+  
+  th {
+    font-size: 14px;
+  
+  }
+  
+  .table td{
+    padding-top: 0px !important;
+    padding-bottom: 0px !important; /* Adjust as needed */
+  }
+
+.nav.nav-tabs {
+    padding: 24px 32px 0px 32px;
+  
+    background-color: white;
+    position: -webkit-sticky;
+    position: sticky;
+    top: 41px; 
+  }
+  .sticky-thead {
+    position: -webkit-sticky;
+    position: sticky;
+    top: 106px;
+    background-color: black !important;
+    z-index: 1000; /* Ensure the sticky header appears above other elements */
+}
+
+.sticky-thead::after {
+    content: '';
+    display: block;
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    width: 100%;
+    height: 1px;
+    background-color: black;
+    border: 1px solid black; /* Choose a color for the bottom border */
+}
+
+.class-record-table {
+    padding-left: 32px;
+    padding-right: 32px;
+}
+/* #dynamic-table th,
+#dynamic-table td {
+    white-space: nowrap;
+    text-align: center;
+}
+
+#dynamic-table th:nth-child(1),
+#dynamic-table td:nth-child(1) {
+    min-width: 50px !important;
+    border: 1px solid #ccc;
+    position: sticky;
+    z-index: 1;
+    left: 0;
+}
+
+#dynamic-table th:nth-child(2),
+#dynamic-table td:nth-child(2) {
+    min-width: 140px !important;
+    border: 1px solid #ccc;
+    border-block: 1px solid #ccc;
+    position: sticky;
+    z-index: 1;
+    left: 0;
+}
+
+
+#dynamic-table th,
+#dynamic-table td {
+    min-width: 180px;
+    border: 1px solid #ccc;
+}
+
+#dynamic-table th:last-child,
+#dynamic-table td:last-child {
+    min-width: 50px !important;
+    border: 1px solid #ccc;
+    position: sticky;
+    z-index: 1;
+    right: 0;
+}
+
+
+.activityList h3{
+    border: none;
+    
+} */

@@ -107,8 +107,8 @@ schoolYear VARCHAR(10),
 UNIQUE KEY unique_assignFaculty (facultyID, subjectID, sectionID, sem, schoolYear)
 );
 
-
-DROP TABLE IF EXISTS `students`;
+-- class_record_student untana
+DROP TABLE IF EXISTS `students`; 
 CREATE TABLE IF NOT EXISTS `students`(
 classID INT AUTO_INCREMENT NOT NULL,
 classrecordID INT NOT NULL,
@@ -133,15 +133,29 @@ PRIMARY KEY (assessmentID),
 FOREIGN KEY(classrecordID) REFERENCES assignFaculty(assignFacultyID)
 );
 
-DROP TABLE IF EXISTS `activity`;
-CREATE TABLE IF NOT EXISTS `activity`(
-activityID INT AUTO_INCREMENT NOT NULL,
+DROP TABLE IF EXISTS `finalscore`;
+CREATE TABLE IF NOT EXISTS `finalscore`(
+finalscoreID INT AUTO_INCREMENT NOT NULL,
 assessmentID INT NOT NULL,
 classID INT NOT NULL,
 finalscore DECIMAL(6,2) DEFAULT 0.00,
-PRIMARY KEY(activityID),
+PRIMARY KEY(finalscoreID),
 FOREIGN KEY(assessmentID) REFERENCES grade_distribution(assessmentID) ON DELETE CASCADE,
-FOREIGN KEY(classID) REFERENCES students(classID)
+FOREIGN KEY(classID) REFERENCES students(classID) ON DELETE CASCADE
+);
+
+DROP TABLE IF EXISTS `activity`;
+CREATE TABLE IF NOT EXISTS `activity` (
+activityID INT AUTO_INCREMENT NOT NULL,
+assessmentID INT NOT NULL,
+classID INT NOT NULL,
+scoreLimit DECIMAL(6,2) NOT NULL,
+activityName VARCHAR(255) NOT NULL,
+score DECIMAL(6,2) DEFAULT 0.00,
+PRIMARY KEY (activityID),
+UNIQUE KEY unique_activity (assessmentID, classID, activityName),
+FOREIGN KEY (assessmentID) REFERENCES grade_distribution(assessmentID) ON DELETE CASCADE,
+FOREIGN KEY (classID) REFERENCES students(classID) ON DELETE CASCADE
 );
 
 -- USED
@@ -185,7 +199,17 @@ VALUES ('None', 'None', 'None', 'None', 'Faculty'),
 ('2023-0001', 'Fulgent Kvasir', 'Lavesores', 'fulgentkvasir.lavesores@g.msuiit.edu.ph', 'Faculty'),
 ('2023-0002', 'Alrick Ivan', 'Gicole', 'alrickivan.gicole@g.msuiit.edu.ph', 'Faculty'),
 ('2023-0003', 'Janella', 'Balantac', 'janellasuzanne.balantac@g.msuiit.edu.ph', 'Faculty'),
-('2023-0004', 'Ramel Cary', 'Jamen', 'ramelcary.jamen@g.msuiit.edu.ph', 'Chairperson');
+('2023-0004', 'Ramel Cary', 'Jamen', 'ramelcary.jamen@g.msuiit.edu.ph', 'Chairperson'),
+('2023-0005', 'Fulgent Kvasir', 'Lavesores', 'fulgentkvasssir.lavesores@g.msuiit.edu.ph', 'Faculty'),
+('2023-0006', 'Alrick Ivan', 'Gicole', 'alrickivsssan.gicole@g.msuiit.edu.ph', 'Faculty'),
+('2023-0007', 'Janella', 'Balantac', 'janellasuzasssnne.balantac@g.msuiit.edu.ph', 'Faculty'),
+('2023-0008', 'Ramel Cary', 'Jamen', 'ramelcasssry.jamen@g.msuiit.edu.ph', 'Chairperson'),
+('2023-0009', 'Ramel Cary', 'Jamen', 'ramel2cary.jamen@g.msuiit.edu.ph', 'Chairperson'),
+('2023-0010', 'Fulgent Kvasir', 'Lavesores', 'fulgen3tkvasssir.lavesores@g.msuiit.edu.ph', 'Faculty'),
+('2023-0011', 'Alrick Ivan', 'Gicole', 'alrickivss1san.gicole@g.msuiit.edu.ph', 'Faculty'),
+('2023-0012', 'Janella', 'Balantac', 'janellasuz4asssnne.balantac@g.msuiit.edu.ph', 'Faculty'),
+('2023-0013', 'Ramel Cary', 'Jamen', 'ramelca4sssry.jamen@g.msuiit.edu.ph', 'Chairperson');
+
 
 INSERT INTO subject (subjectCode, description, credits)
 VALUES

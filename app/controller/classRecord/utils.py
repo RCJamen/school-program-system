@@ -9,3 +9,7 @@ class Utils:
     def getClassID(Students):
         class_ids = [student[1] for student in Students]
         return class_ids
+
+    def getAssessmentID(Assessments):
+        assessment_ids = [assessment[0] for assessment in Assessments]
+        return assessment_ids
